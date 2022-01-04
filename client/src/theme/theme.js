@@ -3,29 +3,68 @@ import { createTheme } from '@mui/material';
 // Create a theme instance.
 export const theme = createTheme({
     palette: {
+        // primary: {
+        //     main: '#eee',
+        //     dark: '#ed8fb2',
+        //     pink: '#ed8fb2',
+        // },
         common: {
             white: '#f9f9f9',
             black: '#000',
+            pink: '#ed8fb2',
+            text_white: '#eee',
         },
+        // text: {
+        //     primary: 'rgba(0,0,0,0.87)',
+        //     secondary: '#ed8fb2',
+        //     disabled: '',
+        // },
     },
     typography: {
-        fontFamily: '-apple-system, sans-serif',
+        fontFamily: 'Poppins, sans-serif',
+        body1: {
+            fontSize: '0.925rem',
+        },
     },
     components: {
         MuiTypography: {
+            // variants: [
+            //     {
+            //         props: { pointer },
+            //         style: { cursor: 'pointer' },
+            //     },
+            // ],
             defaultProps: {
-                // color: '#352f44',
+                color: '#eee',
             },
         },
+
+        MuiButton: {
+            variants: [
+                {
+                    props: { color_custom: 'pink' },
+                    style: {
+                        borderColor: '#ed8fb2',
+                        color: '#ed8fb2',
+                        '&:hover': {
+                            borderColor: '#ed8fb2',
+                            backgroundColor: 'transparent',
+                        },
+                    },
+                },
+            ],
+        },
+
         MuiContainer: {
             defaultProps: {
                 maxWidth: 'md',
             },
+
             styleOverrides: {
                 maxWidthMd: {
-                    maxWidth: '800px',
-                    '@media (min-width: 800px)': {
-                        maxWidth: '800px',
+                    maxWidth: '780px',
+                    '@media (min-width: 780px)': {
+                        maxWidth: '780px',
                     },
                 },
             },

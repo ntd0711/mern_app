@@ -1,9 +1,8 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Grid, Typography } from '@mui/material';
-import InputField from 'components/input';
-import InputPassword from 'components/input-password';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Box, Button, Grid, Typography } from '@mui/material';
+import { InputField, InputPassword } from 'components';
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 function AuthForm({ isSignUp, switchMode, onSubmit }) {

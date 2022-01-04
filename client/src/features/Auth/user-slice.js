@@ -16,6 +16,12 @@ export const userSlice = createSlice({
 
             localStorage.removeItem('profile');
         },
+        updateProfile: (state, action) => {
+            state.profile = action.payload;
+            const user = { user: action.payload, token: state.token };
+
+            localStorage.setItem('profile', JSON.stringify(user));
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(login.fulfilled, (state, action) => {
@@ -35,6 +41,6 @@ export const userSlice = createSlice({
 });
 
 const { reducer, actions } = userSlice;
-export const { logout } = actions;
+export const { logout, updateProfile } = actions;
 
 export default reducer;

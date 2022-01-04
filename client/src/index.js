@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@mui/material';
@@ -8,6 +7,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { theme } from './theme/theme';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
+import { ToastContainer } from 'react-toastify';
+import './index.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.render(
     <React.StrictMode>
@@ -15,6 +17,7 @@ ReactDOM.render(
             <ThemeProvider theme={theme}>
                 <Provider store={store}>
                     <App />
+                    <ToastContainer />
                 </Provider>
             </ThemeProvider>
         </BrowserRouter>

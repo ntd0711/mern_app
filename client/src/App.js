@@ -1,23 +1,25 @@
 import { Box, Stack } from '@mui/material';
-import AuthFeature from 'features/Auth';
+import { Footer, Header, RequireAuth } from 'components';
+import { AuthFeature, PostsFeature, ProfileFeature } from 'features';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import Footer from './components/footer';
-import Header from './components/header';
-import BlogFeature from './features/Blog';
 
 function App() {
     return (
         <Box>
-            <Stack bgcolor="common.white" minHeight="100vh">
+            <Stack bgcolor="#292c33" minHeight="100vh">
                 <Box>
                     <Header />
                 </Box>
 
                 <Box flexGrow={1}>
                     <Routes>
-                        <Route path="blog/*" element={<BlogFeature />} />
                         <Route path="signin" element={<AuthFeature />} />
+                        <Route path="posts/*" element={<PostsFeature />} />
+                        <Route
+                            path="profile/*"
+                            element={<RequireAuth component={ProfileFeature} />}
+                        />
                     </Routes>
                 </Box>
 

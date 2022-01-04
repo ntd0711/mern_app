@@ -1,10 +1,9 @@
 import { Box, Paper } from '@mui/material';
-import { userApi } from 'api/user-api';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from './components/form-auth';
-import { login } from './user-thunk';
+import { login, register } from './user-thunk';
 
 function AuthFeature() {
     const navigate = useNavigate();
@@ -18,11 +17,11 @@ function AuthFeature() {
     const handleOnSubmit = async (data) => {
         try {
             if (isSignUp) {
-                // await dispatch(login())
+                await dispatch(register(data));
             } else {
                 const formData = { email: data.email, password: data.password };
                 await dispatch(login(formData));
-                navigate('/blog');
+                navigate('/posts');
             }
         } catch (error) {
             console.log(error);
