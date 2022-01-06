@@ -2,7 +2,7 @@ import { Stack, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import { postsApi } from 'api/posts-api';
 import queryString from 'query-string';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { fetchTagsPost } from '../posts-thunk';
@@ -12,21 +12,14 @@ function PostFilters() {
     const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
-    const [tags, setTags] = useState(() => {
-        return queryString.parse(location.search)?.tags?.split(' ') || [];
-    });
     const [search, setSearch] = useState('');
     const { postTags } = useSelector((state) => state.posts);
 
-    useEffect(() => {
-        if (tags.length === 0) {
-            navigate('/posts');
-        } else {
-            const queryTags = `?tags=${tags.join('+')}`;
-            navigate(queryTags);
-        }
-    }, [tags, navigate]);
+    let tagsQuery = useMemo(() => {
+        return queryString.parse(location.search).tags
+            ? queryString.parse(location.search)?.tags?.split(' ')
+            : [];
+    }, [location.search]);
 
     useEffect(() => {
         if (postTags.length) return;
@@ -40,10 +33,16 @@ function PostFilters() {
     }, [dispatch, postTags]);
 
     const handleOnclickTag = (tag) => {
-        if (tags.includes(tag)) {
-            setTags(tags.filter((x) => x !== tag));
+        if (tagsQuery.includes(tag)) {
+            tagsQuery = tagsQuery.filter((x) => x !== tag);
         } else {
-            setTags([...tags, tag]);
+            tagsQuery.push(tag);
+        }
+
+        if (tagsQuery.length === 0) {
+            navigate('/posts');
+        } else {
+            navigate(`?tags=${tagsQuery.join('+')}`);
         }
     };
 
@@ -55,7 +54,6 @@ function PostFilters() {
         e.preventDefault();
         setSearch('');
         navigate(`?search=${search}`);
-        console.log(search);
     };
 
     return (
@@ -90,7 +88,7 @@ function PostFilters() {
                         key={tag}
                         tag={tag}
                         onClickTag={handleOnclickTag}
-                        active={tags.includes(tag)}
+                        active={tagsQuery.includes(tag)}
                     />
                 ))}
             </Stack>

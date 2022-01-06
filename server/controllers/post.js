@@ -9,7 +9,7 @@ export const createPosts = async (req, res) => {
         const post = req.body;
 
         if (post) {
-            const { tagList } = await TagsModel.findOne({ name: 'tagList' });
+            const tagList = await TagsModel.findOne({ name: 'tagList' });
 
             if (!tagList) {
                 await TagsModel.create({
@@ -17,11 +17,16 @@ export const createPosts = async (req, res) => {
                     tagList: [],
                 });
             }
-            const newTagList = Array.from(new Set([...post.tags?.split(' '), ...tagList]));
+            const newTagList = Array.from(
+                new Set([
+                    ...post.tags?.split(' ').map((tag) => tag?.toLowerCase()),
+                    ...tagList.tagList,
+                ])
+            );
 
             const newPostPromise = PostModel.create({
                 ...post,
-                tags: post.tags?.split(' '),
+                tags: post.tags?.split(' ').map((tag) => tag?.toLowerCase()),
                 creatorId: req?.userId,
             });
             const tagsPromise = TagsModel.findOneAndUpdate(
@@ -74,6 +79,7 @@ export const getPosts = async (req, res) => {
 export const getTags = async (req, res) => {
     try {
         const { tagList } = await TagsModel.findOne({ name: 'tagList' });
+        tagList.sort();
         res.status(200).json(tagList);
     } catch (error) {
         res.status(404).json({ message: error.message });

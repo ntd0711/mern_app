@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 
-function EditorPost({ onChange }) {
+function EditorPost({ onChange, value }) {
     const mdParser = new MarkdownIt();
+    const [mdValue, setMdValue] = useState(value || '');
 
-    const handleEditorChange = ({ html }) => {
-        if (onChange) onChange(html);
+    const handleEditorChange = ({ html, text }) => {
+        if (!onChange) return;
+        onChange({ html, text });
+        setMdValue(text);
     };
 
     function onImageUpload(file) {
@@ -22,6 +25,7 @@ function EditorPost({ onChange }) {
 
     return (
         <MdEditor
+            value={mdValue}
             style={{ height: '500px' }}
             renderHTML={(text) => mdParser.render(text)}
             onChange={handleEditorChange}

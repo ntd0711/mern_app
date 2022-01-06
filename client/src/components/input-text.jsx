@@ -4,13 +4,14 @@ import { Controller } from 'react-hook-form';
 import PropTypes from 'prop-types';
 
 const InputField = (props) => {
-    const { name, label, disabled, control, multiline } = props;
+    const { name, label, value, disabled, control, multiline } = props;
 
     return (
         <>
             <Controller
                 name={name}
                 control={control}
+                defaultValue={value}
                 render={({ field, fieldState: { invalid, error } }) => {
                     return (
                         <TextField

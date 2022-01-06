@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { notify } from 'utils/toastify';
 import { login, register } from './user-thunk';
 
 const initialState = {
@@ -30,12 +31,18 @@ export const userSlice = createSlice({
 
             localStorage.setItem('profile', JSON.stringify(action.payload));
         });
+        builder.addCase(login.rejected, (state, action) => {
+            notify.error(action.payload.message);
+        });
 
         builder.addCase(register.fulfilled, (state, action) => {
             state.profile = action.payload?.user;
             state.token = action.payload?.token;
-
+            notify.success('register account successfully!');
             localStorage.setItem('profile', JSON.stringify(action.payload));
+        });
+        builder.addCase(register.rejected, (state, action) => {
+            notify.error(action.payload.message);
         });
     },
 });

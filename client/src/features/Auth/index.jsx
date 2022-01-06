@@ -15,16 +15,12 @@ function AuthFeature() {
     };
 
     const handleOnSubmit = async (data) => {
-        try {
-            if (isSignUp) {
-                await dispatch(register(data));
-            } else {
-                const formData = { email: data.email, password: data.password };
-                await dispatch(login(formData));
-                navigate('/posts');
-            }
-        } catch (error) {
-            console.log(error);
+        if (isSignUp) {
+            await dispatch(register(data));
+        } else {
+            const formData = { email: data.email, password: data.password };
+            await dispatch(login(formData));
+            navigate('/posts');
         }
     };
     return (

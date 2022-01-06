@@ -19,8 +19,8 @@ function ProfileTabs({ posts }) {
         cursor: pointer;
 
         &.${tabUnstyledClasses.selected} {
-            color: #ed8fb2;
-            border-bottom: 1px solid #ed8fb2;
+            color: #ffa7c4;
+            border-bottom: 1px solid #ffa7c4;
             transition: all 0.3s;
         }
     `;

@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
 
 const InputPassword = (props) => {
-    const { name, label, control, multiline } = props;
+    const { name, label, control } = props;
     const [isShowPassword, setIsShowPassword] = useState(false);
 
     const handleShowPassword = () => {

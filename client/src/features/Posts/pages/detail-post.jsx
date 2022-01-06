@@ -16,12 +16,10 @@ function PostDetail() {
         })();
     }, [id]);
 
-    console.log(post);
-
     if (Object.keys(post).length === 0) return 'loading...';
 
     const createMarkup = () => {
-        return { __html: post?.content };
+        return { __html: post?.htmlContent || post?.content };
     };
 
     return (

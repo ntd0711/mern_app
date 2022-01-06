@@ -4,7 +4,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import PostCard from '../components/post-card';
-import PostFilters from '../components/post-filters';
+import PostFilters from '../components/post-filter';
 import { fetchPosts, likePost } from '../posts-thunk';
 
 function PostList() {
@@ -68,7 +68,6 @@ function PostList() {
                         </Stack>
                     </Grid>
                 </Grid>
-                {/* <Box mb={6}></Box> */}
             </Container>
         </Box>
     );

@@ -1,21 +1,23 @@
-import { IconButton, Stack, Typography } from '@mui/material';
+import { Chip, IconButton, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import React from 'react';
 import { IoTriangleOutline, IoTriangleSharp } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { toUpperCaseFirstLetter } from 'utils/common';
+import { TiEdit } from 'react-icons/ti';
 
 dayjs.extend(localizedFormat);
 
-function PostCard({ post, onLike, onAccessUser }) {
+function PostCard({ post, onLike }) {
     const navigate = useNavigate();
+    const location = useLocation();
     const { profile, token } = useSelector((state) => state.user);
     const hasSignIn = !!(profile && token);
 
-    const { title, description, createdAt, creator, _id, likes, creatorId } = post;
+    const { title, description, createdAt, creator, _id, likes, creatorId, tags } = post;
 
     const handleLikePost = () => {
         if (!hasSignIn) {
@@ -42,41 +44,69 @@ function PostCard({ post, onLike, onAccessUser }) {
         );
     };
 
+    const Edit = () => {
+        const isEdit = creatorId === profile?._id && location.pathname === '/profile';
+        return (
+            <>
+                {isEdit ? (
+                    <Link to={`/posts/update/${_id}`}>
+                        <IconButton
+                            size="small"
+                            sx={{ fontSize: '1rem', color: 'common.pink', ml: 4 }}
+                        >
+                            <TiEdit title="edit post" />
+                        </IconButton>
+                    </Link>
+                ) : (
+                    <></>
+                )}
+            </>
+        );
+    };
+
     return (
-        <Box>
+        <Stack rowGap={0.8}>
             <Link to={`/posts/${_id}`}>
                 <Typography
                     component="h2"
-                    variant="h5"
                     sx={{
-                        display: 'inline-block',
                         color: 'common.pink',
+
                         fontWeight: 'bold',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
-                        overflow: 'hidden',
+                        fontSize: '28px',
                         cursor: 'pointer',
                     }}
                 >
-                    {toUpperCaseFirstLetter(title)}
+                    {toUpperCaseFirstLetter(title.trim())}
                 </Typography>
             </Link>
-            <Stack direction="row" alignItems="flex-start">
+            <Box mt={-1}>
                 <Stack direction="row" alignItems="center">
-                    <Typography fontSize="11px">{dayjs(createdAt).format('ll')}</Typography>
+                    <Typography fontSize="12px">{dayjs(createdAt).format('ll')}</Typography>
                     <Box
                         sx={{ width: '0.5px', height: '14px', bgcolor: 'common.text_white', mx: 2 }}
                     />
                     <Link to={creatorId === profile?._id ? '/profile' : `/profile/${creatorId}`}>
-                        <Typography mt={0.2} variant="subtitle2" sx={{ cursor: 'pointer' }}>
+                        <Typography variant="subtitle2" sx={{ cursor: 'pointer' }}>
                             {toUpperCaseFirstLetter(creator)}
                         </Typography>
                     </Link>
                     <Like />
+                    <Edit />
                 </Stack>
-            </Stack>
-            <Typography mt={2}>{description}</Typography>
-        </Box>
+            </Box>
+            <Box ml={-1}>
+                {tags.map((tag) => (
+                    <Chip
+                        key={tag}
+                        label={`#${tag}`}
+                        sx={{ height: '28px', ml: 1, fontSize: '0.8rem', color: '#eee' }}
+                        variant="outlined"
+                    />
+                ))}
+            </Box>
+            <Typography mt={1.8}>{description}</Typography>
+        </Stack>
     );
 }
 

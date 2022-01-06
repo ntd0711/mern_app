@@ -87,7 +87,7 @@ function Header() {
                                     />
                                 </IconButton>
                                 <Typography variant="subtitle2" ml={0.8}>
-                                    {toUpperCaseFirstLetter(profile?.name)}
+                                    {toUpperCaseFirstLetter(profile?.name?.trim())}
                                 </Typography>
                             </Stack>
                         )}

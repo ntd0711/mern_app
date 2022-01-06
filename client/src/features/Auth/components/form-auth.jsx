@@ -42,9 +42,7 @@ function AuthForm({ isSignUp, switchMode, onSubmit }) {
     };
 
     const handleOnSubmit = (data) => {
-        if (onSubmit) {
-            onSubmit(data);
-        }
+        if (onSubmit) onSubmit(data);
     };
 
     const SwitchModeElement = () => {

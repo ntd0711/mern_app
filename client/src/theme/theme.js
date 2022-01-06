@@ -11,7 +11,7 @@ export const theme = createTheme({
         common: {
             white: '#f9f9f9',
             black: '#000',
-            pink: '#ed8fb2',
+            pink: '#ffa7c4',
             text_white: '#eee',
         },
         // text: {

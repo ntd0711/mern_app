@@ -66,7 +66,7 @@ export const getUserById = async (req, res) => {
 
         res.status(200).json(userNeedToFind);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: 'Something went wrong.' });
     }
 };
 
@@ -81,7 +81,7 @@ export const updateInfo = async (req, res) => {
         res.status(200).json(userUpdated);
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: 'Something went wrong.' });
     }
 };
 
@@ -100,7 +100,7 @@ export const unsetAvatar = async (req, res) => {
         res.status(200).json(userUpdated);
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: 'Something went wrong.' });
     }
 };
 
@@ -120,6 +120,6 @@ export const updateAvatar = async (req, res) => {
         res.status(200).json(userUpdated);
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: 'Something went wrong.' });
     }
 };

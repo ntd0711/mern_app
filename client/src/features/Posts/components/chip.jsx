@@ -7,11 +7,10 @@ function TagElement({ tag, onClickTag, active }) {
     };
     return (
         <Chip
-            label={tag}
+            label={`#${tag}`}
             sx={{
                 color: active ? '#000' : '#eee',
                 bgcolor: active ? 'common.pink' : '',
-                borderRadius: '10px',
                 fontSize: '0.8rem',
                 height: '28px',
                 '&:hover': {

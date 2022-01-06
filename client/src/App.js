@@ -7,7 +7,7 @@ import './App.css';
 function App() {
     return (
         <Box>
-            <Stack bgcolor="#292c33" minHeight="100vh">
+            <Stack bgcolor="#282c35" minHeight="100vh">
                 <Box>
                     <Header />
                 </Box>

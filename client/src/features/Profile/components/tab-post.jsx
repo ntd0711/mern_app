@@ -1,4 +1,4 @@
-import { Box, Container, Stack, Typography } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import PostCard from 'features/Posts/components/post-card';
 import React from 'react';
 
