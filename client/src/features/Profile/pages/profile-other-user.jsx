@@ -9,36 +9,37 @@ import ProfileInfo from '../components/profile-info';
 import ProfileTabs from '../components/profile-tabs';
 
 function ProfileOtherUser() {
-    const { id } = useParams();
-    const dispatch = useDispatch();
-    const [posts, setPosts] = useState([]);
-    const [user, setUser] = useState({});
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState({});
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const postsPromise = postsApi.getPostsByUserId(id);
-                const userPromise = userApi.getUserById(id);
+  useEffect(() => {
+    (async () => {
+      try {
+        const postsPromise = postsApi.getPostsByUserId(id);
+        const userPromise = userApi.getUserById(id);
 
-                const [user, posts] = await Promise.all([userPromise, postsPromise]);
+        const [user, posts] = await Promise.all([userPromise, postsPromise]);
 
-                setUser(user);
-                setPosts(posts);
-            } catch (error) {
-                console.log(error);
-            }
-        })();
-    }, [dispatch, id]);
+        setUser(user);
+        setPosts(posts);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [dispatch, id]);
 
-    if (posts.length === 0) return 'loading ...';
-    return (
-        <Box mt={10}>
-            <Container>
-                <ProfileInfo isOtherUser={id} postQuantity={posts.length} profile={user} />
-                <ProfileTabs posts={posts} />
-            </Container>
-        </Box>
-    );
+  if (posts.length === 0) return 'loading ...';
+  return (
+    <Box mt={10}>
+      <Container>
+        <ProfileInfo isOtherUser={id} postQuantity={posts.length} profile={user} />
+
+        <ProfileTabs posts={posts} />
+      </Container>
+    </Box>
+  );
 }
 
 export default ProfileOtherUser;

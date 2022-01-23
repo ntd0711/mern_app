@@ -1,86 +1,95 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button } from '@mui/material';
-import { AvatarCustom, InputField } from 'components';
+import { Box, Button, InputLabel, Stack, Typography } from '@mui/material';
+import { AvatarCustom, ButtonCustom, InputField, InputFile } from 'components';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import ModalProfile from './modal';
 
-function ProfileForm({ onSubmit, profile, onUnsetAvt, onUpdateAvt }) {
-    const [avatar, setAvatar] = useState();
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+function ProfileForm({ onSubmit, profile, loading, onUnsetAvt, onUpdateAvt }) {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-    const schema = yup.object().shape({
-        name: yup
-            .string()
-            .required()
-            .test('check title', 'title at least two word', (value) => {
-                return value.split(' ').filter((x) => x.length >= 2).length >= 2;
-            }),
-    });
+  const schema = yup.object().shape({
+    name: yup
+      .string()
+      .required()
+      .test('check title', 'title at least two word', (value) => {
+        return value.split(' ').filter((x) => x.length >= 2).length >= 2;
+      }),
+  });
 
-    const { handleSubmit, control } = useForm({
-        defaultValues: {
-            name: profile?.name,
-        },
-        resolver: yupResolver(schema),
-    });
+  const { handleSubmit, control } = useForm({
+    defaultValues: {
+      name: profile?.name,
+    },
+    resolver: yupResolver(schema),
+  });
 
-    const handleOnSubmit = (data) => {
-        if (onSubmit) onSubmit(data);
+  const handleOnSubmit = (data) => {
+    if (onSubmit) onSubmit(data);
+  };
+
+  const handleSetFile = (file) => {
+    if (!onUpdateAvt) return;
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      const imgUrl = reader.result;
+
+      onUpdateAvt(imgUrl);
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
     };
 
-    const handleSetFile = (file) => {
-        const url = URL.createObjectURL(file);
+    handleClose();
+  };
 
-        setAvatar(url);
-        if (onUpdateAvt) onUpdateAvt(file);
-        handleClose();
-    };
+  const handleUnsetAvt = () => {
+    if (onUnsetAvt) onUnsetAvt();
+    handleClose();
+  };
 
-    const handleUnsetAvt = () => {
-        if (onUnsetAvt) onUnsetAvt();
-        setAvatar();
-        handleClose();
-    };
-
-    return (
-        <>
-            <AvatarCustom
-                url={
-                    avatar ||
-                    (profile?.avatar?.filePath &&
-                        `http://localhost:5000/${profile?.avatar.filePath}`) ||
-                    ''
-                }
-                size={5}
-            />
-            <Button
-                sx={{ textTransform: 'none' }}
-                size="small"
-                color_custom="pink"
-                variant="outlined"
-                onClick={handleOpen}
-            >
-                Change Avatar
-            </Button>
-            <ModalProfile
-                open={open}
-                onClose={handleClose}
-                onSetFile={handleSetFile}
-                onUnsetAvt={handleUnsetAvt}
-            />
-            <Box component="form" onSubmit={handleSubmit(handleOnSubmit)}>
-                <InputField name="name" label="Name" control={control} />
-
-                <Button type="submit" variant="contained" color="primary">
-                    Save
-                </Button>
-            </Box>
-        </>
-    );
+  return (
+    <>
+      <Stack direction="row" spacing={1} alignItems="flex-end">
+        <InputLabel htmlFor="upload_image" sx={{ cursor: 'pointer' }}>
+          <AvatarCustom url={profile?.avatar} size={3} />
+        </InputLabel>
+        <Box rowGap={2}>
+          <Typography variant="h7">{profile.name}</Typography>
+          <Typography
+            variant="subtitle2"
+            sx={{
+              color: 'common.blue',
+              cursor: 'pointer',
+              transition: 'color 0.2s ease',
+              '&:hover': { color: 'common.dark_blue' },
+            }}
+            onClick={handleOpen}
+          >
+            Change Avatar
+          </Typography>
+        </Box>
+      </Stack>
+      <ModalProfile
+        open={open}
+        onClose={handleClose}
+        onSetFile={handleSetFile}
+        onUnsetAvt={handleUnsetAvt}
+      />
+      <Box component="form" onSubmit={handleSubmit(handleOnSubmit)}>
+        <InputField name="name" label="Name" height="44px" control={control} />
+        <InputFile control={control} name="imgFile" onSetFile={handleSetFile} />
+        <ButtonCustom type="submit" disabled={loading} size="small">
+          Save
+        </ButtonCustom>
+      </Box>
+    </>
+  );
 }
 
 export default ProfileForm;

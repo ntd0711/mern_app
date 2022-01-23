@@ -1,11 +1,12 @@
 import {
-    FormControl,
-    FormHelperText,
-    IconButton,
-    InputAdornment,
-    InputLabel,
-    OutlinedInput,
-    TextField,
+  FormControl,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField,
+  Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
@@ -13,65 +14,94 @@ import PropTypes from 'prop-types';
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
 
 const InputPassword = (props) => {
-    const { name, label, control } = props;
-    const [isShowPassword, setIsShowPassword] = useState(false);
+  const { name, label, control } = props;
+  const [isShowPassword, setIsShowPassword] = useState(false);
 
-    const handleShowPassword = () => {
-        setIsShowPassword((prevState) => !prevState);
-    };
+  const handleShowPassword = () => {
+    setIsShowPassword((prevState) => !prevState);
+  };
 
-    return (
-        <>
-            <Controller
-                name={name}
-                control={control}
-                render={({ field, fieldState: { invalid, error } }) => {
-                    return (
-                        <FormControl
-                            sx={{ mt: 2, mb: 1 }}
-                            size="small"
-                            fullWidth
-                            variant="outlined"
-                            error={invalid}
-                        >
-                            <InputLabel>{label}</InputLabel>
-                            <OutlinedInput
-                                {...field}
-                                type={isShowPassword ? 'text' : 'password'}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleShowPassword}
-                                            edge="end"
-                                            sx={{ color: `${invalid ? 'error.light' : ''}` }}
-                                        >
-                                            {isShowPassword ? (
-                                                <MdOutlineVisibilityOff />
-                                            ) : (
-                                                <MdOutlineVisibility />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label={label}
-                            />
-                            <FormHelperText id="component-error-text">
-                                {error?.message}
-                            </FormHelperText>
-                        </FormControl>
-                    );
+  return (
+    <>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field, fieldState: { invalid, error } }) => {
+          return (
+            <>
+              <InputLabel
+                htmlFor={name}
+                sx={{
+                  color: '#eee',
+                  display: 'block',
+                  marginTop: '20px',
+                  fontSize: '16px',
+                  fontWeight: '500',
                 }}
-            />
-        </>
-    );
+              >
+                {label}
+              </InputLabel>
+              <FormControl sx={{ mt: 1 }} size="small" fullWidth variant="outlined" error={invalid}>
+                <OutlinedInput
+                  {...field}
+                  id={name}
+                  placeholder={label}
+                  type={isShowPassword ? 'text' : 'password'}
+                  sx={{
+                    color: '#eee',
+                    backgroundColor: 'rgba(255,255,255,0.07)',
+                    '& input': {
+                      borderColor: 'transparent',
+                      display: 'block',
+                      height: '50px',
+                      width: '100%',
+                      borderRadius: '3px',
+                      padding: '0 10px',
+                      fontSize: '14px',
+                      fontWeight: 300,
+                      '$::placeholder': {
+                        color: ' #e5e5e5',
+                      },
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'transparent',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'transparent',
+                    },
+                    '& fieldset': {
+                      borderColor: 'transparent',
+                    },
+                  }}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleShowPassword}
+                        edge="end"
+                        sx={{ color: `${invalid ? 'error.light' : '#e5e5e5'}` }}
+                      >
+                        {isShowPassword ? <MdOutlineVisibilityOff /> : <MdOutlineVisibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label={label}
+                />
+                <FormHelperText id="component-error-text">{error?.message}</FormHelperText>
+              </FormControl>
+            </>
+          );
+        }}
+      />
+    </>
+  );
 };
 
 InputPassword.propTypes = {
-    control: PropTypes.object,
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string,
-    multiline: PropTypes.bool,
+  control: PropTypes.object,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  multiline: PropTypes.bool,
 };
 
 export default InputPassword;

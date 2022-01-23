@@ -1,125 +1,165 @@
-import UserModel from '../models/user.js';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import createError from 'http-errors';
 import mongoose from 'mongoose';
-import { fileSizeFormatter } from '../helpers/file-size-formatter.js';
+import PostModel from '../models/post.js';
+import UserModel from '../models/user.js';
+import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../helpers/jwt-service.js';
+import { userValidate } from '../helpers/validation.js';
 
-export const signin = async (req, res) => {
-    try {
-        const { email, password } = req.body;
+export const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
 
-        const existingEmail = await UserModel.findOne({ email });
-        if (!existingEmail) return res.status(404).json({ message: "User doesn't exist." });
+    const existingEmail = await UserModel.findOne({ email });
+    if (!existingEmail) throw createError.NotFound("User doesn't exist.");
 
-        const isPasswordCorrect = await bcrypt.compare(password, existingEmail.password);
-        if (!isPasswordCorrect) return res.status(400).json({ message: 'Invalid credentials.' });
+    const isPasswordCorrect = await bcrypt.compare(password, existingEmail.password);
+    if (!isPasswordCorrect) throw createError.NotFound('Invalid credentials.');
 
-        const token = jwt.sign(
-            { email: existingEmail.email, id: existingEmail._id },
-            process.env.JWT_SECRET,
-            { expiresIn: '2 days' }
-        );
+    const accessToken = await signAccessToken(existingEmail._id);
+    const refreshToken = await signRefreshToken(existingEmail._id);
 
-        res.status(200).json({ user: existingEmail, token });
-    } catch (error) {
-        res.status(500).json({ message: 'Something went wrong.' });
-    }
+    res.status(200).json({ user: existingEmail, token: accessToken, refreshToken });
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const signup = async (req, res) => {
-    try {
-        const { firstName, lastName, email, password, confirmPassword } = req.body;
+export const logout = async (req, res, next) => {
+  try {
+    const { rfToken } = req.body;
 
-        const existingEmail = await UserModel.findOne({ email });
-        if (existingEmail) return res.status(404).json({ message: 'User already exists.' });
+    if (!rfToken) throw createError.BadRequest();
 
-        if (password !== confirmPassword)
-            return res.status(404).json({ message: 'password not match' });
+    const { userId } = await verifyRefreshToken(rfToken);
+    await client.del(userId.toString());
 
-        const formUser = {
-            name: `${firstName} ${lastName}`,
-            email,
-            password: await bcrypt.hash(password, 10),
-        };
+    res.status(200).json({ message: 'logout success!' });
+  } catch (error) {
+    next(error);
+  }
+};
 
-        const newUser = await UserModel.create(formUser);
+export const register = async (req, res, next) => {
+  try {
+    const { error } = userValidate(req.body);
+    if (error) return next(createError.BadRequest(error.details[0].message));
 
-        const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET, {
-            expiresIn: '2 days',
-        });
+    const { firstName, lastName, email, password, confirmPassword } = req.body;
 
-        res.status(200).json({ user: newUser, token });
-    } catch (error) {
-        res.status(500).json({ message: 'Something went wrong.' });
-    }
+    const existingEmail = await UserModel.findOne({ email });
+    if (existingEmail) throw createError.BadRequest('User already exists.');
+
+    if (password !== confirmPassword) throw createError.BadRequest('password not match.');
+
+    const formUser = {
+      name: `${firstName} ${lastName}`,
+      email,
+      password: await bcrypt.hash(password, 10),
+    };
+
+    const newUser = await UserModel.create(formUser);
+
+    const accessToken = await signAccessToken(newUser._id);
+    const refreshToken = await signRefreshToken(newUser._id);
+
+    res.status(200).json({ user: newUser, token: accessToken, refreshToken });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getUserById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const listUser = await UserModel.find({});
+  try {
+    const { id } = req.params;
+    const listUser = await UserModel.find({});
 
-        if (!mongoose.Types.ObjectId.isValid(id))
-            return res.status(404).json({ message: 'No user with that id' });
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(404).json({ message: 'No user with that id' });
 
-        const userNeedToFind = listUser.find((user) => user._id.toString() === String(id));
+    const userNeedToFind = listUser.find((user) => user._id.toString() === String(id));
 
-        res.status(200).json(userNeedToFind);
-    } catch (error) {
-        res.status(500).json({ message: 'Something went wrong.' });
-    }
+    res.status(200).json(userNeedToFind);
+  } catch (error) {
+    res.status(500).json({ message: 'Something went wrong.' });
+  }
 };
 
 export const updateInfo = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const info = req.body;
-        delete info?.id;
+  if (!req.userId) return res.status(404).json({ message: 'Unauthenticated' });
 
-        const userUpdated = await UserModel.findByIdAndUpdate(id, info, { new: true });
+  try {
+    const { id } = req.params;
+    const info = req.body;
 
-        res.status(200).json(userUpdated);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: 'Something went wrong.' });
-    }
+    const userUpdated = await UserModel.findByIdAndUpdate(
+      id,
+      { ...info, updatedAt: Date.now() },
+      { new: true }
+    );
+    await PostModel.updateMany({ creatorId: id }, { creator: info.name });
+
+    res.status(200).json({ user: userUpdated });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Something went wrong.' });
+  }
 };
 
 export const unsetAvatar = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const file = {
-            fileName: '',
-            filePath: '',
-            fileType: '',
-            fileSize: '',
-        };
+  if (!req.userId) return res.status(404).json({ message: 'Unauthenticated' });
 
-        const userUpdated = await UserModel.findByIdAndUpdate(id, { avatar: file }, { new: true });
+  try {
+    const { id } = req.params;
 
-        res.status(200).json(userUpdated);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: 'Something went wrong.' });
-    }
+    const userUpdated = await UserModel.findByIdAndUpdate(
+      id,
+      { avatar: '', updatedAt: Date.now() },
+      { new: true }
+    );
+
+    res.status(200).json({ user: userUpdated });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Something went wrong.' });
+  }
 };
 
 export const updateAvatar = async (req, res) => {
-    try {
-        if (!req.file) return res.status(404).json({ message: 'avatar file is not valid' });
+  if (!req.userId) return res.status(404).json({ message: 'Unauthenticated' });
 
-        const { id } = req.params;
-        const file = {
-            fileName: req.file.originalname,
-            filePath: req.file.path,
-            fileType: req.file.mimetype,
-            fileSize: fileSizeFormatter(req.file.size, 2),
-        };
+  try {
+    const { id } = req.params;
+    const { imgUrl } = req.body;
 
-        const userUpdated = await UserModel.findByIdAndUpdate(id, { avatar: file }, { new: true });
-        res.status(200).json(userUpdated);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: 'Something went wrong.' });
-    }
+    const userUpdated = await UserModel.findByIdAndUpdate(
+      id,
+      { avatar: imgUrl, updatedAt: Date.now() },
+      { new: true }
+    );
+    res.status(200).json({ user: userUpdated });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
+export const refreshToken = async (req, res, next) => {
+  try {
+    const { rfToken } = req.body;
+    if (!rfToken) throw createError.BadRequest('Refresh token invalid');
+
+    const { userId } = await verifyRefreshToken(rfToken);
+    if (!userId) throw createError.BadRequest();
+
+    const accessToken = await signAccessToken(userId);
+    const refreshToken = await signRefreshToken(userId);
+
+    res.status(200).json({
+      token: accessToken,
+      refreshToken,
+    });
+  } catch (error) {
+    next(error);
+  }
 };

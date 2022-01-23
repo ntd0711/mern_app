@@ -1,27 +1,35 @@
 import axiosClient from './axios-client';
 
 export const postsApi = {
-    getPosts(objectParams) {
-        return axiosClient.get('/post', { params: objectParams });
-    },
+  getPosts(objectParams) {
+    return axiosClient.get('/post', { params: objectParams });
+  },
 
-    getPostById(id) {
-        return axiosClient.get(`/post/${id}`);
-    },
+  getPostById(id) {
+    return axiosClient.get(`/post/${id}`);
+  },
 
-    getPostsByUserId(id) {
-        return axiosClient.get(`/post/user/${id}`);
-    },
+  getPostsByUserId(id) {
+    return axiosClient.get(`/post/user/${id}`);
+  },
 
-    getTags() {
-        return axiosClient.get('/post/tags');
-    },
+  getTags() {
+    return axiosClient.get('/post/tags');
+  },
 
-    createPost(formData) {
-        return axiosClient.post('/post/create', formData);
-    },
+  createPost(data) {
+    return axiosClient.post('/post/create', data);
+  },
 
-    likePost(id) {
-        return axiosClient.post(`/post/${id}/like`);
-    },
+  likePost(id) {
+    return axiosClient.patch(`/post/${id}/like`);
+  },
+
+  commentPost(data) {
+    return axiosClient.post(`/post/${data.postId}/comment`, data);
+  },
+
+  updatePost({ id, data }) {
+    return axiosClient.patch(`/post/${id}/update`, data);
+  },
 };

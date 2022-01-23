@@ -1,22 +1,26 @@
 import express from 'express';
 import {
-    createPosts,
-    getPosts,
-    likePost,
-    getPostsByUserId,
-    getPostById,
-    getTags,
+  createPosts,
+  getPosts,
+  likePost,
+  getPostsByUserId,
+  getPostById,
+  getTags,
+  updatePost,
+  commentPost,
 } from '../controllers/post.js';
-import auth from '../middleware/auth.js';
+import { verifyAccessToken } from '../helpers/jwt-service.js';
 
 const router = express.Router();
 
 router.get('/', getPosts);
-router.post('/create', auth, createPosts);
 router.get('/tags', getTags);
+router.post('/create', verifyAccessToken, createPosts);
 router.get('/:id', getPostById);
 
-router.post('/:id/like', auth, likePost);
-router.get('/user/:id', auth, getPostsByUserId);
+router.patch('/:id/like', verifyAccessToken, likePost);
+router.patch('/:id/update', verifyAccessToken, updatePost);
+router.post('/:id/comment', verifyAccessToken, commentPost);
+router.get('/user/:id', verifyAccessToken, getPostsByUserId);
 
 export default router;

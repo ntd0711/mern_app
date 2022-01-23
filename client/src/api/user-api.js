@@ -1,28 +1,36 @@
 import axiosClient from './axios-client';
 
 export const userApi = {
-    signin(data) {
-        return axiosClient.post('/user/signin', data);
-    },
+  signin(data) {
+    return axiosClient.post('/user/login', data);
+  },
 
-    signup(data) {
-        return axiosClient.post('/user/signup', data);
-    },
+  signout(data) {
+    return axiosClient.post('/user/logout', data);
+  },
 
-    getUserById(id) {
-        return axiosClient.get(`/user/${id}`);
-    },
+  signup(data) {
+    return axiosClient.post('/user/register', data);
+  },
 
-    updateInfo(data) {
-        return axiosClient.post(`/user/update-info/${data.id}`, data);
-    },
+  refreshToken(data) {
+    return axiosClient.post('/user/refresh-token', data);
+  },
 
-    updateAvatar(formData) {
-        const id = formData?.get('id');
-        return axiosClient.post(`/user/update-avt/${id}`, formData);
-    },
+  getUserById(id) {
+    return axiosClient.get(`/user/${id}`);
+  },
 
-    unsetAvatar(id) {
-        return axiosClient.post(`/user/unset-avt/${id}`);
-    },
+  updateInfo({ id, data }) {
+    return axiosClient.post(`/user/update-info/${id}`, data);
+  },
+
+  updateAvatar(data) {
+    const id = data?.id;
+    return axiosClient.post(`/user/update-avt/${id}`, data);
+  },
+
+  unsetAvatar(id) {
+    return axiosClient.post(`/user/unset-avt/${id}`);
+  },
 };

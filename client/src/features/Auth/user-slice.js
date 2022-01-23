@@ -1,53 +1,131 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getLocalStorage, setLocalStorage } from 'utils/common';
 import { notify } from 'utils/toastify';
-import { login, register } from './user-thunk';
+import { login, logout, register, unsetAvatar, updateAvatar, updateInfo } from './user-thunk';
 
 const initialState = {
-    profile: JSON.parse(localStorage.getItem('profile'))?.user || null,
-    token: JSON.parse(localStorage.getItem('profile'))?.token || null,
+  profile: getLocalStorage('user') || null,
+  loading: false,
 };
 
 export const userSlice = createSlice({
-    name: 'user',
-    initialState,
-    reducers: {
-        logout: (state) => {
-            state.profile = null;
-            state.token = null;
+  name: 'user',
+  initialState,
+  reducers: {
+    // logout: (state) => {
+    //   state.profile = null;
+    //   state.token = null;
+    //   localStorage.removeItem('user');
+    //   localStorage.removeItem('token');
+    //   localStorage.removeItem('refreshToken');
+    // },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(login.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.profile = action.payload.user;
+        state.token = action.payload.token;
+        // localStorage.setItem('profile', JSON.stringify(action.payload));
+        setLocalStorage('user', action.payload.user);
+        setLocalStorage('token', action.payload.token);
+        setLocalStorage('refreshToken', action.payload.refreshToken);
 
-            localStorage.removeItem('profile');
-        },
-        updateProfile: (state, action) => {
-            state.profile = action.payload;
-            const user = { user: action.payload, token: state.token };
+        state.loading = false;
+      })
+      .addCase(login.rejected, (state, action) => {
+        if (action.error) notify.error(action.payload.message);
+        state.loading = false;
+      })
 
-            localStorage.setItem('profile', JSON.stringify(user));
-        },
-    },
-    extraReducers: (builder) => {
-        builder.addCase(login.fulfilled, (state, action) => {
-            state.profile = action.payload?.user;
-            state.token = action.payload?.token;
+      .addCase(logout.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.profile = null;
+        state.token = null;
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
 
-            localStorage.setItem('profile', JSON.stringify(action.payload));
-        });
-        builder.addCase(login.rejected, (state, action) => {
-            notify.error(action.payload.message);
-        });
+        state.loading = false;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        if (action.error) notify.error(action.payload.message);
+        state.loading = false;
+      })
 
-        builder.addCase(register.fulfilled, (state, action) => {
-            state.profile = action.payload?.user;
-            state.token = action.payload?.token;
-            notify.success('register account successfully!');
-            localStorage.setItem('profile', JSON.stringify(action.payload));
-        });
-        builder.addCase(register.rejected, (state, action) => {
-            notify.error(action.payload.message);
-        });
-    },
+      .addCase(register.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.profile = action.payload?.user;
+        state.token = action.payload?.token;
+
+        setLocalStorage('user', action.payload.user);
+        setLocalStorage('token', action.payload.token);
+        setLocalStorage('refreshToken', action.payload.refreshToken);
+
+        notify.success('register account successfully!');
+        state.loading = false;
+      })
+      .addCase(register.rejected, (state, action) => {
+        if (action.error) notify.error(action.payload.message);
+        state.loading = false;
+      })
+
+      .addCase(updateInfo.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(updateInfo.fulfilled, (state, action) => {
+        state.profile = action.payload.user;
+
+        setLocalStorage('user', action.payload.user);
+        notify.success('update info successfully!');
+
+        state.loading = false;
+      })
+      .addCase(updateInfo.rejected, (state, action) => {
+        if (action.error) notify.error(action.payload.message);
+        state.loading = false;
+      })
+
+      .addCase(unsetAvatar.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(unsetAvatar.fulfilled, (state, action) => {
+        state.profile = action.payload.user;
+
+        setLocalStorage('user', action.payload.user);
+        notify.success('unset avatar!');
+
+        state.loading = false;
+      })
+      .addCase(unsetAvatar.rejected, (state, action) => {
+        if (action.error) notify.error(action.payload.message);
+        state.loading = false;
+      })
+
+      .addCase(updateAvatar.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(updateAvatar.fulfilled, (state, action) => {
+        state.profile = action.payload.user;
+        setLocalStorage('user', action.payload.user);
+        notify.success('update avatar successfully!');
+
+        state.loading = false;
+      })
+      .addCase(updateAvatar.rejected, (state, action) => {
+        if (action.error) notify.error(action.payload.message);
+        state.loading = false;
+      });
+  },
 });
 
 const { reducer, actions } = userSlice;
-export const { logout, updateProfile } = actions;
+// export const { logout } = actions;
 
 export default reducer;

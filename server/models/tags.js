@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
+import { myBlogConnection } from '../helpers/connections-multi-mongodb.js';
 
-const tagsSchema = new mongoose.Schema({
-    name: { type: String, default: 'tagList' },
-    tagList: { type: [String], default: [] },
-    createdAt: { type: Date, default: Date.now },
+export const tagSchema = new mongoose.Schema({
+  name: { type: String, required: true, lowercase: true, trim: true },
+  createdAt: { type: Date, default: Date.now() },
 });
 
-export default mongoose.model('tags', tagsSchema);
+export default myBlogConnection.model('tags', tagSchema);
