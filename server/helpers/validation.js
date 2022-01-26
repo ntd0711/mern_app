@@ -12,6 +12,14 @@ export const userValidate = (data) => {
   return userSchema.validate(data);
 };
 
+export const updateInfoValidate = (data) => {
+  const infoSchema = Joi.object({
+    name: Joi.string().min(3).max(32).required(),
+  });
+
+  return infoSchema.validate(data);
+};
+
 export const postValidate = (data) => {
   const postSchema = Joi.object({
     title: Joi.string()

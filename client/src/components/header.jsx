@@ -21,7 +21,7 @@ function Header() {
 
   const handleLogout = async () => {
     try {
-      await dispatch(logout({ rfToken }));
+      await dispatch(logout({ rfToken })).unwrap();
       navigate('/signin');
     } catch (error) {
       console.log(error);
@@ -36,11 +36,21 @@ function Header() {
     setAnchorEl(null);
   };
 
+  const handleScroll = () => {
+    console.log('ahihi');
+  };
+
   return (
     <Box
+      onScroll={handleScroll}
       sx={{
+        bgcolor: 'common.dark',
+        left: '0',
+        right: '0',
         paddingY: 2,
+        zIndex: '100',
         boxShadow: '0 0 5px rgba(255,255,255,0.1)',
+        position: 'fixed',
       }}
     >
       <Container>

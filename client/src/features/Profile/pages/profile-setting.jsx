@@ -3,6 +3,7 @@ import { Box } from '@mui/system';
 import { unsetAvatar, updateAvatar, updateInfo } from 'features/Auth/user-thunk';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { notify } from 'utils/toastify';
 import ProfileForm from '../components/profile-form';
 
 function ProfileSetting() {
@@ -12,9 +13,11 @@ function ProfileSetting() {
   const handleOnSubmit = async (data) => {
     try {
       const id = profile._id;
-      await dispatch(updateInfo({ id, data }));
+      await dispatch(updateInfo({ id, data })).unwrap();
+
+      notify.success('update info successfully!');
     } catch (error) {
-      console.log(error);
+      notify.error('update info failed.');
     }
   };
 

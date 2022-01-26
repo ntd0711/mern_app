@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
 
 const InputPassword = (props) => {
-  const { name, label, control } = props;
+  const { name, label, control, clearErrorFromServer } = props;
   const [isShowPassword, setIsShowPassword] = useState(false);
 
   const handleShowPassword = () => {
@@ -44,6 +44,7 @@ const InputPassword = (props) => {
               <FormControl sx={{ mt: 1 }} size="small" fullWidth variant="outlined" error={invalid}>
                 <OutlinedInput
                   {...field}
+                  onInput={clearErrorFromServer}
                   id={name}
                   placeholder={label}
                   type={isShowPassword ? 'text' : 'password'}

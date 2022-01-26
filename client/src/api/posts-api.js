@@ -21,6 +21,10 @@ export const postsApi = {
     return axiosClient.post('/post/create', data);
   },
 
+  deletePost(id) {
+    return axiosClient.delete(`/post/${id}/delete`);
+  },
+
   likePost(id) {
     return axiosClient.patch(`/post/${id}/like`);
   },

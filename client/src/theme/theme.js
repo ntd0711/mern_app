@@ -17,10 +17,11 @@ export const theme = createTheme({
       dark_blue: '#00eee5',
       light_dark: '#393E46',
       dark: '#222831',
+      pink: '#ffa7c4',
     },
   },
   typography: {
-    fontFamily: 'Poppins, sans-serif',
+    fontFamily: 'Open Sans, sans-serif',
     body1: {
       fontSize: '0.925rem',
     },
@@ -40,7 +41,7 @@ export const theme = createTheme({
       ],
       styleOverrides: {
         h5: {
-          fontSize: '28px',
+          fontSize: '26px',
         },
       },
     },
@@ -52,26 +53,28 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: '#222831',
-          border: '2px solid rgba(255,255,255,0.1)',
           boxShadow: '0 0 10px rgba(8,7,16,0.6)',
         },
       },
     },
 
     MuiButton: {
-      variants: [
-        {
-          props: { color_custom: 'pink' },
-          style: {
-            borderColor: '#ed8fb2',
-            color: '#ed8fb2',
-            '&:hover': {
-              borderColor: '#ed8fb2',
-              backgroundColor: 'transparent',
-            },
+      styleOverrides: {
+        containedPrimary: {
+          backgroundColor: '#eee',
+          color: '#080710',
+          '&:hover': {
+            backgroundColor: '#b6b6b6',
           },
         },
-      ],
+
+        containedSecondary: {
+          backgroundColor: 'rgba(255,255,255,0.05)',
+          '&:hover': {
+            backgroundColor: 'rgba(255,255,255,0.02)',
+          },
+        },
+      },
     },
 
     MuiContainer: {

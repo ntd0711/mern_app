@@ -1,42 +1,42 @@
 import { Container } from '@mui/material';
 import { Box } from '@mui/system';
-import { postsApi } from 'api/posts-api';
 import { userApi } from 'api/user-api';
+import { fetchPostByUserId } from 'features/Posts/posts-thunk';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams, useRoutes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import ProfileInfo from '../components/profile-info';
 import ProfileTabs from '../components/profile-tabs';
 
 function ProfileOtherUser() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const [posts, setPosts] = useState([]);
+  const { postList, loading } = useSelector((state) => state.posts);
   const [user, setUser] = useState({});
 
   useEffect(() => {
     (async () => {
       try {
-        const postsPromise = postsApi.getPostsByUserId(id);
         const userPromise = userApi.getUserById(id);
+        const postsPromise = dispatch(fetchPostByUserId(id));
 
         const [user, posts] = await Promise.all([userPromise, postsPromise]);
 
         setUser(user);
-        setPosts(posts);
       } catch (error) {
         console.log(error);
       }
     })();
   }, [dispatch, id]);
 
-  if (posts.length === 0) return 'loading ...';
+  if (loading) return 'loading ...';
+
   return (
     <Box mt={10}>
       <Container>
-        <ProfileInfo isOtherUser={id} postQuantity={posts.length} profile={user} />
+        <ProfileInfo isOtherUser={id} postQuantity={postList.length} profile={user} />
 
-        <ProfileTabs posts={posts} />
+        <ProfileTabs posts={postList} />
       </Container>
     </Box>
   );

@@ -9,7 +9,7 @@ dayjs.extend(relativeTime);
 
 function Comment({ cmt, authorId, profile }) {
   const isAuthorComment = authorId === cmt.user._id;
-  const href = authorId === profile?._id ? '/profile' : `/profile/${authorId}`;
+  const href = cmt.user._id === profile?._id ? '/profile' : `/profile/${cmt.user._id}`;
 
   return (
     <Stack direction="row" alignItems="start" key={cmt._id}>

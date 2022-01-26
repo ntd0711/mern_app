@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import createError from 'http-errors';
 import dotenv from 'dotenv';
-import client from '../helpers/connections-redis.js';
+import redisClient from '../helpers/connections-redis.js';
 dotenv.config();
 
 export const signAccessToken = (userId) => {
@@ -25,7 +25,7 @@ export const signRefreshToken = (userId) => {
 
     jwt.sign(payload, secret, option, function (err, token) {
       if (err) reject(err);
-      client
+      redisClient
         .set(userId.toString(), token, { EX: 60 * 60 * 24 * 365 })
         .then(() => resolve(token))
         .catch((err) => reject(err));
@@ -57,7 +57,7 @@ export const verifyRefreshToken = (refreshToken) => {
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decodedData) => {
       if (err) reject(createError.Unauthorized(err.message));
 
-      client
+      redisClient
         .get(decodedData.userId)
         .then((value) => {
           if (value !== refreshToken) reject(createError.InternalServerError());

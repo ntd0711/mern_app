@@ -8,6 +8,7 @@ import {
   getTags,
   updatePost,
   commentPost,
+  deletePost,
 } from '../controllers/post.js';
 import { verifyAccessToken } from '../helpers/jwt-service.js';
 
@@ -19,6 +20,7 @@ router.post('/create', verifyAccessToken, createPosts);
 router.get('/:id', getPostById);
 
 router.patch('/:id/like', verifyAccessToken, likePost);
+router.delete('/:id/delete', verifyAccessToken, deletePost);
 router.patch('/:id/update', verifyAccessToken, updatePost);
 router.post('/:id/comment', verifyAccessToken, commentPost);
 router.get('/user/:id', verifyAccessToken, getPostsByUserId);

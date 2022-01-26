@@ -11,15 +11,7 @@ const initialState = {
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    // logout: (state) => {
-    //   state.profile = null;
-    //   state.token = null;
-    //   localStorage.removeItem('user');
-    //   localStorage.removeItem('token');
-    //   localStorage.removeItem('refreshToken');
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state, action) => {
@@ -28,7 +20,7 @@ export const userSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.profile = action.payload.user;
         state.token = action.payload.token;
-        // localStorage.setItem('profile', JSON.stringify(action.payload));
+
         setLocalStorage('user', action.payload.user);
         setLocalStorage('token', action.payload.token);
         setLocalStorage('refreshToken', action.payload.refreshToken);
@@ -36,7 +28,6 @@ export const userSlice = createSlice({
         state.loading = false;
       })
       .addCase(login.rejected, (state, action) => {
-        if (action.error) notify.error(action.payload.message);
         state.loading = false;
       })
 
@@ -53,7 +44,6 @@ export const userSlice = createSlice({
         state.loading = false;
       })
       .addCase(logout.rejected, (state, action) => {
-        if (action.error) notify.error(action.payload.message);
         state.loading = false;
       })
 
@@ -68,11 +58,9 @@ export const userSlice = createSlice({
         setLocalStorage('token', action.payload.token);
         setLocalStorage('refreshToken', action.payload.refreshToken);
 
-        notify.success('register account successfully!');
         state.loading = false;
       })
       .addCase(register.rejected, (state, action) => {
-        if (action.error) notify.error(action.payload.message);
         state.loading = false;
       })
 
@@ -81,14 +69,11 @@ export const userSlice = createSlice({
       })
       .addCase(updateInfo.fulfilled, (state, action) => {
         state.profile = action.payload.user;
-
         setLocalStorage('user', action.payload.user);
-        notify.success('update info successfully!');
 
         state.loading = false;
       })
       .addCase(updateInfo.rejected, (state, action) => {
-        if (action.error) notify.error(action.payload.message);
         state.loading = false;
       })
 
@@ -125,7 +110,6 @@ export const userSlice = createSlice({
   },
 });
 
-const { reducer, actions } = userSlice;
-// export const { logout } = actions;
+const { reducer } = userSlice;
 
 export default reducer;

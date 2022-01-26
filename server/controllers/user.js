@@ -3,18 +3,19 @@ import createError from 'http-errors';
 import mongoose from 'mongoose';
 import PostModel from '../models/post.js';
 import UserModel from '../models/user.js';
+import redisClient from '../helpers/connections-redis.js';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../helpers/jwt-service.js';
-import { userValidate } from '../helpers/validation.js';
+import { updateInfoValidate, userValidate } from '../helpers/validation.js';
 
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
     const existingEmail = await UserModel.findOne({ email });
-    if (!existingEmail) throw createError.NotFound("User doesn't exist.");
+    if (!existingEmail) throw createError.NotFound("email-Account email is does't exist");
 
     const isPasswordCorrect = await bcrypt.compare(password, existingEmail.password);
-    if (!isPasswordCorrect) throw createError.NotFound('Invalid credentials.');
+    if (!isPasswordCorrect) throw createError.NotFound('password-The password invalid');
 
     const accessToken = await signAccessToken(existingEmail._id);
     const refreshToken = await signRefreshToken(existingEmail._id);
@@ -32,7 +33,7 @@ export const logout = async (req, res, next) => {
     if (!rfToken) throw createError.BadRequest();
 
     const { userId } = await verifyRefreshToken(rfToken);
-    await client.del(userId.toString());
+    await redisClient.del(userId.toString());
 
     res.status(200).json({ message: 'logout success!' });
   } catch (error) {
@@ -48,9 +49,11 @@ export const register = async (req, res, next) => {
     const { firstName, lastName, email, password, confirmPassword } = req.body;
 
     const existingEmail = await UserModel.findOne({ email });
-    if (existingEmail) throw createError.BadRequest('User already exists.');
+    if (existingEmail)
+      throw createError.BadRequest('email-The email is already in use by another account.');
 
-    if (password !== confirmPassword) throw createError.BadRequest('password not match.');
+    if (password !== confirmPassword)
+      throw createError.BadRequest('confirmPassword-Password not match.');
 
     const formUser = {
       name: `${firstName} ${lastName}`,
@@ -85,10 +88,14 @@ export const getUserById = async (req, res) => {
   }
 };
 
-export const updateInfo = async (req, res) => {
-  if (!req.userId) return res.status(404).json({ message: 'Unauthenticated' });
-
+export const updateInfo = async (req, res, next) => {
   try {
+    const { error } = updateInfoValidate(req.body);
+    if (error) {
+      console.log(error);
+      return next(createError.BadRequest(error.details[0].message));
+    }
+
     const { id } = req.params;
     const info = req.body;
 

@@ -3,7 +3,9 @@ import { notify } from 'utils/toastify';
 import {
   commentPost,
   createPost,
+  deletePost,
   fetchPostById,
+  fetchPostByUserId,
   fetchPosts,
   fetchTagsPost,
   likePost,
@@ -15,6 +17,7 @@ const initialState = {
   postDetail: {},
   postTags: [],
   loading: false,
+  loadingAction: false,
 };
 
 export const postsSlice = createSlice({
@@ -30,6 +33,18 @@ export const postsSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchPosts.rejected, (state, action) => {
+        if (action.error) notify.error(action.payload.message);
+        state.loading = false;
+      })
+
+      .addCase(fetchPostByUserId.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(fetchPostByUserId.fulfilled, (state, action) => {
+        state.postList = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchPostByUserId.rejected, (state, action) => {
         if (action.error) notify.error(action.payload.message);
         state.loading = false;
       })
@@ -73,19 +88,33 @@ export const postsSlice = createSlice({
         state.loading = false;
       })
 
+      .addCase(deletePost.pending, (state, action) => {
+        state.loadingAction = true;
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        const postDeletedId = action.payload;
+        state.postList = state.postList.filter((post) => post._id !== postDeletedId);
+
+        state.loadingAction = false;
+      })
+      .addCase(deletePost.rejected, (state, action) => {
+        if (action.error) notify.error(action.payload.message);
+        state.loadingAction = false;
+      })
+
       .addCase(likePost.pending, (state, action) => {
-        state.loading = true;
+        state.loadingAction = true;
       })
       .addCase(likePost.fulfilled, (state, action) => {
         const { _id } = action.payload;
         const index = state.postList.findIndex((post) => post._id === _id);
         state.postList.splice(index, 1, action.payload);
 
-        state.loading = false;
+        state.loadingAction = false;
       })
       .addCase(likePost.rejected, (state, action) => {
         if (action.error) notify.error(action.payload.message);
-        state.loading = false;
+        state.loadingAction = false;
       })
 
       .addCase(updatePost.pending, (state, action) => {

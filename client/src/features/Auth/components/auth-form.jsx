@@ -4,8 +4,9 @@ import { InputField, InputPassword } from 'components';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import SwitchMode from './switch-mode';
 
-function AuthForm({ isSignUp, switchMode, onSubmit }) {
+function AuthForm({ isSignUp, switchMode, onSubmit, loading, error, clearErrorFromServer }) {
   const schema = yup.object().shape({
     firstName: isSignUp
       ? yup.string().required().min(2, 'first name at least two characters')
@@ -22,6 +23,7 @@ function AuthForm({ isSignUp, switchMode, onSubmit }) {
           .oneOf([yup.ref('password')], 'password does not match')
       : null,
   });
+  const [field, message] = error?.split('-');
 
   const { control, handleSubmit, clearErrors } = useForm({
     defaultValues: {
@@ -45,56 +47,9 @@ function AuthForm({ isSignUp, switchMode, onSubmit }) {
     if (onSubmit) onSubmit(data);
   };
 
-  const SwitchModeElement = () => {
-    return (
-      <>
-        {isSignUp ? (
-          <Typography>
-            Already have an account?{' '}
-            <Typography
-              component="span"
-              sx={{
-                cursor: 'pointer',
-                '&:hover': { textDecoration: 'underline' },
-              }}
-              onClick={handleSwitchMode}
-            >
-              Login
-            </Typography>
-          </Typography>
-        ) : (
-          <Typography>
-            Don't have an account?{' '}
-            <Typography
-              component="span"
-              sx={{
-                cursor: 'pointer',
-                '&:hover': { textDecoration: 'underline' },
-              }}
-              onClick={handleSwitchMode}
-            >
-              Sign up
-            </Typography>
-          </Typography>
-        )}
-      </>
-    );
-  };
-
   return (
     <>
-      <Box
-        sx={{
-          maxWidth: '400px',
-          borderRadius: '10px',
-          backdropFilter: 'blur(10px)',
-          border: '2px solid rgba(255,255,255,0.1)',
-          boxShadow: '0 0 40px rgba(8,7,16,0.6)',
-          padding: '50px 35px',
-        }}
-        component="form"
-        onSubmit={handleSubmit(handleOnSubmit)}
-      >
+      <Box component="form" onSubmit={handleSubmit(handleOnSubmit)}>
         <Typography
           sx={{ fontSize: '32px', fontWeight: 500, lineHeight: '42px', textAlign: 'center' }}
         >
@@ -120,13 +75,42 @@ function AuthForm({ isSignUp, switchMode, onSubmit }) {
             </Grid>
           </Grid>
         )}
-        <InputField control={control} name="email" label="Email" placeholder="Email or Phone" />
-        <InputPassword control={control} name="password" label="Password" />
+        <InputField
+          control={control}
+          name="email"
+          label="Email"
+          placeholder="Email or Phone"
+          clearErrorFromServer={clearErrorFromServer}
+        />
+        {error && field === 'email' && (
+          <Typography ml={2} color="#d32f2f" fontSize="12px">
+            {message}
+          </Typography>
+        )}
+        <InputPassword
+          control={control}
+          name="password"
+          label="Password"
+          clearErrorFromServer={clearErrorFromServer}
+        />
+        {error && field === 'password' && (
+          <Typography ml={2} color="#d32f2f" fontSize="12px">
+            {message}
+          </Typography>
+        )}
         {isSignUp && (
-          <InputPassword control={control} name="confirmPassword" label="Confirm Password" />
+          <>
+            <InputPassword control={control} name="confirmPassword" label="Confirm Password" />
+            {error && field === 'confirmPassword' && (
+              <Typography ml={2} color="#d32f2f" fontSize="12px">
+                {message}
+              </Typography>
+            )}
+          </>
         )}
         <Button
           type="submit"
+          disabled={loading}
           sx={{
             '&:hover': {
               backgroundColor: '#eee',
@@ -147,7 +131,7 @@ function AuthForm({ isSignUp, switchMode, onSubmit }) {
           {isSignUp ? 'sign up' : 'login'}
         </Button>
         <Box mt={1}>
-          <SwitchModeElement />
+          <SwitchMode isSignUp={isSignUp} onSwitchMode={handleSwitchMode} />
         </Box>
       </Box>
     </>

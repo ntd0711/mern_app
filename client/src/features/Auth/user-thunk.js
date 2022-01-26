@@ -1,44 +1,21 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { userApi } from 'api/user-api';
 
-export const login = createAsyncThunk('user/signin', async (payload, { rejectWithValue }) => {
-  try {
-    return await userApi.signin(payload);
-  } catch (error) {
-    console.log(error);
-    return rejectWithValue(error);
-  }
+export const login = createAsyncThunk('user/signin', async (payload) => {
+  return await userApi.signin(payload);
 });
 
-export const logout = createAsyncThunk('user/signout', async (payload, { rejectWithValue }) => {
-  try {
-    return await userApi.signout(payload);
-  } catch (error) {
-    console.log(error);
-    return rejectWithValue(error);
-  }
+export const logout = createAsyncThunk('user/signout', async (payload) => {
+  return await userApi.signout(payload);
 });
 
-export const register = createAsyncThunk('user/signup', async (payload, { rejectWithValue }) => {
-  try {
-    return await userApi.signup(payload);
-  } catch (error) {
-    console.log(error);
-    return rejectWithValue(error);
-  }
+export const register = createAsyncThunk('user/signup', async (payload) => {
+  return await userApi.signup(payload);
 });
 
-export const updateInfo = createAsyncThunk(
-  'user/update-info',
-  async (payload, { rejectWithValue }) => {
-    try {
-      return await userApi.updateInfo(payload);
-    } catch (error) {
-      console.log(error);
-      return rejectWithValue(error);
-    }
-  }
-);
+export const updateInfo = createAsyncThunk('user/update-info', async (payload) => {
+  return await userApi.updateInfo(payload);
+});
 
 export const unsetAvatar = createAsyncThunk(
   'user/unset-avatar',

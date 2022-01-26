@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 dotenv.config();
-// const CONNECTION_URL = process.env.CONNECTION_URL_MONGODB;
-const CONNECTION_URL = 'mongodb://localhost:27017/test';
+const CONNECTION_URL = process.env.CONNECTION_URL_MONGODB;
+// const CONNECTION_URL = 'mongodb://localhost:27017/test';
 
 function newConnection(uri) {
   const conn = mongoose.createConnection(uri, {
@@ -20,7 +20,7 @@ function newConnection(uri) {
     console.log(`Mongodb:: disconnected::${this?.modelNames()}`);
   });
 
-  conn.on('error', function () {
+  conn.on('error', function (error) {
     console.log(`Mongodb:: error::${JSON.stringify(error)}`);
   });
 

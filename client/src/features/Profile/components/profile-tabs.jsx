@@ -6,9 +6,9 @@ import {
   tabUnstyledClasses,
 } from '@mui/material';
 import { styled } from '@mui/system';
+import PostList from 'features/Posts/components/post-list';
 import React from 'react';
 import TabAbout from './tab-about';
-import TabPost from './tab-post';
 function ProfileTabs({ posts }) {
   const Tab = styled(TabUnstyled)`
     font-size: 1.2rem;
@@ -52,7 +52,7 @@ function ProfileTabs({ posts }) {
         <Tab component="div">About</Tab>
       </Tabs>
       <TabContent value={0}>
-        <TabPost posts={posts} />
+        <PostList posts={posts} />
       </TabContent>
       <TabContent value={1}>
         <TabAbout />

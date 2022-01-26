@@ -2,42 +2,49 @@ import { Chip, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import useAuth from 'hooks/useAuth';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { getLocalStorage } from 'utils/common';
+import DeletePost from './delete-post';
 import EditPost from './edit-post';
 import LikePost from './like-post';
 
 dayjs.extend(localizedFormat);
 
-function PostCard({ post, onLike }) {
+function PostCard({ post, onLike, onDelete }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { profile } = useSelector((state) => state.user);
-  const token = getLocalStorage('token');
-  const hasSignIn = !!(profile && token);
+  const isAuth = useAuth();
 
   const {
     title,
     description,
     createdAt,
-    _id,
+    _id: postId,
     likes,
     author: { name, _id: authorId },
     tags,
   } = post;
 
   const handleLikePost = () => {
-    if (!hasSignIn) {
+    if (!isAuth) {
       return navigate('/signin');
     }
-    if (onLike) onLike(_id);
+    if (onLike) onLike(postId);
+  };
+
+  const handleDeletePost = () => {
+    if (!isAuth) {
+      return navigate('/signin');
+    }
+    if (onDelete) onDelete(postId);
   };
 
   return (
     <Stack rowGap={0.8}>
-      <Link to={`/posts/${_id}`}>
+      <Link to={`/posts/${postId}`}>
         <Typography
           component="h2"
           variant="h5"
@@ -60,13 +67,21 @@ function PostCard({ post, onLike }) {
               {name}
             </Typography>
           </Link>
-          <LikePost likes={likes} id={profile?._id} onLike={handleLikePost} />
-          <EditPost
-            authorId={authorId}
-            myId={profile?._id}
-            postId={_id}
-            pathname={location.pathname}
-          />
+          <Stack direction="row" alignItems="center" ml={4} spacing={3}>
+            <LikePost likes={likes} id={profile?._id} onLike={handleLikePost} />
+            <EditPost
+              authorId={authorId}
+              myId={profile?._id}
+              postId={postId}
+              pathname={location.pathname}
+            />
+            <DeletePost
+              authorId={authorId}
+              myId={profile?._id}
+              pathname={location.pathname}
+              onDelete={handleDeletePost}
+            />
+          </Stack>
         </Stack>
       </Box>
       <Box ml={-1}>

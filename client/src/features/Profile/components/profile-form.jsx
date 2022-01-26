@@ -84,9 +84,9 @@ function ProfileForm({ onSubmit, profile, loading, onUnsetAvt, onUpdateAvt }) {
       <Box component="form" onSubmit={handleSubmit(handleOnSubmit)}>
         <InputField name="name" label="Name" height="44px" control={control} />
         <InputFile control={control} name="imgFile" onSetFile={handleSetFile} />
-        <ButtonCustom type="submit" disabled={loading} size="small">
+        <Button type="submit" variant="contained" disabled={loading} size="small">
           Save
-        </ButtonCustom>
+        </Button>
       </Box>
     </>
   );

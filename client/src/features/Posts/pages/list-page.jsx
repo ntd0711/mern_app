@@ -1,17 +1,19 @@
-import { Box, Container, Grid, Stack, Typography } from '@mui/material';
+import { Container, Stack } from '@mui/material';
+import { Box } from '@mui/system';
 import queryString from 'query-string';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import PostCard from '../components/post-card';
 import PostFilters from '../components/post-filter';
-import { fetchPosts, likePost } from '../posts-thunk';
+import PostList from '../components/post-list';
+import SkeletonPosts from '../components/skeleton';
+import { fetchPosts } from '../posts-thunk';
 
 function ListPage() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const { postList } = useSelector((state) => state.posts);
+  const { postList, loading } = useSelector((state) => state.posts);
 
   const queryParams = useMemo(() => {
     const params = queryString.parse(location.search);
@@ -22,7 +24,6 @@ function ListPage() {
   }, [location.search]);
 
   useEffect(() => {
-    // if (postList.length > 0) return;
     (async () => {
       try {
         await dispatch(fetchPosts(queryParams));
@@ -31,14 +32,6 @@ function ListPage() {
       }
     })();
   }, [dispatch, queryParams]);
-
-  const handleLike = async (id) => {
-    try {
-      await dispatch(likePost(id));
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleTagChange = (newFilter) => {
     if (queryParams.tag === newFilter.tag) return navigate('/posts');
@@ -53,22 +46,17 @@ function ListPage() {
   };
 
   return (
-    <Box mt={6}>
+    <Box>
       <Container>
-        <Box mt={0.8}>
-          <PostFilters
-            filters={queryParams}
-            onTagChange={handleTagChange}
-            onSearchChange={handleSearchChange}
-          />
-        </Box>
-
-        {/* {isFetchPost && <Typography>Loading</Typography>} */}
-
-        <Stack rowGap={8} mt={3}>
-          {postList?.map((post) => (
-            <PostCard onLike={handleLike} key={post._id} post={post} />
-          ))}
+        <Stack spacing={3}>
+          <Box mt={0.8}>
+            <PostFilters
+              filters={queryParams}
+              onTagChange={handleTagChange}
+              onSearchChange={handleSearchChange}
+            />
+          </Box>
+          <Box>{loading ? <SkeletonPosts quantity={10} /> : <PostList posts={postList} />}</Box>
         </Stack>
       </Container>
     </Box>

@@ -13,7 +13,7 @@ function DetailPage() {
   const navigate = useNavigate();
   const isAuth = useAuth();
   const { id } = useParams();
-  const { postDetail } = useSelector((state) => state.posts);
+  const { postDetail, loading } = useSelector((state) => state.posts);
   const { profile } = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -40,17 +40,17 @@ function DetailPage() {
     }
   };
 
-  if (Object.keys(postDetail).length === 0) return 'loading...';
+  if (loading) return 'loading...';
 
   return (
     <Box mt={6}>
       <Container sx={{ color: 'common.grey_white' }}>
         <Stack spacing={4}>
-          <PostDetail post={postDetail} authorId={postDetail.author._id} profile={profile} />
+          <PostDetail post={postDetail} authorId={postDetail?.author?._id} profile={profile} />
           <PostComments
             comments={postDetail?.comments}
             onSubmit={handleCommentPost}
-            authorId={postDetail.author._id}
+            authorId={postDetail.author?._id}
             profile={profile}
           />
         </Stack>

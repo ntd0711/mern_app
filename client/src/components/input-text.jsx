@@ -4,7 +4,8 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 
 const InputField = (props) => {
-  const { name, value, label, disabled, control, placeholder, height } = props;
+  const { name, value, label, disabled, control, placeholder, height, clearErrorFromServer } =
+    props;
 
   return (
     <>
@@ -29,6 +30,7 @@ const InputField = (props) => {
               </InputLabel>
               <TextField
                 {...field}
+                onInput={clearErrorFromServer}
                 id={name}
                 margin="normal"
                 disabled={disabled}
@@ -45,7 +47,7 @@ const InputField = (props) => {
                       display: 'block',
                       height: height || '50px',
                       width: '100%',
-                      backgroundColor: 'common.light_dark',
+                      backgroundColor: 'rgba(255,255,255,0.07)',
                       borderRadius: '3px',
                       padding: '0 10px',
                       fontSize: '14px',

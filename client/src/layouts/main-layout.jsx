@@ -5,13 +5,17 @@ import { Outlet } from 'react-router-dom';
 
 function MainLayout() {
   return (
-    <Stack minHeight="100vh">
-      <Header />
-      <Box flexGrow={1}>
-        <Outlet />
+    <Box>
+      <Stack minHeight="100vh">
+        <Header />
+        <Box flexGrow={1} mt={15}>
+          <Outlet />
+        </Box>
+      </Stack>
+      <Box mt={12} py={4}>
+        <Footer />
       </Box>
-      <Footer />
-    </Stack>
+    </Box>
   );
 }
 

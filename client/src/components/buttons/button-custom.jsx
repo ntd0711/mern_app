@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import React from 'react';
 
-function ButtonCustom({ children, size, onClick, disabled, type }) {
+function ButtonCustom({ children, size, onClick, disabled, type, color }) {
   const handleClick = () => {
     if (onClick) onClick();
   };

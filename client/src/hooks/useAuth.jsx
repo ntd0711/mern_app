@@ -5,7 +5,7 @@ function useAuth() {
   const { profile } = useSelector((state) => state.user);
   const token = getLocalStorage('token');
 
-  return profile && token;
+  return Boolean(profile && token);
 }
 
 export default useAuth;

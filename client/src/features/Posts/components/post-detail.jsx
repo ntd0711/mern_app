@@ -9,8 +9,10 @@ import { Link } from 'react-router-dom';
 dayjs.extend(localizedFormat);
 
 function PostDetail({ post, authorId, profile }) {
+  const { author, title, content, tags, createdAt } = post;
+
   const createMarkup = () => {
-    return { __html: post?.content };
+    return { __html: content };
   };
 
   return (
@@ -26,17 +28,17 @@ function PostDetail({ post, authorId, profile }) {
           cursor: 'pointer',
         }}
       >
-        {post?.title}
+        {title}
       </Typography>
       <Stack direction="row" spacing={1}>
-        <AvatarCustom url={post.author.avatar} />
+        <AvatarCustom url={author?.avatar} size={2.4} />
         <Box>
           <Link to={authorId === profile?._id ? '/profile' : `/profile/${authorId}`}>
             <Typography variant="subtitle2" sx={{ cursor: 'pointer' }}>
-              {post.author.name}
+              {author?.name}
             </Typography>
           </Link>
-          <Typography fontSize="12px">{dayjs(post.createdAt).format('ll')}</Typography>
+          <Typography fontSize="12px">{dayjs(createdAt).format('ll')}</Typography>
         </Box>
       </Stack>
       <Box
@@ -57,7 +59,7 @@ function PostDetail({ post, authorId, profile }) {
       />
       <Typography component="span" variant="subtitle2">
         Tags:{' '}
-        {post.tags.map((tag, index) => (
+        {tags?.map((tag, index) => (
           <Link key={index} to={`/posts/?tag=${tag}`}>
             <Typography
               component="span"
@@ -68,7 +70,7 @@ function PostDetail({ post, authorId, profile }) {
                 '&:hover': { color: 'common.dark_blue' },
               }}
             >
-              {index === post.tags.length - 1 ? tag : `${tag}, `}
+              {index === tags.length - 1 ? tag : `${tag}, `}
             </Typography>
           </Link>
         ))}

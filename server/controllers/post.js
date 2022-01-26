@@ -14,7 +14,7 @@ export const createPosts = async (req, res, next) => {
     const post = req.body;
 
     if (post) {
-      const tagsFromClient = post.tags?.split(' ').map((x) => x.toLowerCase());
+      const tagsFromClient = Array.from(new Set(post.tags?.split(' ').map((x) => x.toLowerCase())));
 
       const arrTag = tagsFromClient.reduce((arr, tag) => {
         arr.push({ name: tag, createdAt: Date.now() });
@@ -135,6 +135,31 @@ export const likePost = async (req, res) => {
     await post.save();
 
     res.status(200).json(post);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const deletePost = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (!id) return next(createError.BadRequest());
+
+    const { author, tags, comments } = await PostModel.findById(id);
+    if (req.userId !== author) return next(createError.BadRequest());
+
+    //delete tags
+    for (const tag of tags) {
+      await TagModel.deleteOne({ name: tag });
+    }
+
+    //delete comments
+    for (const comment of comments) {
+      await CommentModel.deleteOne({ _id: comment });
+    }
+
+    await PostModel.findByIdAndDelete(id);
+    res.status(200).json(id);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

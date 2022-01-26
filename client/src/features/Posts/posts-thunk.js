@@ -24,6 +24,17 @@ export const fetchPostById = createAsyncThunk(
   }
 );
 
+export const fetchPostByUserId = createAsyncThunk(
+  'post/fetPostByUserId',
+  async (id, { rejectWithValue }) => {
+    try {
+      return await postsApi.getPostsByUserId(id);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const fetchTagsPost = createAsyncThunk(
   'post/fetchTagsPost',
   async (payload, { rejectWithValue }) => {
@@ -39,6 +50,15 @@ export const fetchTagsPost = createAsyncThunk(
 export const createPost = createAsyncThunk('post/create', async (payload, { rejectWithValue }) => {
   try {
     return await postsApi.createPost(payload);
+  } catch (error) {
+    console.log(error);
+    return rejectWithValue(error);
+  }
+});
+
+export const deletePost = createAsyncThunk('post/delete', async (id, { rejectWithValue }) => {
+  try {
+    return await postsApi.deletePost(id);
   } catch (error) {
     console.log(error);
     return rejectWithValue(error);
