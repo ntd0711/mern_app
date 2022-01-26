@@ -1,7 +1,7 @@
 import { Skeleton, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-function SkeletonPosts({ quantity }) {
+function SkeletonPostList({ quantity }) {
   return (
     <Stack spacing={6}>
       {Array.from({ length: quantity }).map((x, i) => (
@@ -22,4 +22,4 @@ function SkeletonPosts({ quantity }) {
   );
 }
 
-export default SkeletonPosts;
+export default SkeletonPostList;

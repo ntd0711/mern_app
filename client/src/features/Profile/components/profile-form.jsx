@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, InputLabel, Stack, Typography } from '@mui/material';
-import { AvatarCustom, ButtonCustom, InputField, InputFile } from 'components';
+import { AvatarCustom, InputField, InputFile } from 'components';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';

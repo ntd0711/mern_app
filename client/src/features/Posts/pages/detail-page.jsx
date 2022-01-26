@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import PostComments from '../components/post-comments';
 import PostDetail from '../components/post-detail';
+import SkeletonPostDetail from '../components/skeleton-post-detail';
 import { commentPost, fetchPostById } from '../posts-thunk';
 
 function DetailPage() {
@@ -40,20 +41,29 @@ function DetailPage() {
     }
   };
 
-  if (loading) return 'loading...';
+  // if (loading)
+  //   return (
+  //     <Container>
+
+  //     </Container>
+  //   );
 
   return (
     <Box mt={6}>
       <Container sx={{ color: 'common.grey_white' }}>
-        <Stack spacing={4}>
-          <PostDetail post={postDetail} authorId={postDetail?.author?._id} profile={profile} />
-          <PostComments
-            comments={postDetail?.comments}
-            onSubmit={handleCommentPost}
-            authorId={postDetail.author?._id}
-            profile={profile}
-          />
-        </Stack>
+        {loading ? (
+          <SkeletonPostDetail />
+        ) : (
+          <Stack spacing={4}>
+            <PostDetail post={postDetail} authorId={postDetail?.author?._id} profile={profile} />
+            <PostComments
+              comments={postDetail?.comments}
+              onSubmit={handleCommentPost}
+              authorId={postDetail.author?._id}
+              profile={profile}
+            />
+          </Stack>
+        )}
       </Container>
     </Box>
   );
