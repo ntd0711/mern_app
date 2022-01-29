@@ -12,19 +12,23 @@ export const theme = createTheme({
     common: {
       grey_white: '#eee',
       white: '#f9f9f9',
+
       black: '#000',
+
       blue: '#00c7d0',
       dark_blue: '#00eee5',
+
       light_dark: '#393E46',
       dark: '#222831',
+
       pink: '#ffa7c4',
     },
   },
   typography: {
-    fontFamily: 'Open Sans, sans-serif',
-    body1: {
-      fontSize: '0.925rem',
-    },
+    fontFamily: 'Nunito Sans, sans-serif',
+    // body1: {
+    //   fontSize: '0.925rem',
+    // },
   },
   components: {
     MuiTypography: {
@@ -42,6 +46,9 @@ export const theme = createTheme({
       styleOverrides: {
         h5: {
           fontSize: '26px',
+        },
+        subtitle2: {
+          fontWeight: 600,
         },
       },
     },
@@ -61,6 +68,7 @@ export const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         containedPrimary: {
+          fontWeight: 600,
           backgroundColor: '#eee',
           color: '#080710',
           '&:hover': {
@@ -69,6 +77,7 @@ export const theme = createTheme({
         },
 
         containedSecondary: {
+          fontWeight: 600,
           backgroundColor: 'rgba(255,255,255,0.05)',
           '&:hover': {
             backgroundColor: 'rgba(255,255,255,0.02)',

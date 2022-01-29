@@ -1,8 +1,8 @@
-import { Stack } from '@mui/material';
+import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import { Box } from '@mui/system';
-import { InputField } from 'components';
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { BiSearchAlt2 } from 'react-icons/bi';
+import { FiX } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import TagElement from '../../../components/chip';
 import { fetchTagsPost } from '../posts-thunk';
@@ -10,11 +10,9 @@ import { fetchTagsPost } from '../posts-thunk';
 function PostFilters({ onTagChange, onSearchChange, filters }) {
   const dispatch = useDispatch();
   const { postTags } = useSelector((state) => state.posts);
-  const { handleSubmit, control } = useForm({
-    defaultValues: {
-      search: '',
-    },
-  });
+
+  const [showSearch, setShowSearch] = useState(false);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -30,16 +28,82 @@ function PostFilters({ onTagChange, onSearchChange, filters }) {
     if (onTagChange) onTagChange({ tag });
   };
 
-  const handleOnSubmit = (data) => {
-    if (onSearchChange) onSearchChange(data);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (onSearchChange) onSearchChange({ search });
+  };
+
+  const handleShowSearch = () => {
+    setShowSearch((prev) => !prev);
+    setSearch('');
   };
 
   return (
-    <>
-      <Box component="form" onSubmit={handleSubmit(handleOnSubmit)}>
-        <InputField control={control} name="search" placeholder="search" height="44px" />
+    <Stack position="relative" direction="row" alignItems="center" justifyContent="space-between">
+      <Box
+        display={showSearch ? 'block' : 'none'}
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          position: 'absolute',
+          zIndex: '25',
+          bgcolor: 'common.dark',
+          width: '100%',
+        }}
+      >
+        <TextField
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          inputRef={(inputRef) => inputRef && inputRef.focus()}
+          autoFocus
+          placeholder="Search"
+          InputProps={{
+            endAdornment: (
+              <>
+                {search && (
+                  <InputAdornment sx={{ mr: '10%' }} position="end">
+                    <IconButton
+                      onClick={() => setSearch('')}
+                      sx={{ color: 'common.grey_white', fontSize: '1rem' }}
+                    >
+                      <FiX />
+                    </IconButton>
+                  </InputAdornment>
+                )}
+              </>
+            ),
+          }}
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              color: '#eee',
+              '& input': {
+                borderColor: 'transparent',
+                display: 'block',
+                height: '44px',
+                width: '100%',
+                bgcolor: 'common.dark',
+                borderRadius: '3px',
+                padding: '0 10px',
+                fontSize: '16px',
+                '$::placeholder': {
+                  color: ' #e5e5e5',
+                },
+              },
+              '&:hover fieldset': {
+                borderColor: 'transparent',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: 'transparent',
+              },
+              '& fieldset': {
+                borderColor: 'transparent',
+              },
+            },
+          }}
+        />
       </Box>
-      <Stack mt={2} columnGap={1} rowGap={1} flexDirection="row" flexWrap="wrap">
+      <Stack columnGap={1} rowGap={1} direction="row" flexWrap="wrap">
         {Object.keys(postTags).map((label) => (
           <TagElement
             key={label}
@@ -49,7 +113,23 @@ function PostFilters({ onTagChange, onSearchChange, filters }) {
           />
         ))}
       </Stack>
-    </>
+      <IconButton
+        sx={{
+          bgcolor: 'common.blue',
+          position: 'absolute',
+          right: '0',
+          zIndex: '26',
+          fontSize: '1.1rem',
+          color: 'common.dark',
+          '&:hover': {
+            bgcolor: 'common.blue',
+          },
+        }}
+        onClick={handleShowSearch}
+      >
+        {showSearch ? <FiX /> : <BiSearchAlt2 />}
+      </IconButton>
+    </Stack>
   );
 }
 

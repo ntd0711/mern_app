@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PostFilters from '../components/post-filter';
 import PostList from '../components/post-list';
+import GoToTopBtn from '../components/go-to-top-btn';
 import SkeletonPostList from '../components/skeleton-post-list';
 import { fetchPosts } from '../posts-thunk';
 
@@ -59,6 +60,7 @@ function ListPage() {
           {loading ? <SkeletonPostList quantity={10} /> : <PostList posts={postList} />}
         </Stack>
       </Container>
+      <GoToTopBtn />
     </Box>
   );
 }

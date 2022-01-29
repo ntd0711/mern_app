@@ -2,7 +2,7 @@ import { Chip, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import useAuth from 'hooks/useAuth';
+import useAuth from 'hooks/use-auth';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -58,7 +58,7 @@ function PostCard({ post, onLike, onDelete }) {
           {title}
         </Typography>
       </Link>
-      <Box mt={-1}>
+      <Box>
         <Stack direction="row" alignItems="center">
           <Typography variant="caption">{dayjs(createdAt).format('ll')}</Typography>
           <Box sx={{ width: '0.5px', height: '14px', bgcolor: 'common.grey_white', mx: 2 }} />

@@ -1,6 +1,7 @@
 import { Container } from '@mui/material';
 import { Box } from '@mui/system';
 import { userApi } from 'api/user-api';
+import SkeletonPostDetail from 'features/Posts/components/skeleton-post-detail';
 import { fetchPostByUserId } from 'features/Posts/posts-thunk';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,14 +30,17 @@ function ProfileOtherUser() {
     })();
   }, [dispatch, id]);
 
-  if (loading) return 'loading ...';
-
   return (
     <Box mt={10}>
       <Container>
-        <ProfileInfo isOtherUser={id} postQuantity={postList.length} profile={user} />
-
-        <ProfileTabs posts={postList} />
+        {loading ? (
+          <SkeletonPostDetail />
+        ) : (
+          <>
+            <ProfileInfo isOtherUser={id} postQuantity={postList.length} profile={user} />
+            <ProfileTabs posts={postList} />
+          </>
+        )}
       </Container>
     </Box>
   );

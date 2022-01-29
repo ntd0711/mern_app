@@ -1,4 +1,4 @@
-import { Box, Container, Paper } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import PostForm from '../components/post-form';
@@ -13,7 +13,7 @@ function CreatePage() {
 
   return (
     <Box height="100%">
-      <Container maxWidth="lg">
+      <Container>
         <PostForm onSubmit={handleOnSubmit} />
       </Container>
     </Box>

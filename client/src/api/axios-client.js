@@ -3,7 +3,7 @@ import { getLocalStorage, setLocalStorage } from 'utils/common';
 import { userApi } from './user-api';
 
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:5000/',
+  baseURL: 'https://ntd-mern-app.herokuapp.com/',
   headers: { 'Content-Type': 'application/json' },
 });
 

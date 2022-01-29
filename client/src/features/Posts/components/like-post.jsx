@@ -3,7 +3,8 @@ import React from 'react';
 import { IoTriangleOutline, IoTriangleSharp } from 'react-icons/io5';
 
 function LikePost({ likes, id, onLike }) {
-  const likedPost = likes.findIndex((x) => x === String(id)) !== -1;
+  const isLiked = likes.findIndex((x) => x === String(id)) !== -1;
+
   const handleLikePost = () => {
     if (onLike) onLike();
   };
@@ -17,11 +18,9 @@ function LikePost({ likes, id, onLike }) {
           color: 'common.dark_blue',
         }}
       >
-        {likedPost ? <IoTriangleSharp /> : <IoTriangleOutline />}
+        {isLiked ? <IoTriangleSharp /> : <IoTriangleOutline />}
       </IconButton>
-      <Typography variant="body2" mt={0.2}>
-        {likes.length || ''}
-      </Typography>
+      <Typography variant="body2">{likes.length || ''}</Typography>
     </Stack>
   );
 }

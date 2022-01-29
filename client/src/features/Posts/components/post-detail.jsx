@@ -23,9 +23,6 @@ function PostDetail({ post, authorId, profile }) {
         sx={{
           color: 'common.blue',
           fontWeight: 'bold',
-          textOverflow: 'ellipsis',
-          overflow: 'hidden',
-          cursor: 'pointer',
         }}
       >
         {title}
@@ -57,13 +54,12 @@ function PostDetail({ post, authorId, profile }) {
         }}
         dangerouslySetInnerHTML={createMarkup()}
       />
-      <Typography component="span" variant="subtitle2">
+      <Typography component="span">
         Tags:{' '}
         {tags?.map((tag, index) => (
           <Link key={index} to={`/posts/?tag=${tag}`}>
             <Typography
               component="span"
-              variant="body2"
               sx={{
                 color: 'common.blue',
                 transition: 'color 0.3s ease',

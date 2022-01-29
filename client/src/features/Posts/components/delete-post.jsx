@@ -1,5 +1,5 @@
 import { Box, IconButton } from '@mui/material';
-import ModalDelete from 'features/Auth/components/modal';
+import ModalDelete from 'features/Posts/components/modal';
 import React from 'react';
 import { BsTrashFill } from 'react-icons/bs';
 

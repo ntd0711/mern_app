@@ -1,19 +1,21 @@
 import { Box, Container, IconButton, Stack, Typography } from '@mui/material';
 import { AvatarCustom } from 'components';
 import { logout } from 'features/Auth/user-thunk';
-
-import useAuth from 'hooks/useAuth';
+import useAuth from 'hooks/use-auth';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { getLocalStorage } from 'utils/common';
 import MenuHeader from './menu-header';
 
+import { ReactComponent as IconLoading } from 'images/loading-logout.svg';
+
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const isAuth = useAuth();
-  const { profile } = useSelector((state) => state.user);
+  const { profile, loading } = useSelector((state) => state.user);
   const rfToken = getLocalStorage('refreshToken');
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -36,56 +38,57 @@ function Header() {
     setAnchorEl(null);
   };
 
-  const handleScroll = () => {
-    console.log('ahihi');
-  };
-
   return (
     <Box
-      onScroll={handleScroll}
       sx={{
         bgcolor: 'common.dark',
+        paddingY: 2,
         left: '0',
         right: '0',
-        paddingY: 2,
-        zIndex: '100',
-        boxShadow: '0 0 5px rgba(255,255,255,0.1)',
         position: 'fixed',
+        zIndex: '100',
+        boxShadow: '0 0 5px rgba(255,255,255,0.06)',
       }}
     >
       <Container>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Link to="/posts">
-            <Typography variant="h5" fontWeight="medium">
+            <Typography component="h1" variant="h5" fontWeight="800">
               Free Frontend
             </Typography>
           </Link>
           <Box>
-            {!isAuth && (
-              <Link to="/signin">
-                <Typography
-                  sx={{
-                    p: '0.4em',
+            {loading ? (
+              <IconLoading style={{ marginRight: '10px' }} />
+            ) : (
+              <>
+                {!isAuth && (
+                  <Link to="/signin">
+                    <Typography
+                      sx={{
+                        p: '0.4em',
 
-                    cursor: 'pointer',
-                    '&:hover': { color: 'common.white' },
-                    transition: 'color 0.2s',
-                  }}
-                >
-                  LOGIN
-                </Typography>
-              </Link>
-            )}
+                        cursor: 'pointer',
+                        '&:hover': { color: 'common.white' },
+                        transition: 'color 0.2s',
+                      }}
+                    >
+                      LOGIN
+                    </Typography>
+                  </Link>
+                )}
 
-            {isAuth && (
-              <Stack direction="row" alignItems="center" spacing={0.5}>
-                <IconButton onClick={handleShowMenu}>
-                  <AvatarCustom url={profile?.avatar} size={2} />
-                </IconButton>
-                <Typography variant="subtitle2" ml={0.8}>
-                  {profile?.name?.trim()}
-                </Typography>
-              </Stack>
+                {isAuth && (
+                  <Stack direction="row" alignItems="center" spacing={0.5}>
+                    <IconButton onClick={handleShowMenu}>
+                      <AvatarCustom url={profile?.avatar} size={2} />
+                    </IconButton>
+                    <Typography variant="subtitle2" ml={0.8}>
+                      {profile?.name?.trim()}
+                    </Typography>
+                  </Stack>
+                )}
+              </>
             )}
           </Box>
         </Stack>

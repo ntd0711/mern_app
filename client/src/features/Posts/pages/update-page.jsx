@@ -1,4 +1,4 @@
-import { Box, Container, Paper } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { postsApi } from 'api/posts-api';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

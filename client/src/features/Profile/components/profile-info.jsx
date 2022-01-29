@@ -15,9 +15,13 @@ function ProfileInfo({ profile, postQuantity, isOtherUser }) {
           {!isOtherUser && (
             <Link to="/profile/setting">
               <Button
-                sx={{ textTransform: 'none' }}
-                color_custom="pink"
-                size="small"
+                sx={{
+                  textTransform: 'none',
+                  color: 'common.grey_white',
+                  borderColor: 'common.grey_white',
+                  '&:hover': { borderColor: 'common.grey_white' },
+                  height: '32px',
+                }}
                 variant="outlined"
               >
                 Edit Profile

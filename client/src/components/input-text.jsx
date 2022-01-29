@@ -4,8 +4,19 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 
 const InputField = (props) => {
-  const { name, value, label, disabled, control, placeholder, height, clearErrorFromServer } =
-    props;
+  const {
+    name,
+    value,
+    label,
+    disabled,
+    control,
+    placeholder,
+    height,
+    bgcolor,
+    color,
+    fontSize,
+    clearErrorFromServer,
+  } = props;
 
   return (
     <>
@@ -41,16 +52,16 @@ const InputField = (props) => {
                 sx={{
                   mt: 1,
                   '& .MuiOutlinedInput-root': {
-                    color: '#eee',
+                    color: `${color || '#eee'}`,
                     '& input': {
                       borderColor: 'transparent',
                       display: 'block',
                       height: height || '50px',
                       width: '100%',
-                      backgroundColor: 'rgba(255,255,255,0.07)',
+                      backgroundColor: `${bgcolor || 'rgba(255,255,255,0.07)'}`,
                       borderRadius: '3px',
                       padding: '0 10px',
-                      fontSize: '14px',
+                      fontSize: `${fontSize || '14px'}`,
                       '$::placeholder': {
                         color: ' #e5e5e5',
                       },

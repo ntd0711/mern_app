@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button } from '@mui/material';
+import { Box, Button, ButtonGroup, Stack } from '@mui/material';
 import { InputField } from 'components';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -51,22 +51,15 @@ function PostForm({ onSubmit, post }) {
   };
 
   return (
-    <Box
-      component="form"
-      sx={{
-        borderRadius: '10px',
-        border: '2px solid rgba(255,255,255,0.1)',
-        boxShadow: '0 0 40px rgba(8,7,16,0.6)',
-        padding: '50px 35px',
-      }}
-      onSubmit={handleSubmit(handleOnSubmit)}
-    >
+    <Box component="form" onSubmit={handleSubmit(handleOnSubmit)}>
       <InputField
         name="title"
-        placeholder="Title"
+        placeholder="Title of post..."
         value={getValues('title')}
         setValue={setValue}
         control={control}
+        bgcolor="common.dark"
+        fontSize="36px"
       />
       <EditorPost onChange={handleChangeContent} value={getValues('content')} />
       <InputField
@@ -85,9 +78,14 @@ function PostForm({ onSubmit, post }) {
         fullWidth
         control={control}
       />
-      <Button type="submit" variant="contained" color="primary" fullWidth>
-        {post ? 'Update' : 'Create'}
-      </Button>
+      <Stack direction="row" spacing={1.4}>
+        <Button onClick={() => reset()} variant="contained" color="secondary">
+          Clear
+        </Button>
+        <Button type="submit" variant="contained" color="primary">
+          {post ? 'Update' : 'Create'}
+        </Button>
+      </Stack>
     </Box>
   );
 }

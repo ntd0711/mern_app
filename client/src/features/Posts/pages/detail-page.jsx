@@ -1,6 +1,6 @@
 import { Container, Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import useAuth from 'hooks/useAuth';
+import useAuth from 'hooks/use-auth';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,6 +8,7 @@ import PostComments from '../components/post-comments';
 import PostDetail from '../components/post-detail';
 import SkeletonPostDetail from '../components/skeleton-post-detail';
 import { commentPost, fetchPostById } from '../posts-thunk';
+import GoToTopBtn from '../components/go-to-top-btn';
 
 function DetailPage() {
   const dispatch = useDispatch();
@@ -41,13 +42,6 @@ function DetailPage() {
     }
   };
 
-  // if (loading)
-  //   return (
-  //     <Container>
-
-  //     </Container>
-  //   );
-
   return (
     <Box mt={6}>
       <Container sx={{ color: 'common.grey_white' }}>
@@ -65,6 +59,7 @@ function DetailPage() {
           </Stack>
         )}
       </Container>
+      <GoToTopBtn />
     </Box>
   );
 }

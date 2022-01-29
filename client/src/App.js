@@ -1,7 +1,6 @@
-import { NotFound } from 'components';
+import { NotFound, ScrollTop } from 'components';
 import RequireAuth from 'components/hocs/require-auth';
 import { AuthFeature, PostsFeature, ProfileFeature } from 'features';
-import ScrollTop from 'features/Posts/components/scroll-top';
 import MainLayout from 'layouts/main-layout';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';

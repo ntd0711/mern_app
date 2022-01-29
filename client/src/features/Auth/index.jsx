@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import useAuth from 'hooks/useAuth';
+import useAuth from 'hooks/use-auth';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

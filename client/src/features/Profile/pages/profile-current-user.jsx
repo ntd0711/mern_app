@@ -1,4 +1,5 @@
 import { Box, Container } from '@mui/material';
+import SkeletonPostDetail from 'features/Posts/components/skeleton-post-detail';
 import { fetchPostByUserId } from 'features/Posts/posts-thunk';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,12 +21,17 @@ function ProfileCurrentUser() {
     })();
   }, [dispatch, profile._id]);
 
-  if (loading) return 'loading ...';
   return (
     <Box mt={10}>
       <Container>
-        <ProfileInfo postQuantity={postList.length} profile={profile} />
-        <ProfileTabs posts={postList} />
+        {loading ? (
+          <SkeletonPostDetail />
+        ) : (
+          <>
+            <ProfileInfo postQuantity={postList.length} profile={profile} />
+            <ProfileTabs posts={postList} />
+          </>
+        )}
       </Container>
     </Box>
   );

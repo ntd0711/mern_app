@@ -1,7 +1,7 @@
-import { FormControl, InputLabel, TextField, Typography } from '@mui/material';
+import { TextField } from '@mui/material';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import PropTypes from 'prop-types';
 
 const InputFile = (props) => {
   const { name, disabled, control, onSetFile } = props;
@@ -30,6 +30,9 @@ const InputFile = (props) => {
                 color="primary"
                 error={invalid}
                 helperText={error?.message}
+                inputProps={{
+                  accept: 'image/*',
+                }}
               />
             </>
           );
