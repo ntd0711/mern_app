@@ -9,7 +9,7 @@ function LikePost({ likes, id, onLike }) {
     if (onLike) onLike();
   };
   return (
-    <Stack direction="row" spacing={-0.2} alignItems="center">
+    <Stack direction="row" alignItems="center">
       <IconButton
         onClick={handleLikePost}
         size="small"
@@ -20,7 +20,9 @@ function LikePost({ likes, id, onLike }) {
       >
         {isLiked ? <IoTriangleSharp /> : <IoTriangleOutline />}
       </IconButton>
-      <Typography variant="body2">{likes.length || ''}</Typography>
+      <Typography variant="body2" mt={0.3}>
+        {likes.length || ''}
+      </Typography>
     </Stack>
   );
 }
