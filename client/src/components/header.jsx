@@ -83,7 +83,11 @@ function Header() {
                     <IconButton onClick={handleShowMenu}>
                       <AvatarCustom url={profile?.avatar} size={2} />
                     </IconButton>
-                    <Typography variant="subtitle2" ml={0.8}>
+                    <Typography
+                      onClick={handleShowMenu}
+                      variant="subtitle2"
+                      sx={{ ml: '0.8', cursor: 'pointer' }}
+                    >
                       {profile?.name?.trim()}
                     </Typography>
                   </Stack>
