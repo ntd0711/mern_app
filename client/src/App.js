@@ -3,12 +3,12 @@ import RequireAuth from 'components/hocs/require-auth';
 import { AuthFeature, PostsFeature, ProfileFeature } from 'features';
 import EmptyLayout from 'layouts/empty-layout';
 import MainLayout from 'layouts/main-layout';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <ScrollTop />
       <Routes>
         <Route element={<MainLayout />}>
@@ -21,7 +21,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
