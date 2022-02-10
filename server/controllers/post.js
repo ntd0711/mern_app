@@ -112,8 +112,9 @@ export const getPostById = async (req, res) => {
 export const getPostsByUserId = async (req, res) => {
   try {
     const { id } = req.params;
-    const postList = await PostModel.find({ author: String(id) }).populate('author');
-
+    const postList = await PostModel.find({ author: String(id) })
+      .populate('author')
+      .sort({ updatedAt: 'desc' });
     res.status(200).json(postList);
   } catch (error) {
     res.status(404).json({ message: error.message });
