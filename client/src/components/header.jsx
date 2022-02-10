@@ -52,7 +52,7 @@ function Header() {
     >
       <Container>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Link to="/posts">
+          <Link to="/">
             <Typography component="h1" variant="h5" fontWeight="800">
               Free Frontend
             </Typography>
