@@ -58,9 +58,11 @@ export const getPosts = async (req, res) => {
     if (search || tag) {
       postList = await PostModel.find({
         $or: [{ title }, { tags: { $all: tag } }],
-      }).populate('author');
+      })
+        .populate('author')
+        .sort({ updatedAt: 'desc' });
     } else {
-      postList = await PostModel.find({}).populate('author');
+      postList = await PostModel.find({}).populate('author').sort({ updatedAt: 'desc' });
     }
 
     res.status(200).json(postList);
