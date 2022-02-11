@@ -79,7 +79,7 @@ function AuthForm({ isSignUp, switchMode, onSubmit, loading, error, clearErrorFr
           control={control}
           name="email"
           label="Email"
-          placeholder="Email or Phone"
+          placeholder="Email"
           clearErrorFromServer={clearErrorFromServer}
         />
         {error && field === 'email' && (
