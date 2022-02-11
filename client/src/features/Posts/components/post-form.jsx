@@ -34,7 +34,7 @@ function PostForm({ onSubmit, post }) {
       title: post?.title || '',
       content: post?.content || '',
       description: post?.description || '',
-      tags: post?.tags.join(' ') || '',
+      tags: post?.tags?.join(' ') || '',
     },
     resolver: yupResolver(schema),
   });

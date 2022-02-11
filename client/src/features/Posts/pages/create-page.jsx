@@ -13,7 +13,7 @@ function CreatePage() {
     await dispatch(createPost(data));
     setTimeout(() => {
       navigate('/posts');
-    }, 2500);
+    }, 2000);
   };
 
   return (

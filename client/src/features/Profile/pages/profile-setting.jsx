@@ -3,11 +3,13 @@ import { Box } from '@mui/system';
 import { unsetAvatar, updateAvatar, updateInfo } from 'features/Auth/user-thunk';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { notify } from 'utils/toastify';
 import ProfileForm from '../components/profile-form';
 
 function ProfileSetting() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { profile, loading } = useSelector((state) => state.user);
 
   const handleOnSubmit = async (data) => {
@@ -16,6 +18,9 @@ function ProfileSetting() {
       await dispatch(updateInfo({ id, data })).unwrap();
 
       notify.success('update info successfully!');
+      setTimeout(() => {
+        navigate('/profile');
+      }, 2000);
     } catch (error) {
       notify.error('update info failed.');
     }
@@ -24,6 +29,9 @@ function ProfileSetting() {
   const handleUnsetAvt = async () => {
     try {
       await dispatch(unsetAvatar(profile._id));
+      setTimeout(() => {
+        navigate('/profile');
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -35,6 +43,9 @@ function ProfileSetting() {
 
       const id = profile._id;
       await dispatch(updateAvatar({ id, imgUrl }));
+      setTimeout(() => {
+        navigate('/profile');
+      }, 2000);
     } catch (error) {
       console.log(error);
     }

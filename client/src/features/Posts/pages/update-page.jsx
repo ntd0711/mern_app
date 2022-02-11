@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import PostForm from '../components/post-form';
+import SkeletonPostDetail from '../components/skeleton-post-detail';
 import { updatePost } from '../posts-thunk';
 
 function UpdatePage() {
@@ -11,12 +12,21 @@ function UpdatePage() {
   const { id } = useParams();
   const { profile } = useSelector((state) => state.user);
   const [postNeedUpdate, setPostNeedUpdate] = useState({});
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
-      const response = await postsApi.getPostById(id);
-      setPostNeedUpdate(response);
+      try {
+        setLoading(true);
+
+        const response = await postsApi.getPostById(id);
+        setPostNeedUpdate(response);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     })();
   }, [id]);
 
@@ -25,14 +35,14 @@ function UpdatePage() {
     await dispatch(updatePost({ id, data }));
     setTimeout(() => {
       navigate(`/posts/${id}`);
-    }, 2500);
+    }, 2000);
   };
 
-  if (Object.keys(postNeedUpdate).length === 0) return 'loading...';
   return (
     <Box height="100%">
-      <Container maxWidth="lg">
-        <PostForm onSubmit={handleOnSubmit} post={postNeedUpdate} />
+      <Container>
+        {loading && <SkeletonPostDetail />}
+        {!loading && <PostForm onSubmit={handleOnSubmit} post={postNeedUpdate} />}
       </Container>
     </Box>
   );
