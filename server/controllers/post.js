@@ -59,10 +59,10 @@ export const getPosts = async (req, res) => {
       postList = await PostModel.find({
         $or: [{ title }, { tags: { $all: tag } }],
       })
-        .populate('author')
+        .populate('author', 'name')
         .sort({ updatedAt: 'desc' });
     } else {
-      postList = await PostModel.find({}).populate('author').sort({ updatedAt: 'desc' });
+      postList = await PostModel.find({}).populate('author', 'name').sort({ updatedAt: 'desc' });
     }
 
     res.status(200).json(postList);
@@ -100,7 +100,7 @@ export const getPostById = async (req, res) => {
         options: { sort: { createdAt: 'desc' } },
         populate: { path: 'user' },
       })
-      .populate('author');
+      .populate('author', ['name', 'avatar', 'createdAt']);
 
     res.status(200).json(post);
   } catch (error) {
@@ -113,7 +113,7 @@ export const getPostsByUserId = async (req, res) => {
   try {
     const { id } = req.params;
     const postList = await PostModel.find({ author: String(id) })
-      .populate('author')
+      .populate('author', 'name')
       .sort({ updatedAt: 'desc' });
     res.status(200).json(postList);
   } catch (error) {
@@ -126,7 +126,7 @@ export const likePost = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const post = await PostModel.findById(id).populate('author');
+    const post = await PostModel.findById(id).populate('author', 'name');
     const likedPost = post.likes.findIndex((id) => id === String(req.userId)) !== -1;
 
     if (likedPost) {

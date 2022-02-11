@@ -23,6 +23,7 @@ function UpdatePage() {
         const response = await postsApi.getPostById(id);
         setPostNeedUpdate(response);
       } catch (error) {
+        setLoading(false);
         console.log(error);
       } finally {
         setLoading(false);

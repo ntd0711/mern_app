@@ -75,14 +75,13 @@ export const register = async (req, res, next) => {
 export const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const listUser = await UserModel.find({});
 
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).json({ message: 'No user with that id' });
 
-    const userNeedToFind = listUser.find((user) => user._id.toString() === String(id));
+    const user = await UserModel.findById(id).select(['avatar', 'name']);
 
-    res.status(200).json(userNeedToFind);
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong.' });
   }

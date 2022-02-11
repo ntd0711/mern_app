@@ -14,12 +14,7 @@ function PostForm({ onSubmit, post }) {
       .test('check title', 'title at least two word', (value) => {
         return value.split(' ').filter((x) => x.length >= 2).length >= 2;
       }),
-    content: yup
-      .string()
-      .required()
-      .test('check content', 'content at least two word', (value) => {
-        return value.split(' ').filter((x) => x.length >= 2).length >= 2;
-      }),
+    content: yup.string().required(),
     description: yup
       .string()
       .required()

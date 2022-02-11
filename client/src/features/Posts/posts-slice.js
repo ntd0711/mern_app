@@ -133,9 +133,7 @@ export const postsSlice = createSlice({
         state.loading = false;
       })
 
-      .addCase(commentPost.pending, (state, action) => {
-        state.loading = true;
-      })
+      .addCase(commentPost.pending, (state, action) => {})
       .addCase(commentPost.fulfilled, (state, action) => {
         state.postDetail.comments = action.payload;
         state.loading = false;
