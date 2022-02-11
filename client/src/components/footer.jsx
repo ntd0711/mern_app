@@ -18,14 +18,8 @@ function Footer() {
           <Typography>Privacy</Typography>
         </Stack>
       </Container>
-      <Stack
-        // sx={{ borderTop: '2px solid', borderColor: 'common.white' }}
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        height="60px"
-      >
-        <Typography>© 2022 DanielNguyen | Made by DanielNguyen</Typography>
+      <Stack direction="row" alignItems="center" justifyContent="center" height="60px">
+        <Typography>© 2022 DatNguyen | Made by DatNguyen</Typography>
       </Stack>
     </Box>
   );
