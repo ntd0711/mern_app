@@ -28,6 +28,7 @@ function AuthFeature() {
   }, [isAuth, navigate]);
 
   const handleOnSubmit = async (data) => {
+    if (loading) return;
     try {
       if (isSignUp) {
         await dispatch(register(data)).unwrap();

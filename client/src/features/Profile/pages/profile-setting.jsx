@@ -13,6 +13,7 @@ function ProfileSetting() {
   const { profile, loading } = useSelector((state) => state.user);
 
   const handleOnSubmit = async (data) => {
+    if (loading) return;
     try {
       const id = profile._id;
       await dispatch(updateInfo({ id, data })).unwrap();
@@ -27,6 +28,7 @@ function ProfileSetting() {
   };
 
   const handleUnsetAvt = async () => {
+    if (loading) return;
     try {
       await dispatch(unsetAvatar(profile._id));
       setTimeout(() => {
@@ -38,6 +40,7 @@ function ProfileSetting() {
   };
 
   const handleUpdateAvt = async (imgUrl) => {
+    if (loading) return;
     try {
       if (!imgUrl) throw new Error('image not found');
 

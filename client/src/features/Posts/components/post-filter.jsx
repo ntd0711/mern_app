@@ -119,6 +119,7 @@ function PostFilters({ onTagChange, onSearchChange, filters }) {
           zIndex: '26',
           fontSize: '1.1rem',
           color: 'common.dark',
+          // color: '#080710',
           '&:hover': {
             bgcolor: 'common.blue',
           },
@@ -127,23 +128,23 @@ function PostFilters({ onTagChange, onSearchChange, filters }) {
       >
         <i
           style={{
-            width: `${!showSearch ? '19px' : '0px'}`,
-            overflow: 'hidden',
-            transition: '0.3s ease-in-out',
-            opacity: `${!showSearch ? '1' : '0'}`,
-            visibility: `${!showSearch ? 'visible' : 'hidden'}`,
-          }}
-          className={`bx bx-x ${!showSearch ? 'active' : ''}`}
-        ></i>
-        <i
-          style={{
             width: `${showSearch ? '19px' : '0px'}`,
             overflow: 'hidden',
             transition: '0.3s ease-in-out',
             opacity: `${showSearch ? '1' : '0'}`,
             visibility: `${showSearch ? 'visible' : 'hidden'}`,
           }}
-          className={`bx bx-search-alt-2 ${showSearch ? 'active' : ''}`}
+          className="bx bx-x"
+        ></i>
+        <i
+          style={{
+            width: `${!showSearch ? '19px' : '0px'}`,
+            overflow: 'hidden',
+            transition: '0.3s ease-in-out',
+            opacity: `${!showSearch ? '1' : '0'}`,
+            visibility: `${!showSearch ? 'visible' : 'hidden'}`,
+          }}
+          className="bx bx-search-alt-2"
         ></i>
       </IconButton>
     </Stack>

@@ -110,7 +110,6 @@ function AuthForm({ isSignUp, switchMode, onSubmit, loading, error, clearErrorFr
         )}
         <Button
           type="submit"
-          disabled={loading}
           sx={{
             '&:hover': {
               backgroundColor: '#eee',
@@ -128,6 +127,21 @@ function AuthForm({ isSignUp, switchMode, onSubmit, loading, error, clearErrorFr
           variant="contained"
           fullWidth
         >
+          <Box
+            component="span"
+            sx={{
+              color: '#080710',
+              width: `${loading ? '24px' : '0px'}`,
+              overflow: 'hidden',
+              transition: '0.3s ease-in-out',
+              opacity: `${loading ? '1' : '0'}`,
+              visibility: `${loading ? 'visible' : 'hidden'}`,
+              display: 'flex',
+              mr: '0.4rem',
+            }}
+          >
+            <i class="bx bx-loader bx-spin bx-sm"></i>
+          </Box>
           {isSignUp ? 'sign up' : 'login'}
         </Button>
         <Box mt={1}>

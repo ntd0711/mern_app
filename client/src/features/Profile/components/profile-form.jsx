@@ -84,7 +84,24 @@ function ProfileForm({ onSubmit, profile, loading, onUnsetAvt, onUpdateAvt }) {
       <Box component="form" onSubmit={handleSubmit(handleOnSubmit)}>
         <InputField name="name" label="Name" height="44px" control={control} />
         <InputFile control={control} name="imgFile" onSetFile={handleSetFile} />
-        <Button type="submit" variant="contained" disabled={loading} size="small">
+        <Button type="submit" variant="contained" size="small">
+          <Box
+            sx={{
+              fontSize: '1rem',
+              color: '#080710',
+              width: `${loading ? '19px' : '0px'}`,
+              overflow: 'hidden',
+              transition: '0.3s ease-in-out',
+              opacity: `${loading ? '1' : '0'}`,
+              visibility: `${loading ? 'visible' : 'hidden'}`,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              overflow: 'hidden',
+            }}
+          >
+            <i class="bx bx-loader bx-spin"></i>
+          </Box>
           Save
         </Button>
       </Box>

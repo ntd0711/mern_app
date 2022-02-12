@@ -3,6 +3,7 @@ import { AvatarCustom } from 'components';
 import { logout } from 'features/Auth/user-thunk';
 import useAuth from 'hooks/use-auth';
 import React from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { getLocalStorage } from 'utils/common';
@@ -13,18 +14,24 @@ function Header() {
   const navigate = useNavigate();
 
   const isAuth = useAuth();
-  const { profile, loading } = useSelector((state) => state.user);
+  const { profile } = useSelector((state) => state.user);
   const rfToken = getLocalStorage('refreshToken');
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [loadingLogout, setLoadingLogout] = useState(false);
   const open = Boolean(anchorEl);
 
   const handleLogout = async () => {
     try {
+      setLoadingLogout(true);
+
       await dispatch(logout({ rfToken })).unwrap();
       navigate('/signin');
     } catch (error) {
+      setLoadingLogout(false);
       console.log(error);
+    } finally {
+      setLoadingLogout(false);
     }
   };
 
@@ -56,7 +63,7 @@ function Header() {
             </Typography>
           </Link>
           <Box>
-            {loading ? (
+            {loadingLogout ? (
               <i style={{ color: '#f9f9f9' }} class="bx bx-loader bx-spin bx-sm"></i>
             ) : (
               <>
