@@ -28,7 +28,7 @@ function DeletePost({ authorId, myId, onDelete, pathname }) {
             sx={{ fontSize: '1.1rem', color: 'common.pink' }}
             onClick={handleClick}
           >
-            <i class="bx bx-trash" title="delete post"></i>
+            <i className="bx bx-trash" title="delete post"></i>
           </IconButton>
         ) : (
           <></>

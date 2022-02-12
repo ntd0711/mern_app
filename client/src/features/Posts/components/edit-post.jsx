@@ -9,7 +9,7 @@ function EditPost({ authorId, myId, postId, pathname }) {
       {isEdit ? (
         <Link to={`/posts/update/${postId}`}>
           <IconButton size="small" sx={{ fontSize: '1.1rem', color: 'common.grey_white' }}>
-            <i class="bx bx-edit-alt" title="edit post"></i>
+            <i className="bx bx-edit-alt" title="edit post"></i>
           </IconButton>
         </Link>
       ) : (

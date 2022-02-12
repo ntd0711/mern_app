@@ -1,13 +1,11 @@
 import { Button, Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import { InputField } from 'components';
+import { ButtonCustom, InputField } from 'components';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import Comment from './comment';
 
-function PostComments({ comments = [], onSubmit, authorId, profile }) {
-  const { loading } = useSelector((state) => state.posts);
+function PostComments({ comments = [], onSubmit, authorId, profile, loadingCmt }) {
   const { handleSubmit, control, reset } = useForm({
     defaultValues: {
       comment: '',
@@ -37,9 +35,14 @@ function PostComments({ comments = [], onSubmit, authorId, profile }) {
         >
           <InputField name="comment" placeholder="add comment" control={control} height="44px" />
 
-          <Button type="submit" disabled={loading} variant="contained">
+          <ButtonCustom
+            loading={loadingCmt}
+            parentIconWidth="48px"
+            iconSize="1.1rem"
+            spacing="0.2rem"
+          >
             comment
-          </Button>
+          </ButtonCustom>
         </Box>
       </Stack>
       <Stack spacing={3}>

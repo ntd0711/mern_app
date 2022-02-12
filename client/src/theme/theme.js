@@ -75,6 +75,10 @@ export const theme = createTheme({
             backgroundColor: '#b6b6b6',
           },
         },
+        containedSizeLarge: {
+          padding: '15px 0',
+          fontSize: '18px',
+        },
 
         containedSecondary: {
           fontWeight: 600,

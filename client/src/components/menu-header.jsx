@@ -51,19 +51,19 @@ function MenuHeader(props) {
     >
       <MenuItem onClick={() => navigate(`profile`)}>
         <ListItemIcon>
-          <i style={{ fontSize: '20px' }} class="bx bx-user"></i>
+          <i style={{ fontSize: '20px' }} className="bx bx-user"></i>
         </ListItemIcon>
         Profile
       </MenuItem>
       <MenuItem onClick={() => navigate('posts/create')}>
         <ListItemIcon>
-          <i style={{ fontSize: '20px' }} class="bx bx-pencil"></i>
+          <i style={{ fontSize: '20px' }} className="bx bx-pencil"></i>
         </ListItemIcon>
         Create Post
       </MenuItem>
       <MenuItem onClick={handleLogout}>
         <ListItemIcon>
-          <i style={{ fontSize: '20px' }} class="bx bx-log-out"></i>
+          <i style={{ fontSize: '20px' }} className="bx bx-log-out"></i>
         </ListItemIcon>
         Logout
       </MenuItem>

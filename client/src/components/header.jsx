@@ -64,7 +64,7 @@ function Header() {
           </Link>
           <Box>
             {loadingLogout ? (
-              <i style={{ color: '#f9f9f9' }} class="bx bx-loader bx-spin bx-sm"></i>
+              <i style={{ color: '#f9f9f9' }} className="bx bx-loader bx-spin bx-sm"></i>
             ) : (
               <>
                 {!isAuth && (

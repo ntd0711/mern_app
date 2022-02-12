@@ -18,7 +18,7 @@ function LikePost({ likes, id, onLike }) {
           transition: 'color 0.2s ease',
         }}
       >
-        <i class="bx bxs-up-arrow"></i>
+        <i className="bx bxs-up-arrow"></i>
       </IconButton>
       <Typography variant="body2" mt={0.3}>
         {likes.length || ''}

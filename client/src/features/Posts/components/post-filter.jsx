@@ -37,117 +37,139 @@ function PostFilters({ onTagChange, onSearchChange, filters }) {
   };
 
   return (
-    <Stack position="relative" direction="row" alignItems="center" justifyContent="space-between">
-      <Box
-        display={showSearch ? 'block' : 'none'}
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          position: 'absolute',
-          zIndex: '25',
-          bgcolor: 'common.dark',
-          width: '100%',
-        }}
-      >
-        <TextField
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          inputRef={(inputRef) => inputRef && inputRef.focus()}
-          autoFocus
-          placeholder="Search"
-          InputProps={{
-            endAdornment: (
-              <>
-                {search && (
-                  <InputAdornment sx={{ mr: '10%' }} position="end">
-                    <IconButton
-                      onClick={() => setSearch('')}
-                      sx={{ color: 'common.grey_white', fontSize: '1rem' }}
-                    >
-                      <i class="bx bx-x"></i>
-                    </IconButton>
-                  </InputAdornment>
-                )}
-              </>
-            ),
-          }}
-          sx={{
-            width: '100%',
-            '& .MuiOutlinedInput-root': {
-              color: '#eee',
-              '& input': {
-                borderColor: 'transparent',
-                display: 'block',
-                height: '44px',
+    <>
+      {Boolean(Object.keys(postTags).length) && (
+        <Stack
+          position="relative"
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
+              position: 'absolute',
+              zIndex: `${showSearch ? '1' : '-1'}`,
+              bgcolor: 'common.dark',
+              width: '100%',
+              pl: `${showSearch ? '0' : '2rem'}`,
+              transition: 'padding 0.1s linear',
+            }}
+          >
+            <TextField
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              inputRef={(inputRef) => inputRef && inputRef.focus()}
+              autoFocus
+              placeholder="Search"
+              InputProps={{
+                endAdornment: (
+                  <>
+                    {search && (
+                      <InputAdornment sx={{ mr: '10%' }} position="end">
+                        <IconButton
+                          onClick={() => setSearch('')}
+                          sx={{ color: 'common.grey_white', fontSize: '1rem' }}
+                        >
+                          <i class="bx bx-x"></i>
+                        </IconButton>
+                      </InputAdornment>
+                    )}
+                  </>
+                ),
+              }}
+              sx={{
                 width: '100%',
-                bgcolor: 'common.dark',
-                borderRadius: '3px',
-                padding: '0 10px',
-                fontSize: '16px',
-                '$::placeholder': {
-                  color: ' #e5e5e5',
+                '& .MuiOutlinedInput-root': {
+                  color: '#eee',
+                  '& input': {
+                    borderColor: 'transparent',
+                    display: 'block',
+                    height: '44px',
+                    width: '100%',
+                    bgcolor: 'common.dark',
+                    borderRadius: '3px',
+                    padding: '0 10px',
+                    fontSize: '16px',
+                    '$::placeholder': {
+                      color: ' #e5e5e5',
+                    },
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'transparent',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'transparent',
+                  },
+                  '& fieldset': {
+                    borderColor: 'transparent',
+                  },
                 },
+              }}
+            />
+          </Box>
+
+          <Stack
+            columnGap={1}
+            rowGap={1}
+            direction="row"
+            flexWrap="wrap"
+            sx={{
+              bgcolor: 'common.dark',
+              opacity: `${showSearch ? '0' : '1'}`,
+              visibility: `${showSearch ? 'hidden' : 'visible'}`,
+              transition: 'all 0.1s linear',
+            }}
+          >
+            {Object.keys(postTags).map((label) => (
+              <TagElement
+                key={label}
+                tag={{ label: label, quantity: postTags[label] }}
+                onClickTag={handleOnclickTag}
+                active={filters.tag === label}
+              />
+            ))}
+          </Stack>
+
+          <IconButton
+            sx={{
+              bgcolor: 'common.blue',
+              position: 'absolute',
+              right: '0',
+              zIndex: '26',
+              fontSize: '1.1rem',
+              color: 'common.dark',
+              '&:hover': {
+                bgcolor: 'common.blue',
               },
-              '&:hover fieldset': {
-                borderColor: 'transparent',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: 'transparent',
-              },
-              '& fieldset': {
-                borderColor: 'transparent',
-              },
-            },
-          }}
-        />
-      </Box>
-      <Stack columnGap={1} rowGap={1} direction="row" flexWrap="wrap">
-        {Object.keys(postTags).map((label) => (
-          <TagElement
-            key={label}
-            tag={{ label: label, quantity: postTags[label] }}
-            onClickTag={handleOnclickTag}
-            active={filters.tag === label}
-          />
-        ))}
-      </Stack>
-      <IconButton
-        sx={{
-          bgcolor: 'common.blue',
-          position: 'absolute',
-          right: '0',
-          zIndex: '26',
-          fontSize: '1.1rem',
-          color: 'common.dark',
-          // color: '#080710',
-          '&:hover': {
-            bgcolor: 'common.blue',
-          },
-        }}
-        onClick={handleShowSearch}
-      >
-        <i
-          style={{
-            width: `${showSearch ? '19px' : '0px'}`,
-            overflow: 'hidden',
-            transition: '0.3s ease-in-out',
-            opacity: `${showSearch ? '1' : '0'}`,
-            visibility: `${showSearch ? 'visible' : 'hidden'}`,
-          }}
-          className="bx bx-x"
-        ></i>
-        <i
-          style={{
-            width: `${!showSearch ? '19px' : '0px'}`,
-            overflow: 'hidden',
-            transition: '0.3s ease-in-out',
-            opacity: `${!showSearch ? '1' : '0'}`,
-            visibility: `${!showSearch ? 'visible' : 'hidden'}`,
-          }}
-          className="bx bx-search-alt-2"
-        ></i>
-      </IconButton>
-    </Stack>
+            }}
+            onClick={handleShowSearch}
+          >
+            <i
+              style={{
+                width: `${showSearch ? '19px' : '0px'}`,
+                overflow: 'hidden',
+                transition: '0.3s ease-in-out',
+                opacity: `${showSearch ? '1' : '0'}`,
+                visibility: `${showSearch ? 'visible' : 'hidden'}`,
+              }}
+              className="bx bx-x"
+            ></i>
+            <i
+              style={{
+                width: `${!showSearch ? '19px' : '0px'}`,
+                overflow: 'hidden',
+                transition: '0.3s ease-in-out',
+                opacity: `${!showSearch ? '1' : '0'}`,
+                visibility: `${!showSearch ? 'visible' : 'hidden'}`,
+              }}
+              className="bx bx-search-alt-2"
+            ></i>
+          </IconButton>
+        </Stack>
+      )}
+    </>
   );
 }
 

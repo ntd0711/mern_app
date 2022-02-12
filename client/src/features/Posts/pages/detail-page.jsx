@@ -1,7 +1,7 @@
 import { Container, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import useAuth from 'hooks/use-auth';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import PostComments from '../components/post-comments';
@@ -17,6 +17,7 @@ function DetailPage() {
   const { id } = useParams();
   const { postDetail, loading } = useSelector((state) => state.posts);
   const { profile } = useSelector((state) => state.user);
+  const [loadingCmt, setLoadingCmt] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -30,7 +31,11 @@ function DetailPage() {
 
   const handleCommentPost = async (data) => {
     if (!isAuth) navigate('/signin');
+    if (loadingCmt) return;
+
     try {
+      setLoadingCmt(true);
+
       const value = data.comment.trim();
       const userId = profile._id;
       const postId = postDetail._id;
@@ -38,7 +43,10 @@ function DetailPage() {
       if (!userId || value.length <= 0 || !postId) return;
       await dispatch(commentPost({ userId, postId, text: value }));
     } catch (error) {
+      setLoadingCmt(false);
       console.log(error);
+    } finally {
+      setLoadingCmt(false);
     }
   };
 
@@ -51,6 +59,7 @@ function DetailPage() {
           <Stack spacing={4}>
             <PostDetail post={postDetail} authorId={postDetail?.author?._id} profile={profile} />
             <PostComments
+              loadingCmt={loadingCmt}
               comments={postDetail?.comments}
               onSubmit={handleCommentPost}
               authorId={postDetail.author?._id}

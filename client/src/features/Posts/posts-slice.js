@@ -136,11 +136,9 @@ export const postsSlice = createSlice({
       .addCase(commentPost.pending, (state, action) => {})
       .addCase(commentPost.fulfilled, (state, action) => {
         state.postDetail.comments = action.payload;
-        state.loading = false;
       })
       .addCase(commentPost.rejected, (state, action) => {
         if (action.error) notify.error(action.payload.message);
-        state.loading = false;
       });
   },
 });

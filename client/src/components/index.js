@@ -6,3 +6,4 @@ export { default as InputFile } from './input-file';
 export { default as AvatarCustom } from './avatar';
 export { default as NotFound } from './not-found';
 export { default as ScrollTop } from './scroll-top';
+export { default as ButtonCustom } from './button-custom';

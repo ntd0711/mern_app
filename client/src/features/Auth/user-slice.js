@@ -31,21 +31,15 @@ export const userSlice = createSlice({
         state.loading = false;
       })
 
-      .addCase(logout.pending, (state, action) => {
-        state.loading = true;
-      })
+      .addCase(logout.pending, (state, action) => {})
       .addCase(logout.fulfilled, (state, action) => {
         state.profile = null;
         state.token = null;
         localStorage.removeItem('user');
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
-
-        state.loading = false;
       })
-      .addCase(logout.rejected, (state, action) => {
-        state.loading = false;
-      })
+      .addCase(logout.rejected, (state, action) => {})
 
       .addCase(register.pending, (state, action) => {
         state.loading = true;

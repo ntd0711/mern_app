@@ -39,7 +39,7 @@ function GoToTopBtn() {
         }}
         onClick={scrollToTop}
       >
-        <i class="bx bx-chevron-up"></i>
+        <i className="bx bx-chevron-up"></i>
       </IconButton>
     </>
   );

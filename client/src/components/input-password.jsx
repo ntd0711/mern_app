@@ -79,7 +79,11 @@ const InputPassword = (props) => {
                         edge="end"
                         sx={{ color: `${invalid ? 'error.light' : '#e5e5e5'}` }}
                       >
-                        {isShowPassword ? <i class="bx bx-show"></i> : <i class="bx bx-hide"></i>}
+                        {isShowPassword ? (
+                          <i className="bx bx-show"></i>
+                        ) : (
+                          <i className="bx bx-hide"></i>
+                        )}
                       </IconButton>
                     </InputAdornment>
                   }

@@ -13,7 +13,7 @@ function AvatarCustom({ url, size }) {
       }}
       src={url}
     >
-      {!url && <i style={{ marginTop: `${size * 0.4}rem` }} class="bx bxs-user"></i>}
+      {!url && <i style={{ marginTop: `${size * 0.4}rem` }} className="bx bxs-user"></i>}
     </Avatar>
   );
 }

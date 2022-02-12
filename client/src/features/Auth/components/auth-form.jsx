@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Grid, Typography } from '@mui/material';
-import { InputField, InputPassword } from 'components';
+import { Box, Grid, Typography } from '@mui/material';
+import { ButtonCustom, InputField, InputPassword } from 'components';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -108,42 +108,17 @@ function AuthForm({ isSignUp, switchMode, onSubmit, loading, error, clearErrorFr
             )}
           </>
         )}
-        <Button
-          type="submit"
-          sx={{
-            '&:hover': {
-              backgroundColor: '#eee',
-            },
-            marginTop: '30px',
-            width: '100%',
-            backgroundColor: '#eee',
-            color: '#080710',
-            padding: '15px 0',
-            fontSize: '18px',
-            fontWeight: 600,
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
-          variant="contained"
-          fullWidth
-        >
-          <Box
-            component="span"
-            sx={{
-              color: '#080710',
-              width: `${loading ? '24px' : '0px'}`,
-              overflow: 'hidden',
-              transition: '0.3s ease-in-out',
-              opacity: `${loading ? '1' : '0'}`,
-              visibility: `${loading ? 'visible' : 'hidden'}`,
-              display: 'flex',
-              mr: '0.4rem',
-            }}
+        <Box mt="30px">
+          <ButtonCustom
+            fullWidth
+            btnSize="large"
+            loading={loading}
+            iconSize="1.6rem"
+            spacing="0.4rem"
           >
-            <i class="bx bx-loader bx-spin bx-sm"></i>
-          </Box>
-          {isSignUp ? 'sign up' : 'login'}
-        </Button>
+            {isSignUp ? 'sign up' : 'login'}
+          </ButtonCustom>
+        </Box>
         <Box mt={1}>
           <SwitchMode isSignUp={isSignUp} onSwitchMode={handleSwitchMode} />
         </Box>
