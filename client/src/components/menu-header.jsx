@@ -1,6 +1,5 @@
 import { ListItemIcon, Menu, MenuItem } from '@mui/material';
 import React from 'react';
-import { IoCreateSharp, IoLogOut, IoPersonSharp } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 
 function MenuHeader(props) {
@@ -52,19 +51,19 @@ function MenuHeader(props) {
     >
       <MenuItem onClick={() => navigate(`profile`)}>
         <ListItemIcon>
-          <IoPersonSharp fontSize="18" />
+          <i style={{ fontSize: '20px' }} class="bx bx-user"></i>
         </ListItemIcon>
         Profile
       </MenuItem>
       <MenuItem onClick={() => navigate('posts/create')}>
         <ListItemIcon>
-          <IoCreateSharp fontSize="18" />
+          <i style={{ fontSize: '20px' }} class="bx bx-pencil"></i>
         </ListItemIcon>
         Create Post
       </MenuItem>
       <MenuItem onClick={handleLogout}>
         <ListItemIcon>
-          <IoLogOut fontSize="18" />
+          <i style={{ fontSize: '20px' }} class="bx bx-log-out"></i>
         </ListItemIcon>
         Logout
       </MenuItem>

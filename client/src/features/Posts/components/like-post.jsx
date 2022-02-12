@@ -1,6 +1,5 @@
 import { IconButton, Stack, Typography } from '@mui/material';
 import React from 'react';
-import { IoTriangleOutline, IoTriangleSharp } from 'react-icons/io5';
 
 function LikePost({ likes, id, onLike }) {
   const isLiked = likes.findIndex((x) => x === String(id)) !== -1;
@@ -14,11 +13,12 @@ function LikePost({ likes, id, onLike }) {
         onClick={handleLikePost}
         size="small"
         sx={{
-          fontSize: '0.8rem',
-          color: 'common.dark_blue',
+          fontSize: '1rem',
+          color: `${isLiked ? 'common.dark_blue' : '#ffffff80'}`,
+          transition: 'color 0.2s ease',
         }}
       >
-        {isLiked ? <IoTriangleSharp /> : <IoTriangleOutline />}
+        <i class="bx bxs-up-arrow"></i>
       </IconButton>
       <Typography variant="body2" mt={0.3}>
         {likes.length || ''}

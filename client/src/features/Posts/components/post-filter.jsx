@@ -1,8 +1,6 @@
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
-import { BiSearchAlt2 } from 'react-icons/bi';
-import { FiX } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import TagElement from '../../../components/chip';
 import { fetchTagsPost } from '../posts-thunk';
@@ -66,7 +64,7 @@ function PostFilters({ onTagChange, onSearchChange, filters }) {
                       onClick={() => setSearch('')}
                       sx={{ color: 'common.grey_white', fontSize: '1rem' }}
                     >
-                      <FiX />
+                      <i class="bx bx-x"></i>
                     </IconButton>
                   </InputAdornment>
                 )}
@@ -127,7 +125,26 @@ function PostFilters({ onTagChange, onSearchChange, filters }) {
         }}
         onClick={handleShowSearch}
       >
-        {showSearch ? <FiX /> : <BiSearchAlt2 />}
+        <i
+          style={{
+            width: `${!showSearch ? '19px' : '0px'}`,
+            overflow: 'hidden',
+            transition: '0.3s ease-in-out',
+            opacity: `${!showSearch ? '1' : '0'}`,
+            visibility: `${!showSearch ? 'visible' : 'hidden'}`,
+          }}
+          className={`bx bx-x ${!showSearch ? 'active' : ''}`}
+        ></i>
+        <i
+          style={{
+            width: `${showSearch ? '19px' : '0px'}`,
+            overflow: 'hidden',
+            transition: '0.3s ease-in-out',
+            opacity: `${showSearch ? '1' : '0'}`,
+            visibility: `${showSearch ? 'visible' : 'hidden'}`,
+          }}
+          className={`bx bx-search-alt-2 ${showSearch ? 'active' : ''}`}
+        ></i>
       </IconButton>
     </Stack>
   );

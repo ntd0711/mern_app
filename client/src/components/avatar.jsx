@@ -1,6 +1,5 @@
 import { Avatar } from '@mui/material';
 import React from 'react';
-import { BsFillPersonFill } from 'react-icons/bs';
 
 function AvatarCustom({ url, size }) {
   return (
@@ -14,7 +13,7 @@ function AvatarCustom({ url, size }) {
       }}
       src={url}
     >
-      {!url && <BsFillPersonFill style={{ marginTop: `${size * 0.35}rem` }} />}
+      {!url && <i style={{ marginTop: `${size * 0.4}rem` }} class="bx bxs-user"></i>}
     </Avatar>
   );
 }

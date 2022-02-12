@@ -98,7 +98,7 @@ export const getPostById = async (req, res) => {
       .populate({
         path: 'comments',
         options: { sort: { createdAt: 'desc' } },
-        populate: { path: 'user' },
+        populate: { path: 'user', select: ['avatar', 'name'] },
       })
       .populate('author', ['name', 'avatar', 'createdAt']);
 

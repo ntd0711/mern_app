@@ -8,8 +8,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getLocalStorage } from 'utils/common';
 import MenuHeader from './menu-header';
 
-import { ReactComponent as IconLoading } from 'images/loading-logout.svg';
-
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -59,7 +57,7 @@ function Header() {
           </Link>
           <Box>
             {loading ? (
-              <IconLoading style={{ marginRight: '10px' }} />
+              <i style={{ color: '#f9f9f9' }} class="bx bx-loader bx-spin bx-sm"></i>
             ) : (
               <>
                 {!isAuth && (

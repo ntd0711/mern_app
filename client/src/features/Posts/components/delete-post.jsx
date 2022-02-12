@@ -1,7 +1,6 @@
 import { Box, IconButton } from '@mui/material';
 import ModalDelete from 'features/Posts/components/modal';
 import React from 'react';
-import { BsTrashFill } from 'react-icons/bs';
 
 function DeletePost({ authorId, myId, onDelete, pathname }) {
   const [open, setOpen] = React.useState(false);
@@ -26,10 +25,10 @@ function DeletePost({ authorId, myId, onDelete, pathname }) {
         {isDelete ? (
           <IconButton
             size="small"
-            sx={{ fontSize: '0.9rem', color: 'common.pink' }}
+            sx={{ fontSize: '1.1rem', color: 'common.pink' }}
             onClick={handleClick}
           >
-            <BsTrashFill title="delete post" />
+            <i class="bx bx-trash" title="delete post"></i>
           </IconButton>
         ) : (
           <></>

@@ -5,13 +5,10 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  TextField,
-  Typography,
 } from '@mui/material';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
-import PropTypes from 'prop-types';
-import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
 
 const InputPassword = (props) => {
   const { name, label, control, clearErrorFromServer } = props;
@@ -82,7 +79,7 @@ const InputPassword = (props) => {
                         edge="end"
                         sx={{ color: `${invalid ? 'error.light' : '#e5e5e5'}` }}
                       >
-                        {isShowPassword ? <MdOutlineVisibilityOff /> : <MdOutlineVisibility />}
+                        {isShowPassword ? <i class="bx bx-show"></i> : <i class="bx bx-hide"></i>}
                       </IconButton>
                     </InputAdornment>
                   }

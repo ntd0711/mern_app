@@ -1,6 +1,5 @@
 import { IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { IoIosArrowUp } from 'react-icons/io';
 
 function GoToTopBtn() {
   const [isVisible, setIsVisible] = useState(false);
@@ -30,7 +29,7 @@ function GoToTopBtn() {
     <>
       <IconButton
         sx={{
-          fontSize: '2.4rem',
+          fontSize: '3rem',
           position: 'fixed',
           right: '4rem',
           bottom: '-4rem',
@@ -40,7 +39,7 @@ function GoToTopBtn() {
         }}
         onClick={scrollToTop}
       >
-        <IoIosArrowUp />
+        <i class="bx bx-chevron-up"></i>
       </IconButton>
     </>
   );

@@ -4,7 +4,7 @@ import { AuthFeature, PostsFeature, ProfileFeature } from 'features';
 import EmptyLayout from 'layouts/empty-layout';
 import MainLayout from 'layouts/main-layout';
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
-import './App.css';
+import 'boxicons/css/boxicons.min.css';
 
 function App() {
   return (
