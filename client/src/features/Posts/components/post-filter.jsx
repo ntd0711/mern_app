@@ -53,6 +53,7 @@ function PostFilters({ onTagChange, onSearchChange, filters }) {
               position: 'absolute',
               bgcolor: 'common.dark',
               width: '100%',
+              ml: '-10px',
             }}
           >
             <TextField
