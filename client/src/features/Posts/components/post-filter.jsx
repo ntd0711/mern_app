@@ -49,12 +49,10 @@ function PostFilters({ onTagChange, onSearchChange, filters }) {
             component="form"
             onSubmit={handleSubmit}
             sx={{
+              display: `${showSearch ? 'block' : 'none'}`,
               position: 'absolute',
-              zIndex: `${showSearch ? '1' : '-1'}`,
               bgcolor: 'common.dark',
               width: '100%',
-              pl: `${showSearch ? '0' : '2rem'}`,
-              transition: 'padding 0.1s linear',
             }}
           >
             <TextField
@@ -116,10 +114,9 @@ function PostFilters({ onTagChange, onSearchChange, filters }) {
             direction="row"
             flexWrap="wrap"
             sx={{
-              bgcolor: 'common.dark',
+              transition: '.2s linear',
               opacity: `${showSearch ? '0' : '1'}`,
               visibility: `${showSearch ? 'hidden' : 'visible'}`,
-              transition: 'all 0.1s linear',
             }}
           >
             {Object.keys(postTags).map((label) => (
