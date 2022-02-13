@@ -1,16 +1,18 @@
 import { Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import { AvatarCustom } from 'components';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import { AvatarCustom } from 'components';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import EditPost from './edit-post';
 
 dayjs.extend(localizedFormat);
 
 function PostDetail({ post, authorId, profile }) {
-  const { author, title, content, tags, createdAt } = post;
+  const { _id: postId, author, title, content, tags, createdAt } = post;
 
+  const location = useLocation();
   const createMarkup = () => {
     return { __html: content };
   };
@@ -27,16 +29,24 @@ function PostDetail({ post, authorId, profile }) {
       >
         {title}
       </Typography>
-      <Stack direction="row" spacing={1}>
-        <AvatarCustom url={author?.avatar} size={2.4} />
-        <Box>
-          <Link to={authorId === profile?._id ? '/profile' : `/profile/${authorId}`}>
-            <Typography variant="subtitle2" sx={{ cursor: 'pointer' }}>
-              {author?.name}
-            </Typography>
-          </Link>
-          <Typography fontSize="12px">{dayjs(createdAt).format('ll')}</Typography>
-        </Box>
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+        <Stack direction="row" spacing={1}>
+          <AvatarCustom url={author?.avatar} size={2.4} />
+          <Box>
+            <Link to={authorId === profile?._id ? '/profile' : `/profile/${authorId}`}>
+              <Typography variant="subtitle2" sx={{ cursor: 'pointer' }}>
+                {author?.name}
+              </Typography>
+            </Link>
+            <Typography fontSize="12px">{dayjs(createdAt).format('ll')}</Typography>
+          </Box>
+        </Stack>
+        <EditPost
+          authorId={author?._id}
+          myId={profile?._id}
+          postId={postId}
+          pathname={location.pathname}
+        />
       </Stack>
       <Box
         sx={{

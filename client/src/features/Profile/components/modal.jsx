@@ -1,9 +1,6 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import { InputLabel, Modal, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
 
 function ModalProfile({ open, onClose, onSetFile, onUnsetAvt }) {
   const style = {
@@ -17,17 +14,6 @@ function ModalProfile({ open, onClose, onSetFile, onUnsetAvt }) {
     boxShadow: 24,
     p: 4,
   };
-
-  const schema = yup.object().shape({
-    imgFile: yup.mixed().required(),
-  });
-
-  const { control } = useForm({
-    defaultValues: {
-      imgFile: undefined,
-    },
-    resolver: yupResolver(schema),
-  });
 
   const handleClose = () => {
     if (onClose) onClose();

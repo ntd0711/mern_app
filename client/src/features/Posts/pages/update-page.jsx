@@ -1,39 +1,38 @@
 import { Box, Container } from '@mui/material';
-import { postsApi } from 'api/posts-api';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import PostForm from '../components/post-form';
 import SkeletonPostDetail from '../components/skeleton-post-detail';
-import { updatePost } from '../posts-thunk';
+import { fetchPostById, updatePost } from '../posts-thunk';
 
 function UpdatePage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { id } = useParams();
   const { profile } = useSelector((state) => state.user);
-  const [postNeedUpdate, setPostNeedUpdate] = useState({});
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const { postDetail, loading } = useSelector((state) => state.posts);
+  const [loadingFetch, setLoadingFetch] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
-        setLoading(true);
+        setLoadingFetch(true);
 
-        const response = await postsApi.getPostById(id);
-        setPostNeedUpdate(response);
+        await dispatch(fetchPostById(id)).unwrap();
       } catch (error) {
-        setLoading(false);
         console.log(error);
       } finally {
-        setLoading(false);
+        setLoadingFetch(false);
       }
     })();
-  }, [id]);
+  }, [id, dispatch]);
 
   const handleOnSubmit = async (data) => {
-    if (postNeedUpdate.author._id !== profile._id) return;
-    await dispatch(updatePost({ id, data }));
+    if (loading) return;
+    if (postDetail.author._id !== profile._id) return;
+    await dispatch(updatePost({ id, data })).unwrap();
     setTimeout(() => {
       navigate(`/posts/${id}`);
     }, 2000);
@@ -42,8 +41,10 @@ function UpdatePage() {
   return (
     <Box height="100%">
       <Container>
-        {loading && <SkeletonPostDetail />}
-        {!loading && <PostForm onSubmit={handleOnSubmit} post={postNeedUpdate} />}
+        {loadingFetch && <SkeletonPostDetail />}
+        {!loadingFetch && (
+          <PostForm onSubmit={handleOnSubmit} post={postDetail} loading={loading} />
+        )}
       </Container>
     </Box>
   );

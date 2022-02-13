@@ -5,7 +5,7 @@ import React from 'react';
 function ButtonCustom({
   children,
   loading,
-  btnSize,
+  btnSize = 'medium',
   iconSize,
   parentIconWidth = '26px',
   spacing = '0',
@@ -37,7 +37,7 @@ function ButtonCustom({
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          overflow: 'hidden',
+          overFlow: 'hidden',
           mr: spacing,
         }}
       >

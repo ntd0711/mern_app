@@ -21,7 +21,7 @@ function ProfileOtherUser() {
         const userPromise = userApi.getUserById(id);
         const postsPromise = dispatch(fetchPostByUserId(id));
 
-        const [user, posts] = await Promise.all([userPromise, postsPromise]);
+        const [user] = await Promise.all([userPromise, postsPromise]);
 
         setUser(user);
       } catch (error) {

@@ -49,11 +49,17 @@ function MenuHeader(props) {
       transformOrigin={{ horizontal: 'left', vertical: 'top' }}
       anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
     >
-      <MenuItem onClick={() => navigate(`profile`)}>
+      <MenuItem onClick={() => navigate('/profile')}>
         <ListItemIcon>
           <i style={{ fontSize: '20px' }} className="bx bx-user"></i>
         </ListItemIcon>
         Profile
+      </MenuItem>
+      <MenuItem onClick={() => navigate('/profile/setting')}>
+        <ListItemIcon>
+          <i style={{ fontSize: '20px' }} className="bx bx-wrench"></i>
+        </ListItemIcon>
+        Setting
       </MenuItem>
       <MenuItem onClick={() => navigate('posts/create')}>
         <ListItemIcon>

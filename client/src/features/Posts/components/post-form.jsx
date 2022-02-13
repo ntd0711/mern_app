@@ -1,12 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, ButtonGroup, Stack } from '@mui/material';
-import { InputField } from 'components';
+import { Box, Button, Stack } from '@mui/material';
+import { ButtonCustom, InputField } from 'components';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import EditorPost from './post-editor';
 
-function PostForm({ onSubmit, post }) {
+function PostForm({ onSubmit, post, loading }) {
   const schema = yup.object().shape({
     title: yup
       .string()
@@ -77,9 +77,9 @@ function PostForm({ onSubmit, post }) {
         <Button onClick={() => reset()} variant="contained" color="secondary">
           Clear
         </Button>
-        <Button type="submit" variant="contained" color="primary">
+        <ButtonCustom loading={loading} parentIconWidth="16px" iconSize="1.1rem" spacing="0.2rem">
           {post ? 'Update' : 'Create'}
-        </Button>
+        </ButtonCustom>
       </Stack>
     </Box>
   );
