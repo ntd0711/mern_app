@@ -60,9 +60,9 @@ export const getPosts = async (req, res) => {
         $or: [{ title }, { tags: { $all: tag } }],
       })
         .populate('author', 'name')
-        .sort({ updatedAt: 'desc' });
+        .sort({ createdAt: 'desc' });
     } else {
-      postList = await PostModel.find({}).populate('author', 'name').sort({ updatedAt: 'desc' });
+      postList = await PostModel.find({}).populate('author', 'name').sort({ createdAt: 'desc' });
     }
 
     res.status(200).json(postList);
@@ -114,7 +114,7 @@ export const getPostsByUserId = async (req, res) => {
     const { id } = req.params;
     const postList = await PostModel.find({ author: String(id) })
       .populate('author', 'name')
-      .sort({ updatedAt: 'desc' });
+      .sort({ createdAt: 'desc' });
     res.status(200).json(postList);
   } catch (error) {
     res.status(404).json({ message: error.message });

@@ -40,6 +40,7 @@ function PostDetail({ post, authorId, profile }) {
       </Stack>
       <Box
         sx={{
+          lineHeight: '170%',
           '& figure': {
             position: 'relative',
           },
