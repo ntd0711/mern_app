@@ -25,7 +25,7 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Nunito Sans, sans-serif',
+    fontFamily: 'Muli, sans-serif',
     // body1: {
     //   fontSize: '0.925rem',
     // },
@@ -48,7 +48,7 @@ export const theme = createTheme({
           fontSize: '26px',
         },
         subtitle2: {
-          fontWeight: 600,
+          fontWeight: 500,
         },
       },
     },

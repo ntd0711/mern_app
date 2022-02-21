@@ -1,9 +1,10 @@
 import { Box, IconButton } from '@mui/material';
 import ModalDelete from 'features/Posts/components/modal';
-import React from 'react';
+import React, { useState } from 'react';
 
 function DeletePost({ authorId, myId, onDelete, pathname }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const isDelete = authorId === myId && pathname !== '/posts';
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -12,8 +13,6 @@ function DeletePost({ authorId, myId, onDelete, pathname }) {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const isDelete = authorId === myId && pathname === '/profile';
 
   const handleClick = () => {
     handleClickOpen();

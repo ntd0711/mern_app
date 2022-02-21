@@ -5,7 +5,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import Comment from './comment';
 
-function PostComments({ comments = [], onSubmit, authorId, profile, loadingCmt }) {
+function PostComments({ comments = [], onSubmit, authorId, commentRef, loadingCmt }) {
   const { handleSubmit, control, reset } = useForm({
     defaultValues: {
       comment: '',
@@ -20,7 +20,10 @@ function PostComments({ comments = [], onSubmit, authorId, profile, loadingCmt }
   };
 
   return (
-    <Box sx={{ border: '2px solid rgba(255,255,255,0.1)', padding: '30px', mb: '1.6rem' }}>
+    <Box
+      ref={commentRef}
+      sx={{ border: '2px solid rgba(255,255,255,0.1)', padding: '30px', mb: '1.6rem' }}
+    >
       <Stack direction="row" alignItems="center" spacing={1} mb={2}>
         <Box
           component="form"
@@ -47,7 +50,7 @@ function PostComments({ comments = [], onSubmit, authorId, profile, loadingCmt }
       </Stack>
       <Stack spacing={3}>
         {comments.map((cmt) => (
-          <Comment key={cmt._id} cmt={cmt} authorId={authorId} profile={profile} />
+          <Comment key={cmt._id} cmt={cmt} authorId={authorId} />
         ))}
       </Stack>
     </Box>

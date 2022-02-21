@@ -1,4 +1,5 @@
 import { Box, Container } from '@mui/material';
+import { generateKeyPost } from 'constants/key-constants';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -12,8 +13,10 @@ function UpdatePage() {
 
   const { id } = useParams();
   const { profile } = useSelector((state) => state.user);
-  const { postDetail, loading } = useSelector((state) => state.posts);
+  const { postDetailList, loading } = useSelector((state) => state.posts);
   const [loadingFetch, setLoadingFetch] = useState(false);
+
+  const postDetail = postDetailList[generateKeyPost.detail(id)];
 
   useEffect(() => {
     (async () => {

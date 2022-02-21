@@ -1,20 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { generateKeyPost } from 'constants/key-constants';
+import {
+  getPostsCreatedByUser,
+  getPostsSavedByUser,
+  savePost,
+  votePost,
+} from 'features/Auth/user-thunk';
 import { notify } from 'utils/toastify';
 import {
   commentPost,
   createPost,
   deletePost,
   fetchPostById,
-  fetchPostByUserId,
   fetchPosts,
   fetchTagsPost,
-  likePost,
   updatePost,
 } from './posts-thunk';
 
 const initialState = {
-  postList: [],
-  postDetail: {},
+  posts: {},
+  postDetailList: {},
   postTags: [],
   loading: false,
   loadingAction: false,
@@ -26,10 +31,12 @@ export const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchPosts.pending, (state, action) => {
-        state.loading = true;
+        const category = generateKeyPost.list(action.meta.arg);
+        state.posts[category] ? (state.loading = false) : (state.loading = true);
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
-        state.postList = action.payload;
+        const category = generateKeyPost.list(action.meta.arg);
+        state.posts[category] = action.payload;
         state.loading = false;
       })
       .addCase(fetchPosts.rejected, (state, action) => {
@@ -37,32 +44,21 @@ export const postsSlice = createSlice({
         state.loading = false;
       })
 
-      .addCase(fetchPostByUserId.pending, (state, action) => {
-        state.loading = true;
-      })
-      .addCase(fetchPostByUserId.fulfilled, (state, action) => {
-        state.postList = action.payload;
-        state.loading = false;
-      })
-      .addCase(fetchPostByUserId.rejected, (state, action) => {
-        if (action.error) notify.error(action.payload.message);
-        state.loading = false;
-      })
-
       .addCase(fetchPostById.pending, (state, action) => {
-        state.loading = true;
+        const category = generateKeyPost.detail(action.meta.arg);
+        state.postDetailList[category] ? (state.loading = false) : (state.loading = true);
       })
       .addCase(fetchPostById.fulfilled, (state, action) => {
-        state.postDetail = action.payload;
+        const category = generateKeyPost.detail(action.meta.arg);
+        state.postDetailList[category] = action.payload;
         state.loading = false;
       })
       .addCase(fetchPostById.rejected, (state, action) => {
-        if (action.error) notify.error(action.payload.message);
         state.loading = false;
       })
 
       .addCase(fetchTagsPost.pending, (state, action) => {
-        state.loading = true;
+        // state.loading = true;
       })
       .addCase(fetchTagsPost.fulfilled, (state, action) => {
         state.postTags = action.payload;
@@ -74,45 +70,69 @@ export const postsSlice = createSlice({
       })
 
       .addCase(createPost.pending, (state, action) => {
-        state.loading = true;
+        state.loadingAction = true;
       })
       .addCase(createPost.fulfilled, (state, action) => {
-        state.postList.push(action.payload.newPost);
-        state.postTags = action.payload.allTagsPost;
+        const { authorId, newPost, allTagsPost } = action.payload;
+        const category = generateKeyPost.createdByUser(authorId);
+
+        if (!state.posts[category]) state.posts[category] = [];
+
+        state.posts[category].push(newPost);
+        state.postTags = allTagsPost;
         notify.success('Create post successfully!');
 
-        state.loading = false;
+        state.loadingAction = false;
       })
       .addCase(createPost.rejected, (state, action) => {
         if (action.error) notify.error(action.payload.message);
-        state.loading = false;
+        state.loadingAction = false;
       })
 
       .addCase(deletePost.pending, (state, action) => {
-        state.loadingAction = true;
+        state.loading = true;
       })
       .addCase(deletePost.fulfilled, (state, action) => {
-        const postDeletedId = action.payload;
-        state.postList = state.postList.filter((post) => post._id !== postDeletedId);
+        const { authorId, postId } = action.payload;
+        const category = generateKeyPost.createdByUser(authorId);
 
-        state.loadingAction = false;
+        state.posts[category] = state.posts[category].filter((post) => post._id !== postId);
+
+        state.loading = false;
       })
       .addCase(deletePost.rejected, (state, action) => {
         if (action.error) notify.error(action.payload.message);
-        state.loadingAction = false;
+        state.loading = false;
       })
 
-      .addCase(likePost.pending, (state, action) => {
+      .addCase(votePost.pending, (state, action) => {
         state.loadingAction = true;
       })
-      .addCase(likePost.fulfilled, (state, action) => {
-        const { _id } = action.payload;
-        const index = state.postList.findIndex((post) => post._id === _id);
-        state.postList.splice(index, 1, action.payload);
+      .addCase(votePost.fulfilled, (state, action) => {
+        const { postId } = action.meta.arg;
+        const point = action.payload?.point;
+        const statusVote = action.payload?.statusVote;
+        const { posts, postDetailList } = state;
+
+        for (const key in posts) {
+          const post = posts[key].find((post) => post._id === postId);
+          if (!post) continue;
+          post.point = point;
+          post.statusVote = statusVote;
+        }
+
+        for (const key in postDetailList) {
+          if (generateKeyPost.detail(postId) === key) {
+            const post = postDetailList[key];
+            if (!post) continue;
+            post.point = point;
+            post.statusVote = statusVote;
+          }
+        }
 
         state.loadingAction = false;
       })
-      .addCase(likePost.rejected, (state, action) => {
+      .addCase(votePost.rejected, (state, action) => {
         if (action.error) notify.error(action.payload.message);
         state.loadingAction = false;
       })
@@ -121,11 +141,7 @@ export const postsSlice = createSlice({
         state.loading = true;
       })
       .addCase(updatePost.fulfilled, (state, action) => {
-        const { _id } = action.payload;
-        const index = state.postList.findIndex((post) => post._id === _id);
-        state.postList.splice(index, 1, action.payload);
         notify.success('Update post successfully!');
-
         state.loading = false;
       })
       .addCase(updatePost.rejected, (state, action) => {
@@ -135,10 +151,51 @@ export const postsSlice = createSlice({
 
       .addCase(commentPost.pending, (state, action) => {})
       .addCase(commentPost.fulfilled, (state, action) => {
-        state.postDetail.comments = action.payload;
+        const { postId } = action.meta.arg;
+        const category = generateKeyPost.detail(postId);
+
+        state.postDetailList[category].comments = action.payload;
       })
-      .addCase(commentPost.rejected, (state, action) => {
-        if (action.error) notify.error(action.payload.message);
+      .addCase(commentPost.rejected, (state, action) => {})
+
+      .addCase(savePost.pending, (state, action) => {})
+      .addCase(savePost.fulfilled, (state, action) => {
+        const { postId } = action.meta.arg;
+        const { savedByUser, usersSaved } = action.payload;
+
+        const category = generateKeyPost.detail(postId);
+        state.postDetailList[category].savedByUser = savedByUser;
+        state.postDetailList[category].usersSaved = usersSaved;
+      })
+      .addCase(savePost.rejected, (state, action) => {})
+
+      .addCase(getPostsCreatedByUser.pending, (state, action) => {
+        const category = generateKeyPost.createdByUser(action.meta.arg);
+        state.posts[category] ? (state.loading = false) : (state.loading = true);
+      })
+      .addCase(getPostsCreatedByUser.fulfilled, (state, action) => {
+        const userId = action.meta.arg;
+        const { createdPosts } = action.payload;
+
+        const category = generateKeyPost.createdByUser(userId);
+        state.posts[category] = createdPosts;
+
+        state.loading = false;
+      })
+      .addCase(getPostsCreatedByUser.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(getPostsSavedByUser.pending, (state, action) => {})
+      .addCase(getPostsSavedByUser.fulfilled, (state, action) => {
+        const { userId, savedPosts } = action.payload;
+        const category = generateKeyPost.savedByUser(userId);
+
+        state.posts[category] = savedPosts;
+        state.loading = false;
+      })
+      .addCase(getPostsSavedByUser.rejected, (state, action) => {
+        state.loading = false;
       });
   },
 });

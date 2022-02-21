@@ -7,3 +7,4 @@ export { default as AvatarCustom } from './avatar';
 export { default as NotFound } from './not-found';
 export { default as ScrollTop } from './scroll-top';
 export { default as ButtonCustom } from './button-custom';
+export { default as ActiveLink } from './active-link';

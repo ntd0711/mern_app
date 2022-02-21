@@ -9,6 +9,13 @@ const postSchema = new mongoose.Schema({
   description: { type: String, required: true },
 
   likes: [{ type: [String], default: [] }],
+  dislikes: [{ type: [String], default: [] }],
+  point: { type: Number, default: 0 },
+  statusVote: { type: String, default: 'notVote' },
+
+  usersSaved: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
+  savedByUser: { type: Boolean, default: false },
+
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'comments' }],
   tags: { type: [String], lowercase: true, required: true },
 

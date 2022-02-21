@@ -1,16 +1,16 @@
 import { IconButton, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-function LikePost({ likes, id, onLike }) {
-  const isLiked = likes.findIndex((x) => x === String(id)) !== -1;
+function LikePost({ point, statusVote, onVote }) {
+  const isLiked = statusVote === 'liked';
 
-  const handleLikePost = () => {
-    if (onLike) onLike();
+  const handleVote = () => {
+    if (onVote) onVote();
   };
   return (
     <Stack direction="row" alignItems="center">
       <IconButton
-        onClick={handleLikePost}
+        onClick={handleVote}
         size="small"
         sx={{
           fontSize: '1rem',
@@ -21,7 +21,7 @@ function LikePost({ likes, id, onLike }) {
         <i className="bx bxs-up-arrow"></i>
       </IconButton>
       <Typography variant="body2" mt={0.3}>
-        {likes.length || ''}
+        {point || ''}
       </Typography>
     </Stack>
   );

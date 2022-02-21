@@ -5,8 +5,8 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import createError from 'http-errors';
 
-import userRouter from './routers/user.js';
-import postRouter from './routers/post.js';
+import userRouter from './src/routers/user.router.js';
+import postRouter from './src/routers/post.router.js';
 
 const app = express();
 dotenv.config();
@@ -17,8 +17,8 @@ app.use(bodyParser.json({ limit: '30mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
 
-app.use('/user', userRouter);
-app.use('/post', postRouter);
+app.use('/api/user', userRouter);
+app.use('/api/post', postRouter);
 
 app.use((req, res, next) => {
   next(createError.NotFound('This route does not exist'));

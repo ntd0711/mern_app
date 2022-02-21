@@ -1,8 +1,9 @@
 import { IconButton } from '@mui/material';
+import useScroll from 'hooks/use-scroll';
 import React, { useEffect, useState } from 'react';
 
 function GoToTopBtn() {
-  const [isVisible, setIsVisible] = useState(false);
+  const isVisible = useScroll({ pageYOffset: 400 });
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -10,20 +11,6 @@ function GoToTopBtn() {
       behavior: 'smooth',
     });
   };
-
-  useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.pageYOffset > 400) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    window.addEventListener('scroll', toggleVisibility);
-
-    return () => window.removeEventListener('scroll', toggleVisibility);
-  }, []);
 
   return (
     <>

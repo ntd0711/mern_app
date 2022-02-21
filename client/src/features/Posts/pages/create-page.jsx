@@ -9,10 +9,10 @@ function CreatePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading } = useSelector((state) => state.posts);
+  const { loadingAction } = useSelector((state) => state.posts);
 
   const handleOnSubmit = async (data) => {
-    if (loading) return;
+    if (loadingAction) return;
     try {
       await dispatch(createPost(data));
       setTimeout(() => {
@@ -26,7 +26,7 @@ function CreatePage() {
   return (
     <Box height="100%">
       <Container>
-        <PostForm onSubmit={handleOnSubmit} loading={loading} />
+        <PostForm onSubmit={handleOnSubmit} loading={loadingAction} />
       </Container>
     </Box>
   );

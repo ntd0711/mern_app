@@ -31,12 +31,54 @@ export const unsetAvatar = createAsyncThunk(
 
 export const updateAvatar = createAsyncThunk(
   'user/update-avatar',
-  async (data, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      return await userApi.updateAvatar(data);
+      return await userApi.updateAvatar(payload);
     } catch (error) {
       console.log(error);
       return rejectWithValue(error);
     }
   }
 );
+
+export const getPostsCreatedByUser = createAsyncThunk(
+  'user/posts-created',
+  async (userId, { rejectWithValue }) => {
+    try {
+      return await userApi.getPostsCreatedByUser(userId);
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const getPostsSavedByUser = createAsyncThunk(
+  'user/posts-saved',
+  async (payload, { rejectWithValue }) => {
+    try {
+      return await userApi.getPostsSavedByUser();
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const votePost = createAsyncThunk('user/vote', async (payload, { rejectWithValue }) => {
+  try {
+    return await userApi.vote(payload);
+  } catch (error) {
+    console.log(error);
+    return rejectWithValue(error);
+  }
+});
+
+export const savePost = createAsyncThunk('user/save-post', async (payload, { rejectWithValue }) => {
+  try {
+    return await userApi.savePost(payload);
+  } catch (error) {
+    console.log(error);
+    return rejectWithValue(error);
+  }
+});

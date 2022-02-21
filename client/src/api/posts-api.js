@@ -9,10 +9,6 @@ export const postsApi = {
     return axiosClient.get(`/post/${id}`);
   },
 
-  getPostsByUserId(id) {
-    return axiosClient.get(`/post/user/${id}`);
-  },
-
   getTags() {
     return axiosClient.get('/post/tags');
   },
@@ -23,10 +19,6 @@ export const postsApi = {
 
   deletePost(id) {
     return axiosClient.delete(`/post/${id}/delete`);
-  },
-
-  likePost(id) {
-    return axiosClient.patch(`/post/${id}/like`);
   },
 
   commentPost(data) {

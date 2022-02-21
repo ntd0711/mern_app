@@ -1,26 +1,11 @@
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import TagElement from '../../../components/chip';
-import { fetchTagsPost } from '../posts-thunk';
 
-function PostFilters({ onTagChange, onSearchChange, filters }) {
-  const dispatch = useDispatch();
-  const { postTags } = useSelector((state) => state.posts);
-
+function PostFilters({ onTagChange, onSearchChange, filters, postTags }) {
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState('');
-
-  useEffect(() => {
-    (async () => {
-      try {
-        await dispatch(fetchTagsPost());
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [dispatch]);
 
   const handleOnclickTag = (tag) => {
     if (onTagChange) onTagChange({ tag });
@@ -71,7 +56,7 @@ function PostFilters({ onTagChange, onSearchChange, filters }) {
                           onClick={() => setSearch('')}
                           sx={{ color: 'common.grey_white', fontSize: '1rem' }}
                         >
-                          <i class="bx bx-x"></i>
+                          <i className="bx bx-x"></i>
                         </IconButton>
                       </InputAdornment>
                     )}

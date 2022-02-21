@@ -33,7 +33,7 @@ function PostDetail({ post, authorId, profile }) {
         <Stack direction="row" spacing={1}>
           <AvatarCustom url={author?.avatar} size={2.4} />
           <Box>
-            <Link to={authorId === profile?._id ? '/profile' : `/profile/${authorId}`}>
+            <Link to={`/profile/${authorId}`}>
               <Typography variant="subtitle2" sx={{ cursor: 'pointer' }}>
                 {author?.name}
               </Typography>
@@ -50,6 +50,7 @@ function PostDetail({ post, authorId, profile }) {
       </Stack>
       <Box
         sx={{
+          fontSize: '18px',
           lineHeight: '170%',
           '& figure': {
             position: 'relative',

@@ -1,17 +1,18 @@
 import { Stack } from '@mui/material';
+import { votePost } from 'features/Auth/user-thunk';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deletePost, likePost } from '../posts-thunk';
+import { deletePost } from '../posts-thunk';
 import PostCard from './post-card';
 
 function PostList({ posts }) {
   const dispatch = useDispatch();
   const { loadingAction } = useSelector((state) => state.posts);
 
-  const handleLikePost = async (id) => {
+  const handleVote = async (data) => {
     if (loadingAction) return;
     try {
-      await dispatch(likePost(id));
+      await dispatch(votePost(data));
     } catch (error) {
       console.log(error);
     }
@@ -29,7 +30,7 @@ function PostList({ posts }) {
   return (
     <Stack rowGap={8}>
       {posts?.map((post) => (
-        <PostCard onLike={handleLikePost} onDelete={handleDeletePost} key={post._id} post={post} />
+        <PostCard onVote={handleVote} onDelete={handleDeletePost} key={post._id} post={post} />
       ))}
     </Stack>
   );

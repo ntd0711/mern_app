@@ -4,7 +4,7 @@ import { unsetAvatar, updateAvatar, updateInfo } from 'features/Auth/user-thunk'
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { notify } from 'utils/toastify';
-import ProfileForm from '../components/profile-form';
+import { ProfileForm } from '../components';
 
 function ProfileSetting() {
   const dispatch = useDispatch();

@@ -7,9 +7,9 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { Link } from 'react-router-dom';
 dayjs.extend(relativeTime);
 
-function Comment({ cmt, authorId, profile }) {
+function Comment({ cmt, authorId }) {
   const isAuthorComment = authorId === cmt.user._id;
-  const href = cmt.user._id === profile?._id ? '/profile' : `/profile/${cmt.user._id}`;
+  const href = `/profile/${cmt.user._id}`;
 
   return (
     <Stack direction="row" alignItems="start" key={cmt._id}>

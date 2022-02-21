@@ -21,6 +21,14 @@ export const userApi = {
     return axiosClient.get(`/user/${id}`);
   },
 
+  getPostsCreatedByUser(userId) {
+    return axiosClient.get(`/user/posts-created/${userId}`);
+  },
+
+  getPostsSavedByUser() {
+    return axiosClient.get('/user/posts-saved');
+  },
+
   updateInfo({ id, data }) {
     return axiosClient.post(`/user/update-info/${id}`, data);
   },
@@ -32,5 +40,13 @@ export const userApi = {
 
   unsetAvatar(id) {
     return axiosClient.post(`/user/unset-avt/${id}`);
+  },
+
+  savePost(data) {
+    return axiosClient.post('/user/post/save', data);
+  },
+
+  vote(data) {
+    return axiosClient.post('/user/vote', data);
   },
 };

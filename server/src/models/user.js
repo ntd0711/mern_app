@@ -9,6 +9,9 @@ const userSchema = new mongoose.Schema({
   avatar: { type: String, default: '' },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'comments' }],
 
+  savedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'posts' }],
+  createdPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'posts' }],
+
   createdAt: { type: Date, default: Date.now() },
   updatedAt: { type: Date, default: Date.now() },
 });

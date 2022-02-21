@@ -33,6 +33,25 @@ export const signRefreshToken = (userId) => {
   });
 };
 
+export const integratedAccessToken = (req, res, next) => {
+  try {
+    if (req.headers.authorization?.split(' ')[1]) {
+      const jwtFromClient = req.headers.authorization?.split(' ')[1];
+
+      jwt.verify(jwtFromClient, process.env.ACCESS_TOKEN_SECRET, function (err, decodedData) {
+        if (err) throw createError.Unauthorized(err.message);
+        req.userId = decodedData?.userId;
+      });
+    } else {
+      req.userId = '';
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const verifyAccessToken = (req, res, next) => {
   try {
     if (!req.headers.authorization?.split(' ')[1]) {

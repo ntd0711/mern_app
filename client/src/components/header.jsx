@@ -102,7 +102,13 @@ function Header() {
           </Box>
         </Stack>
       </Container>
-      <MenuHeader open={open} anchorEl={anchorEl} onClose={handleClose} onLogout={handleLogout} />
+      <MenuHeader
+        userId={profile?._id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        onLogout={handleLogout}
+      />
     </Box>
   );
 }

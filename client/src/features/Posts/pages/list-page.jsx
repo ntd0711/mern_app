@@ -1,28 +1,27 @@
 import { Container, Stack } from '@mui/material';
 import { Box } from '@mui/system';
+import { generateKeyPost } from 'constants/key-constants';
 import queryString from 'query-string';
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import GoToTopBtn from '../components/go-to-top-btn';
 import PostFilters from '../components/post-filter';
 import PostList from '../components/post-list';
-import GoToTopBtn from '../components/go-to-top-btn';
 import SkeletonPostList from '../components/skeleton-post-list';
-import { fetchPosts } from '../posts-thunk';
+import { fetchPosts, fetchTagsPost } from '../posts-thunk';
 
 function ListPage() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const { postList, loading } = useSelector((state) => state.posts);
+
+  const { posts, postTags, loading } = useSelector((state) => state.posts);
 
   const queryParams = useMemo(() => {
-    const params = queryString.parse(location.search);
-    return {
-      search: params?.search,
-      tag: params?.tag,
-    };
+    return queryString.parse(location.search) || {};
   }, [location.search]);
+  const postsCategory = generateKeyPost.list(queryParams);
 
   useEffect(() => {
     (async () => {
@@ -34,16 +33,38 @@ function ListPage() {
     })();
   }, [dispatch, queryParams]);
 
-  const handleTagChange = (newFilter) => {
-    if (queryParams.tag === newFilter.tag) return navigate('/posts');
+  useEffect(() => {
+    (async () => {
+      try {
+        await dispatch(fetchTagsPost());
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [dispatch]);
 
-    const searchParams = queryString.stringify({ ...newFilter });
-    navigate(`?${searchParams}`);
+  const handleTagChange = (newFilter) => {
+    let searchParams;
+    if (newFilter?.tag === queryParams?.tag) {
+      const { tag, ...newQueryParams } = queryParams;
+      searchParams = newQueryParams;
+    } else {
+      searchParams = { ...queryParams, ...newFilter };
+    }
+
+    navigate(`?${queryString.stringify(searchParams)}`);
   };
 
   const handleSearchChange = (newFilter) => {
-    const searchParams = queryString.stringify({ ...newFilter });
-    navigate(`?${searchParams}`);
+    let searchParams;
+    if (!newFilter?.search) {
+      const { search, ...newQueryParams } = queryParams;
+      searchParams = newQueryParams;
+    } else {
+      searchParams = { ...queryParams, ...newFilter };
+    }
+
+    navigate(`?${queryString.stringify(searchParams)}`);
   };
 
   return (
@@ -52,12 +73,13 @@ function ListPage() {
         <Stack spacing={3}>
           <Box mt={0.8}>
             <PostFilters
+              postTags={postTags}
               filters={queryParams}
               onTagChange={handleTagChange}
               onSearchChange={handleSearchChange}
             />
           </Box>
-          {loading ? <SkeletonPostList quantity={10} /> : <PostList posts={postList} />}
+          {loading ? <SkeletonPostList quantity={10} /> : <PostList posts={posts[postsCategory]} />}
         </Stack>
       </Container>
       <GoToTopBtn />

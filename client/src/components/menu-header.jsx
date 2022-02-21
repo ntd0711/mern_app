@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function MenuHeader(props) {
-  const { open, anchorEl, onClose, onLogout } = props;
+  const { userId, open, anchorEl, onClose, onLogout } = props;
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -49,7 +49,7 @@ function MenuHeader(props) {
       transformOrigin={{ horizontal: 'left', vertical: 'top' }}
       anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
     >
-      <MenuItem onClick={() => navigate('/profile')}>
+      <MenuItem onClick={() => navigate(`/profile/${userId}`)}>
         <ListItemIcon>
           <i style={{ fontSize: '20px' }} className="bx bx-user"></i>
         </ListItemIcon>

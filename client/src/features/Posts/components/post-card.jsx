@@ -12,7 +12,7 @@ import LikePost from './like-post';
 
 dayjs.extend(localizedFormat);
 
-function PostCard({ post, onLike, onDelete }) {
+function PostCard({ post, onVote, onDelete }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { profile } = useSelector((state) => state.user);
@@ -23,16 +23,20 @@ function PostCard({ post, onLike, onDelete }) {
     description,
     createdAt,
     _id: postId,
-    likes,
+    statusVote,
+    point,
     author: { name, _id: authorId },
     tags,
   } = post;
 
-  const handleLikePost = () => {
+  const handleVote = () => {
     if (!isAuth) {
       return navigate('/signin');
     }
-    if (onLike) onLike(postId);
+    if (onVote) {
+      const voteType = statusVote === 'liked' ? 'withdraw' : 'like';
+      onVote({ voteType, postId });
+    }
   };
 
   const handleDeletePost = () => {
@@ -62,13 +66,13 @@ function PostCard({ post, onLike, onDelete }) {
         <Stack direction="row" alignItems="center">
           <Typography variant="caption">{dayjs(createdAt).format('ll')}</Typography>
           <Box sx={{ width: '0.5px', height: '14px', bgcolor: 'common.grey_white', mx: 2 }} />
-          <Link to={authorId === profile?._id ? '/profile' : `/profile/${authorId}`}>
+          <Link to={`/profile/${authorId}`}>
             <Typography variant="subtitle2" sx={{ cursor: 'pointer' }}>
               {name}
             </Typography>
           </Link>
           <Stack direction="row" alignItems="center" ml={4} spacing={3}>
-            <LikePost likes={likes} id={profile?._id} onLike={handleLikePost} />
+            <LikePost point={point} statusVote={statusVote} onVote={handleVote} />
             <EditPost
               authorId={authorId}
               myId={profile?._id}
