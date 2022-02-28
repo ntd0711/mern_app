@@ -1,113 +1,62 @@
+import { asyncWrapper } from '../helpers/async-wrapper.js';
 import UserService from '../services/user.service.js';
 
-export const login = async (req, res, next) => {
-  try {
-    const data = await UserService.login(req);
-    res.status(200).json(data);
-  } catch (error) {
-    next(error);
-  }
-};
+export const login = asyncWrapper(async (req, res, next) => {
+  const data = await UserService.login(req);
+  res.status(200).json(data);
+});
 
-export const logout = async (req, res, next) => {
-  try {
-    const message = await UserService.logout(req);
-    res.status(200).json(message);
-  } catch (error) {
-    next(error);
-  }
-};
+export const logout = asyncWrapper(async (req, res, next) => {
+  const message = await UserService.logout(req);
+  res.status(200).json(message);
+});
 
-export const register = async (req, res, next) => {
-  try {
-    const data = await UserService.register(req);
-    res.status(200).json(data);
-  } catch (error) {
-    next(error);
-  }
-};
+export const register = asyncWrapper(async (req, res, next) => {
+  const data = await UserService.register(req);
+  res.status(200).json(data);
+});
 
-export const getUserById = async (req, res) => {
-  try {
-    const user = await UserService.getUserById(req);
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
+export const getUserById = asyncWrapper(async (req, res) => {
+  const user = await UserService.getUserById(req);
+  res.status(200).json(user);
+});
 
-export const getCreatedPostsByUser = async (req, res) => {
-  try {
-    const data = await UserService.getCreatedPostsByUser(req);
-    res.status(200).json(data);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
+export const getCreatedPostsByUser = asyncWrapper(async (req, res) => {
+  const data = await UserService.getCreatedPostsByUser(req);
+  res.status(200).json(data);
+});
 
-export const getSavedPostsByUser = async (req, res, next) => {
-  try {
-    const data = await UserService.getSavedPostsByUser(req);
-    res.status(200).json(data);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
+export const getSavedPostsByUser = asyncWrapper(async (req, res, next) => {
+  const data = await UserService.getSavedPostsByUser(req);
+  res.status(200).json(data);
+});
 
-export const savePost = async (req, res) => {
-  try {
-    const data = await UserService.savePost(req);
+export const savePost = asyncWrapper(async (req, res) => {
+  const data = await UserService.savePost(req);
+  res.status(200).json(data);
+});
 
-    res.status(200).json(data);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'Something went wrong.' });
-  }
-};
+export const votePost = asyncWrapper(async (req, res) => {
+  const data = await UserService.votePost(req);
+  res.status(200).json(data);
+});
 
-export const votePost = async (req, res) => {
-  try {
-    const data = await UserService.votePost(req);
-    res.status(200).json(data);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-};
+export const updateInfo = asyncWrapper(async (req, res) => {
+  const newUser = await UserService.updateInfo(req);
+  res.status(200).json(newUser);
+});
 
-export const updateInfo = async (req, res) => {
-  try {
-    const newUser = await UserService.updateInfo(req);
+export const unsetAvatar = asyncWrapper(async (req, res) => {
+  const newUser = await UserService.unsetAvatar(req);
+  res.status(200).json(newUser);
+});
 
-    res.status(200).json(newUser);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'Something went wrong.' });
-  }
-};
+export const updateAvatar = asyncWrapper(async (req, res) => {
+  const newUser = await UserService.updateAvatar(req);
+  res.status(200).json(newUser);
+});
 
-export const unsetAvatar = async (req, res) => {
-  try {
-    const newUser = await UserService.unsetAvatar(req);
-    res.status(200).json(newUser);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
-
-export const updateAvatar = async (req, res) => {
-  try {
-    const newUser = await UserService.updateAvatar(req);
-    res.status(200).json(newUser);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
-
-export const refreshToken = async (req, res, next) => {
-  try {
-    const newTokens = await UserService.refreshToken(req);
-    res.status(200).json(newTokens);
-  } catch (error) {
-    next(error);
-  }
-};
+export const refreshToken = asyncWrapper(async (req, res, next) => {
+  const newTokens = await UserService.refreshToken(req);
+  res.status(200).json(newTokens);
+});

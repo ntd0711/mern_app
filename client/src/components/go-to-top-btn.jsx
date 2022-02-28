@@ -1,6 +1,6 @@
 import { IconButton } from '@mui/material';
 import useScroll from 'hooks/use-scroll';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 function GoToTopBtn() {
   const isVisible = useScroll({ pageYOffset: 400 });

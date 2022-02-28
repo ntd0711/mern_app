@@ -77,7 +77,7 @@ function PostForm({ onSubmit, post, loading }) {
         <Button onClick={() => reset()} variant="contained" color="secondary">
           Clear
         </Button>
-        <ButtonCustom loading={loading} parentIconWidth="16px" iconSize="1.1rem" spacing="0.2rem">
+        <ButtonCustom disabled={loading} parentIconWidth="16px" iconSize="1.1rem" spacing="0.2rem">
           {post ? 'Update' : 'Create'}
         </ButtonCustom>
       </Stack>

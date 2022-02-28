@@ -2,16 +2,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { postsApi } from '../../api/posts-api';
 
 // First, create the thunk
-export const fetchPosts = createAsyncThunk(
-  'post/fetchPosts',
-  async (payload, { rejectWithValue }) => {
-    try {
-      return await postsApi.getPosts(payload);
-    } catch (error) {
-      return rejectWithValue(error);
-    }
-  }
-);
+export const fetchPosts = createAsyncThunk('post/fetchPosts', async (payload) => {
+  return await postsApi.getPosts(payload);
+});
 
 export const fetchPostById = createAsyncThunk(
   'post/fetchPostById',

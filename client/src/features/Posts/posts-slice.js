@@ -40,7 +40,7 @@ export const postsSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchPosts.rejected, (state, action) => {
-        if (action.error) notify.error(action.payload.message);
+        // if (action.error) notify.error(action.payload.message);
         state.loading = false;
       })
 

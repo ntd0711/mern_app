@@ -5,7 +5,7 @@ import queryString from 'query-string';
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import GoToTopBtn from '../components/go-to-top-btn';
+import GoToTopBtn from '../../../components/go-to-top-btn';
 import PostFilters from '../components/post-filter';
 import PostList from '../components/post-list';
 import SkeletonPostList from '../components/skeleton-post-list';
@@ -26,7 +26,7 @@ function ListPage() {
   useEffect(() => {
     (async () => {
       try {
-        await dispatch(fetchPosts(queryParams));
+        await dispatch(fetchPosts(queryParams)).unwrap();
       } catch (error) {
         console.log(error);
       }

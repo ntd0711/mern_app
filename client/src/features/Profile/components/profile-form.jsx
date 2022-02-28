@@ -85,7 +85,7 @@ function ProfileForm({ onSubmit, profile, loading, onUnsetAvt, onUpdateAvt }) {
         <InputField name="name" label="Name" height="44px" control={control} />
         <InputFile control={control} name="imgFile" onSetFile={handleSetFile} />
         <Box mt="10px">
-          <ButtonCustom loading={loading} parentIconWidth="16px" iconSize="1rem" spacing="0.2rem">
+          <ButtonCustom disabled={loading} parentIconWidth="16px" iconSize="1rem" spacing="0.2rem">
             Save
           </ButtonCustom>
         </Box>

@@ -8,7 +8,7 @@ import PostComments from '../components/post-comments';
 import PostDetail from '../components/post-detail';
 import SkeletonPostDetail from '../components/skeleton-post-detail';
 import { commentPost, fetchPostById } from '../posts-thunk';
-import GoToTopBtn from '../components/go-to-top-btn';
+import GoToTopBtn from '../../../components/go-to-top-btn';
 import StickyBar from '../components/sticky-bar';
 import { savePost, votePost } from 'features/Auth/user-thunk';
 import { notify } from 'utils/toastify';

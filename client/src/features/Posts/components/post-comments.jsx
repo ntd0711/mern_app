@@ -39,7 +39,7 @@ function PostComments({ comments = [], onSubmit, authorId, commentRef, loadingCm
           <InputField name="comment" placeholder="add comment" control={control} height="44px" />
 
           <ButtonCustom
-            loading={loadingCmt}
+            disabled={loadingCmt}
             parentIconWidth="48px"
             iconSize="1.1rem"
             spacing="0.2rem"

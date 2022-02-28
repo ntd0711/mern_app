@@ -10,11 +10,13 @@ function ButtonCustom({
   parentIconWidth = '26px',
   spacing = '0',
   fullWidth,
+  disabled,
 }) {
   return (
     <Button
       variant="contained"
       fullWidth={fullWidth}
+      disabled={disabled}
       type="submit"
       size={btnSize}
       sx={{
@@ -55,6 +57,7 @@ ButtonCustom.propTypes = {
   iconSize: PropTypes.string,
   parentIconWidth: PropTypes.string,
   spacing: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export default ButtonCustom;
