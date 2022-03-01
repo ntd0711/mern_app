@@ -20,11 +20,14 @@ function Profile() {
       <Container>
         <Stack spacing={3}>
           <ProfileInfo />
-          <ProfileTabs myId={profile._id} userId={userId} />
+          <ProfileTabs myId={profile?._id} userId={userId} />
           <Routes>
             <Route index element={<PostsCreatedUser userId={userId} />} />
-            {profile._id === userId && (
-              <Route path="saved" element={<PostsSavedUser myId={profile._id} userId={userId} />} />
+            {profile?._id === userId && (
+              <Route
+                path="saved"
+                element={<PostsSavedUser myId={profile?._id} userId={userId} />}
+              />
             )}
             <Route path="about" element={<AboutUser />} />
           </Routes>

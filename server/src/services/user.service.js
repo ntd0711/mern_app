@@ -87,6 +87,14 @@ UserService.getCreatedPostsByUser = async (req) => {
       })
   ).createdPosts;
 
+  for (const post of createdPosts) {
+    const { likes, dislikes, usersSaved } = post;
+
+    post.statusVote = checkStatusVotePost(likes, dislikes, id);
+    post.point = likes.length - dislikes.length;
+    post.savedByUser = usersSaved?.includes(id);
+  }
+
   const total = createdPosts?.length;
 
   return { total, createdPosts };
@@ -105,6 +113,14 @@ UserService.getSavedPostsByUser = async (req) => {
       })
       .sort({ createdAt: 'desc' })
   ).savedPosts;
+
+  for (const post of savedPosts) {
+    const { likes, dislikes, usersSaved } = post;
+
+    post.statusVote = checkStatusVotePost(likes, dislikes, userId);
+    post.point = likes.length - dislikes.length;
+    post.savedByUser = usersSaved?.includes(userId);
+  }
 
   const total = savedPosts?.length;
 

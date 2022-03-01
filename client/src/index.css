@@ -18,12 +18,6 @@ body {
   background-color: #222831;
 }
 
-body > div {
-  /* transform: translate3d(0, 0, 0); */
-  /* -webkit-transform: translate3d(0, 0, 0); */
-  -webkit-overflow-scrolling: touch;
-}
-
 body::-webkit-scrollbar {
   width: 10px;
 }

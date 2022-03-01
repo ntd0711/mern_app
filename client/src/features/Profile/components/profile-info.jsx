@@ -9,7 +9,7 @@ function ProfileInfo() {
   const { profile } = useSelector((state) => state.user);
   const { userId } = useParams();
   const [user, setUser] = useState({});
-  const isOtherUser = userId !== profile._id;
+  const isOtherUser = userId !== profile?._id;
 
   useEffect(() => {
     (async () => {
