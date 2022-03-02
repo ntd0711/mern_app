@@ -47,7 +47,8 @@ function Header() {
     <Box
       sx={{
         bgcolor: 'common.dark',
-        paddingY: 2,
+        pt: 3,
+        pb: 2,
         left: '0',
         right: '0',
         position: 'fixed',
@@ -70,9 +71,8 @@ function Header() {
                 {!isAuth && (
                   <Link to="/signin">
                     <Typography
+                      variant="body2"
                       sx={{
-                        p: '0.4em',
-
                         cursor: 'pointer',
                         '&:hover': { color: 'common.white' },
                         transition: 'color 0.2s',
