@@ -101,32 +101,28 @@ function DetailPage() {
 
   return (
     <Box mt={6}>
+      {!loading && postDetail && (
+        <StickyBar
+          scrollToComment={handleScrollToComment}
+          post={postDetail}
+          profile={profile}
+          onLike={handleLikePost}
+          onDislike={handleDislikePost}
+          onSave={handleSavePost}
+        />
+      )}
       <Container sx={{ color: 'common.grey_white' }}>
         <>{pageError && <Typography textAlign="center">{pageError}</Typography>}</>
         {!pageError && (
           <>
-            {loading ? (
-              <SkeletonPostDetail />
-            ) : (
+            {loading && <SkeletonPostDetail />}
+            {!loading && postDetail && (
               <Stack spacing={4}>
-                {postDetail && (
-                  <>
-                    <StickyBar
-                      scrollToComment={handleScrollToComment}
-                      post={postDetail}
-                      profile={profile}
-                      onLike={handleLikePost}
-                      onDislike={handleDislikePost}
-                      onSave={handleSavePost}
-                    />
-
-                    <PostDetail
-                      post={postDetail}
-                      authorId={postDetail?.author?._id}
-                      profile={profile}
-                    />
-                  </>
-                )}
+                <PostDetail
+                  post={postDetail}
+                  authorId={postDetail?.author?._id}
+                  profile={profile}
+                />
                 <PostComments
                   commentRef={commentRef}
                   loadingCmt={loadingCmt}
@@ -140,7 +136,7 @@ function DetailPage() {
           </>
         )}
       </Container>
-      <GoToTopBtn />
+      <GoToTopBtn pageYOffset={200} />
     </Box>
   );
 }

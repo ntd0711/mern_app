@@ -8,7 +8,7 @@ import SharePost from './share-post';
 import VotePost from './vote-post';
 
 function StickyBar({ post, onLike, onDislike, scrollToComment, onSave }) {
-  const isVisible = useScroll({ pageYOffset: 100 });
+  const isVisible = useScroll({ pageYOffset: 200 });
   const { author, comments } = post;
 
   return (
@@ -17,9 +17,10 @@ function StickyBar({ post, onLike, onDislike, scrollToComment, onSave }) {
       zIndex="99"
       alignItems="center"
       spacing={1.6}
+      display={{ xs: 'none', lg: 'flex' }}
       sx={{
-        left: '10%',
-        top: '25%',
+        left: 'calc((100% - 732px)/4)',
+        transform: 'translateX(-50%)',
         transition: 'all .3s linear',
         opacity: `${isVisible ? '1' : '0'}`,
         visibility: `${isVisible ? 'visible' : 'hidden'}`,

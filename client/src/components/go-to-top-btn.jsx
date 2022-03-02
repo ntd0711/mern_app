@@ -2,8 +2,8 @@ import { IconButton } from '@mui/material';
 import useScroll from 'hooks/use-scroll';
 import React from 'react';
 
-function GoToTopBtn() {
-  const isVisible = useScroll({ pageYOffset: 400 });
+function GoToTopBtn({ pageYOffset }) {
+  const isVisible = useScroll({ pageYOffset });
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -19,9 +19,9 @@ function GoToTopBtn() {
           fontSize: '3rem',
           position: 'fixed',
           right: '4rem',
-          bottom: '-4rem',
+          bottom: '3rem',
           transition: 'transform 0.4s ease',
-          transform: `${isVisible ? 'translateY(-7rem)' : ''}`,
+          transform: `${isVisible ? 'scale(1)' : 'scale(0)'}`,
           color: 'common.dark_blue',
         }}
         onClick={scrollToTop}

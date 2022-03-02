@@ -82,7 +82,7 @@ function ListPage() {
           {loading ? <SkeletonPostList quantity={10} /> : <PostList posts={posts[postsCategory]} />}
         </Stack>
       </Container>
-      <GoToTopBtn />
+      <GoToTopBtn pageYOffset={400} />
     </Box>
   );
 }
