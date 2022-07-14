@@ -45,6 +45,7 @@ function Header() {
 
   return (
     <Box
+      className="header"
       sx={{
         bgcolor: 'common.dark',
         pt: 3,

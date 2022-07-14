@@ -7,7 +7,7 @@ function NotFound() {
     <>
       <h2>Page Not Found</h2>
       <Link to="/posts">
-        <Typography>Go Home</Typography>
+        <Typography >Go Home</Typography>
       </Link>
     </>
   );

@@ -8,6 +8,15 @@ import { createTheme } from '@mui/material';
 //// blue: #00FFF5
 // pink: #ffa7c4
 export const theme = createTheme({
+  breakpoints: {
+    values: {
+      mobile: 0,
+      mobileL: 425,
+      tablet: 768,
+      laptop: 1024,
+      desktop: 1280,
+    },
+  },
   palette: {
     common: {
       grey_white: '#eee',
@@ -91,15 +100,32 @@ export const theme = createTheme({
     },
 
     MuiContainer: {
-      defaultProps: {
-        maxWidth: 'md',
-      },
-
+      // defaultProps: {
+      //   maxWidth: 'md',
+      // },
+      // styleOverrides: {
+      //   maxWidthMd: {
+      //     maxWidth: '780px',
+      //     '@media (min-width: 780px)': {
+      //       maxWidth: '780px',
+      //     },
+      //   },
+      // },
       styleOverrides: {
-        maxWidthMd: {
-          maxWidth: '780px',
-          '@media (min-width: 780px)': {
-            maxWidth: '780px',
+        root: {
+          padding: 0,
+          '@media (min-width: 0px)': {
+            maxWidth: '90vw',
+          },
+          '@media (min-width: 425px)': {
+            padding: '0 5%',
+            maxWidth: '1440px',
+          },
+          '@media (min-width: 768px)': {
+            padding: '0 15%',
+          },
+          '@media (min-width: 1280px)': {
+            padding: '0 20%',
           },
         },
       },

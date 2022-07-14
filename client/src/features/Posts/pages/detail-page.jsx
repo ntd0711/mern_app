@@ -85,7 +85,7 @@ function DetailPage() {
     try {
       const response = await dispatch(savePost(data)).unwrap();
 
-      response.savedByUser ? notify.success('Saved post 😍') : notify.success('Unsave post 😡');
+      // response.savedByUser ? notify.success('Saved post 😍') : notify.success('Unsave post 😡');
     } catch (error) {
       notify.error('save post failed');
       console.log(error);

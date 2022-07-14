@@ -18,7 +18,7 @@ function GoToTopBtn({ pageYOffset }) {
         sx={{
           fontSize: '3rem',
           position: 'fixed',
-          right: '4rem',
+          right: '6%',
           bottom: '3rem',
           transition: 'transform 0.4s ease',
           transform: `${isVisible ? 'scale(1)' : 'scale(0)'}`,

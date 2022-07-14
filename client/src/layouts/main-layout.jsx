@@ -5,14 +5,14 @@ import { Outlet } from 'react-router-dom';
 
 function MainLayout() {
   return (
-    <Box>
+    <Box className="main__layout">
       <Stack minHeight="100vh">
         <Header />
-        <Box flexGrow={1} mt={15}>
+        <Box className="main" flexGrow={1} mt={15}>
           <Outlet />
         </Box>
       </Stack>
-      <Box mt={12} py={4}>
+      <Box className="footer" mt={12} py={4}>
         <Footer />
       </Box>
     </Box>
