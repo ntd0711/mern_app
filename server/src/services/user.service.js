@@ -74,6 +74,7 @@ UserService.getUserById = async (req) => {
 
 UserService.getCreatedPostsByUser = async (req) => {
   const { id } = req.params;
+  const userId = req?.userId;
 
   if (!mongoose.Types.ObjectId.isValid(id)) throw createError.BadRequest('No user with that id');
 
@@ -90,9 +91,9 @@ UserService.getCreatedPostsByUser = async (req) => {
   for (const post of createdPosts) {
     const { likes, dislikes, usersSaved } = post;
 
-    post.statusVote = checkStatusVotePost(likes, dislikes, id);
+    post.statusVote = checkStatusVotePost(likes, dislikes, userId);
     post.point = likes.length - dislikes.length;
-    post.savedByUser = usersSaved?.includes(id);
+    post.savedByUser = usersSaved?.includes(userId);
   }
 
   const total = createdPosts?.length;
@@ -129,35 +130,25 @@ UserService.getSavedPostsByUser = async (req) => {
 
 UserService.savePost = async (req) => {
   const userId = req.userId;
-  const { postId, actionType } = req.body;
+  const { postId, isSavedByUser } = req.body;
 
   const promiseUser = UserModel.findOne({ _id: userId });
   const promisePost = PostModel.findOne({ _id: postId });
 
   const [user, post] = await Promise.all([promiseUser, promisePost]);
 
-  switch (actionType) {
-    case 'unSave': {
-      user.savedPosts = user.savedPosts.filter((id) => String(id) !== postId);
-      post.usersSaved = post.usersSaved.filter((id) => String(id) !== userId);
+  if (isSavedByUser) {
+    user.savedPosts = user.savedPosts.filter((id) => String(id) !== postId);
+    post.usersSaved = post.usersSaved.filter((id) => String(id) !== userId);
+  } else {
+    const objPostId = new mongoose.Types.ObjectId(postId);
+    user.savedPosts.addToSet(objPostId);
 
-      // post.savedByUser = post.usersSaved.includes(userId) ? true : false;
-      break;
-    }
-    case 'save': {
-      const objPostId = new mongoose.Types.ObjectId(postId);
-      user.savedPosts.addToSet(objPostId);
-
-      const objUserId = new mongoose.Types.ObjectId(userId);
-      post.usersSaved.addToSet(objUserId);
-      // post.savedByUser = post.usersSaved.includes(userId) ? true : false;
-      break;
-    }
-    default:
-      break;
+    const objUserId = new mongoose.Types.ObjectId(userId);
+    post.usersSaved.addToSet(objUserId);
   }
-  const [newPost] = await Promise.all([post.save(), user.save()]);
 
+  const [newPost] = await Promise.all([post.save(), user.save()]);
   const savedByUser = newPost.usersSaved.includes(userId) ? true : false;
 
   return { savedByUser, usersSaved: newPost.usersSaved };
@@ -225,26 +216,18 @@ UserService.updateInfo = async (req) => {
 UserService.unsetAvatar = async (req, res) => {
   const { id } = req.params;
 
-  const newUser = await UserModel.findByIdAndUpdate(
-    id,
-    { avatar: '', updatedAt: Date.now() },
-    { new: true }
-  );
+  await UserModel.findByIdAndUpdate(id, { avatar: '', updatedAt: Date.now() }, { new: true });
 
-  return { user: newUser };
+  return 'unset avatar successfully';
 };
 
 UserService.updateAvatar = async (req) => {
   const { id } = req.params;
   const { imgUrl } = req.body;
 
-  const newUser = await UserModel.findByIdAndUpdate(
-    id,
-    { avatar: imgUrl, updatedAt: Date.now() },
-    { new: true }
-  );
+  await UserModel.findByIdAndUpdate(id, { avatar: imgUrl, updatedAt: Date.now() }, { new: true });
 
-  return { user: newUser };
+  return { newAvatar: imgUrl };
 };
 
 UserService.refreshToken = async (req) => {

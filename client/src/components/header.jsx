@@ -1,38 +1,28 @@
 import { Box, Container, IconButton, Stack, Typography } from '@mui/material';
 import { AvatarCustom } from 'components';
-import { logout } from 'features/Auth/user-thunk';
+import useLogout from 'hooks/query/user/use-logout';
 import useAuth from 'hooks/use-auth';
-import React from 'react';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { getLocalStorage } from 'utils/common';
+import useAuthStore from 'store/authStore';
 import MenuHeader from './menu-header';
 
 function Header() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const isAuth = useAuth();
-  const { profile } = useSelector((state) => state.user);
-  const rfToken = getLocalStorage('refreshToken');
+  const { user: profile, refreshToken, removeUser } = useAuthStore();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [loadingLogout, setLoadingLogout] = useState(false);
   const open = Boolean(anchorEl);
 
+  const { mutateAsync: logout, isLoading } = useLogout();
   const handleLogout = async () => {
     try {
-      setLoadingLogout(true);
-
-      await dispatch(logout({ rfToken })).unwrap();
+      await logout({ rfToken: refreshToken });
+      removeUser();
       navigate('/signin');
-    } catch (error) {
-      setLoadingLogout(false);
-      console.log(error);
-    } finally {
-      setLoadingLogout(false);
-    }
+    } catch (error) {}
   };
 
   const handleShowMenu = (event) => {
@@ -65,7 +55,7 @@ function Header() {
             </Typography>
           </Link>
           <Box>
-            {loadingLogout ? (
+            {isLoading ? (
               <i style={{ color: '#f9f9f9' }} className="bx bx-loader bx-spin bx-sm"></i>
             ) : (
               <>

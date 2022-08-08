@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import TagElement from '../../../components/chip';
 
-function PostFilters({ onTagChange, onSearchChange, filters, postTags }) {
+function PostFilters({ onTagChange, onSearchChange, filters, postTags, isLoadingTags }) {
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState('');
 
@@ -23,7 +23,7 @@ function PostFilters({ onTagChange, onSearchChange, filters, postTags }) {
 
   return (
     <>
-      {Boolean(Object.keys(postTags).length) && (
+      {!isLoadingTags && (
         <Stack
           position="relative"
           direction="row"

@@ -1,12 +1,12 @@
-import { Stack, Typography, Link as LinkMui5 } from '@mui/material';
+import { Link as LinkMui5, Stack, Typography } from '@mui/material';
 import { userApi } from 'api/user-api';
 import { AvatarCustom } from 'components';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import useAuthStore from 'store/authStore';
 
 function ProfileInfo() {
-  const { profile } = useSelector((state) => state.user);
+  const { user: profile } = useAuthStore();
   const { userId } = useParams();
   const [user, setUser] = useState({});
   const isOtherUser = userId !== profile?._id;

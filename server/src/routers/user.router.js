@@ -13,7 +13,7 @@ import {
   getSavedPostsByUser,
   votePost,
 } from '../controllers/user.controller.js';
-import { verifyAccessToken } from '../helpers/jwt-service.js';
+import { integratedAccessToken, verifyAccessToken } from '../helpers/jwt-service.js';
 
 const router = express.Router();
 
@@ -24,7 +24,7 @@ router.post('/refresh-token', refreshToken);
 router.post('/vote', verifyAccessToken, votePost);
 router.get('/posts-saved', verifyAccessToken, getSavedPostsByUser);
 router.post('/post/save', verifyAccessToken, savePost);
-router.get('/posts-created/:id', getCreatedPostsByUser);
+router.get('/posts-created/:id', integratedAccessToken, getCreatedPostsByUser);
 router.post('/update-info/:id', verifyAccessToken, updateInfo);
 router.post('/unset-avt/:id', verifyAccessToken, unsetAvatar);
 router.post('/update-avt/:id', verifyAccessToken, updateAvatar);

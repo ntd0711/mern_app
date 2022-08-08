@@ -178,15 +178,16 @@ PostService.commentPost = async (req) => {
 
   const [newPost] = await Promise.all([postRelated.save(), userRelated.save()]);
 
-  const comments = (
-    await newPost.populate({
-      path: 'comments',
-      options: { sort: { createdAt: 'desc' } },
-      populate: { path: 'user' },
-    })
-  ).comments;
+  // const comments = (
+  //   await newPost.populate({
+  //     path: 'comments',
+  //     options: { sort: { createdAt: 'desc' } },
+  //     populate: { path: 'user' },
+  //   })
+  // ).comments;
+  comment.user = userRelated;
 
-  return comments;
+  return comment;
 };
 
 export default PostService;

@@ -1,30 +1,18 @@
 import { Stack } from '@mui/material';
-import { votePost } from 'features/Auth/user-thunk';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { deletePost } from '../posts-thunk';
+import useDeletePost from 'hooks/query/use-delete-post';
+import useVotePost from 'hooks/query/use-vote-post';
 import PostCard from './post-card';
 
-function PostList({ posts }) {
-  const dispatch = useDispatch();
-  const { loadingAction } = useSelector((state) => state.posts);
+function PostList({ posts, queryKeys, params }) {
+  const mutationVote = useVotePost(queryKeys);
+  const mutationDelete = useDeletePost();
 
   const handleVote = async (data) => {
-    if (loadingAction) return;
-    try {
-      await dispatch(votePost(data));
-    } catch (error) {
-      console.log(error);
-    }
+    mutationVote.mutate({ ...data, params });
   };
 
   const handleDeletePost = async (id) => {
-    if (loadingAction) return;
-    try {
-      await dispatch(deletePost(id));
-    } catch (error) {
-      console.log(error);
-    }
+    mutationDelete.mutate(id);
   };
 
   return (

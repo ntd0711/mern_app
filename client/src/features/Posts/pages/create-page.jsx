@@ -1,32 +1,32 @@
 import { Box, Container } from '@mui/material';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { postsApi } from 'api/posts-api';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PostForm from '../components/post-form';
-import { createPost } from '../posts-thunk';
 
 function CreatePage() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loadingAction } = useSelector((state) => state.posts);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleOnSubmit = async (data) => {
-    if (loadingAction) return;
+    setIsLoading(true);
     try {
-      await dispatch(createPost(data));
+      await postsApi.createPost(data);
       setTimeout(() => {
         navigate('/posts');
       }, 2000);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <Box height="100%">
       <Container>
-        <PostForm onSubmit={handleOnSubmit} loading={loadingAction} />
+        <PostForm onSubmit={handleOnSubmit} loading={isLoading} />
       </Container>
     </Box>
   );

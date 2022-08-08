@@ -1,9 +1,10 @@
 import { Chip, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { VOTE_TYPES } from 'constants/action-types';
+import { STATUS_VOTE } from 'constants/status-vote';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import useAuth from 'hooks/use-auth';
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import DeletePost from './delete-post';
@@ -34,7 +35,7 @@ function PostCard({ post, onVote, onDelete }) {
       return navigate('/signin');
     }
     if (onVote) {
-      const voteType = statusVote === 'liked' ? 'withdraw' : 'like';
+      const voteType = statusVote === STATUS_VOTE.LIKED ? VOTE_TYPES.WITHDRAW : VOTE_TYPES.LIKE;
       onVote({ voteType, postId });
     }
   };

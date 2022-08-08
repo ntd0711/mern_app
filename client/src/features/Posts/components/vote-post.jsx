@@ -1,16 +1,16 @@
 import { IconButton, Stack, Typography } from '@mui/material';
-import React from 'react';
-
+import { VOTE_TYPES } from 'constants/action-types';
+import { STATUS_VOTE } from 'constants/status-vote';
 function VotePost({ post, onLike, onDislike }) {
   const { _id: postId, statusVote, point } = post;
 
   const handleLike = () => {
-    const voteType = statusVote === 'liked' ? 'withdraw' : 'like';
+    const voteType = statusVote === STATUS_VOTE.LIKED ? VOTE_TYPES.WITHDRAW : VOTE_TYPES.LIKE;
     onLike({ voteType, postId });
   };
 
   const handleDislike = () => {
-    const voteType = statusVote === 'disliked' ? 'withdraw' : 'dislike';
+    const voteType = statusVote === STATUS_VOTE.DISLIKED ? VOTE_TYPES.WITHDRAW : VOTE_TYPES.DISLIKE;
     onDislike({ voteType, postId });
   };
 
@@ -21,7 +21,7 @@ function VotePost({ post, onLike, onDislike }) {
         size="small"
         sx={{
           fontSize: '1rem',
-          color: `${statusVote === 'liked' ? 'common.dark_blue' : '#ffffff80'}`,
+          color: `${statusVote === STATUS_VOTE.LIKED ? 'common.dark_blue' : '#ffffff80'}`,
           transition: 'color 0.2s ease',
         }}
       >
@@ -32,7 +32,7 @@ function VotePost({ post, onLike, onDislike }) {
         onClick={handleDislike}
         sx={{
           fontSize: '1rem',
-          color: `${statusVote === 'disliked' ? 'common.pink' : '#ffffff80'}`,
+          color: `${statusVote === STATUS_VOTE.DISLIKED ? 'common.pink' : '#ffffff80'}`,
           transition: 'color 0.2s ease',
         }}
       >

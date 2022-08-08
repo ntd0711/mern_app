@@ -1,17 +1,17 @@
 import axios from 'axios';
-import { getLocalStorage, setLocalStorage } from 'utils/common';
+import { getToken, setToken } from 'utils/common';
 import { userApi } from './user-api';
 
 const axiosClient = axios.create({
-  baseURL: 'https://frontendeverything.herokuapp.com/api',
-  // baseURL: 'http://localhost:5000/api',
+  // baseURL: 'https://frontendeverything.herokuapp.com/api',
+  baseURL: 'http://localhost:8888/api',
   headers: { 'Content-Type': 'application/json' },
 });
 
 // Add a request interceptor
 axiosClient.interceptors.request.use(
   function (config) {
-    const token = getLocalStorage('token');
+    const token = getToken('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -39,13 +39,12 @@ axiosClient.interceptors.response.use(
       originalConfig._retry = true;
 
       try {
-        const rfToken = getLocalStorage('refreshToken');
+        const rfToken = getToken('refreshToken');
 
         const response = await userApi.refreshToken({ rfToken });
         const { token, refreshToken } = response;
 
-        setLocalStorage('token', token);
-        setLocalStorage('refreshToken', refreshToken);
+        setToken(token, refreshToken);
         axiosClient.defaults.headers.Authorization = token;
 
         return axiosClient(originalConfig);

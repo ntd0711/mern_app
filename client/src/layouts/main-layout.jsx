@@ -1,6 +1,5 @@
 import { Box, Stack } from '@mui/material';
 import { Footer, Header } from 'components';
-import React from 'react';
 import { Outlet } from 'react-router-dom';
 
 function MainLayout() {

@@ -1,11 +1,8 @@
-import { useSelector } from 'react-redux';
-import { getLocalStorage } from 'utils/common';
+import useAuthStore from 'store/authStore';
 
 function useAuth() {
-  const { profile } = useSelector((state) => state.user);
-  const token = getLocalStorage('token');
-
-  return Boolean(profile && token);
+  const { user, token, refreshToken } = useAuthStore();
+  return Boolean(user && token && refreshToken);
 }
 
 export default useAuth;

@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getLocalStorage, setLocalStorage } from 'utils/common';
+import { getToken, setToken } from 'utils/common';
 import { notify } from 'utils/toastify';
 import { login, logout, register, unsetAvatar, updateAvatar, updateInfo } from './user-thunk';
 
 const initialState = {
-  profile: getLocalStorage('user') || null,
+  profile: getToken('user') || null,
   loading: false,
 };
 
@@ -21,9 +21,9 @@ export const userSlice = createSlice({
         state.profile = action.payload.user;
         state.token = action.payload.token;
 
-        setLocalStorage('user', action.payload.user);
-        setLocalStorage('token', action.payload.token);
-        setLocalStorage('refreshToken', action.payload.refreshToken);
+        setToken('user', action.payload.user);
+        setToken('token', action.payload.token);
+        setToken('refreshToken', action.payload.refreshToken);
 
         state.loading = false;
       })
@@ -48,9 +48,9 @@ export const userSlice = createSlice({
         state.profile = action.payload?.user;
         state.token = action.payload?.token;
 
-        setLocalStorage('user', action.payload.user);
-        setLocalStorage('token', action.payload.token);
-        setLocalStorage('refreshToken', action.payload.refreshToken);
+        setToken('user', action.payload.user);
+        setToken('token', action.payload.token);
+        setToken('refreshToken', action.payload.refreshToken);
 
         state.loading = false;
       })
@@ -63,7 +63,7 @@ export const userSlice = createSlice({
       })
       .addCase(updateInfo.fulfilled, (state, action) => {
         state.profile = action.payload.user;
-        setLocalStorage('user', action.payload.user);
+        setToken('user', action.payload.user);
 
         state.loading = false;
       })
@@ -77,7 +77,7 @@ export const userSlice = createSlice({
       .addCase(unsetAvatar.fulfilled, (state, action) => {
         state.profile = action.payload.user;
 
-        setLocalStorage('user', action.payload.user);
+        setToken('user', action.payload.user);
         notify.success('unset avatar!');
 
         state.loading = false;
@@ -92,7 +92,7 @@ export const userSlice = createSlice({
       })
       .addCase(updateAvatar.fulfilled, (state, action) => {
         state.profile = action.payload.user;
-        setLocalStorage('user', action.payload.user);
+        setToken('user', action.payload.user);
         notify.success('update avatar successfully!');
 
         state.loading = false;

@@ -1,17 +1,17 @@
 import { Box } from '@mui/material';
+import { userApi } from 'api/user-api';
+import useUserAuth from 'hooks/query/user/use-login';
 import useAuth from 'hooks/use-auth';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from './components/auth-form';
-import { login, register } from './user-thunk';
 
 function AuthFeature() {
+  const { mutate, isLoading, isError, error: errorFromApi } = useUserAuth();
+
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [isSignUp, setIsSignUp] = useState(false);
   const isAuth = useAuth();
-  const { loading } = useSelector((state) => state.user);
   const [error, setError] = useState('');
 
   const handleSwitchMode = () => {
@@ -27,18 +27,17 @@ function AuthFeature() {
     if (isAuth) navigate('/posts');
   }, [isAuth, navigate]);
 
+  useEffect(() => {
+    setError(errorFromApi?.message || '');
+  }, [isError, errorFromApi]);
+
   const handleOnSubmit = async (data) => {
-    if (loading) return;
-    try {
-      if (isSignUp) {
-        await dispatch(register(data)).unwrap();
-      } else {
-        const formData = { email: data.email, password: data.password };
-        await dispatch(login(formData)).unwrap();
-      }
-    } catch (error) {
-      console.log(error.message);
-      error ? setError(error.message) : setError('');
+    if (isLoading) return;
+    if (isSignUp) {
+      mutate(() => userApi.signup(data));
+    } else {
+      const formData = { email: data.email, password: data.password };
+      mutate(() => userApi.signin(formData));
     }
   };
   return (
@@ -57,7 +56,7 @@ function AuthFeature() {
         isSignUp={isSignUp}
         onSubmit={handleOnSubmit}
         switchMode={handleSwitchMode}
-        loading={loading}
+        loading={isLoading}
         clearErrorFromServer={handleClearError}
       />
     </Box>

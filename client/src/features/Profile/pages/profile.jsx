@@ -1,19 +1,18 @@
 import { Container, Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
-import { useSelector } from 'react-redux';
 import { Route, Routes, useParams } from 'react-router-dom';
+import useAuthStore from 'store/authStore';
 import {
-  ProfileInfo,
-  ProfileTabs,
+  AboutUser,
   PostsCreatedUser,
   PostsSavedUser,
-  AboutUser,
+  ProfileInfo,
+  ProfileTabs,
 } from '../components';
 
 function Profile() {
   const { userId } = useParams();
-  const { profile } = useSelector((state) => state.user);
+  const { user: profile } = useAuthStore();
 
   return (
     <Box mt={10}>

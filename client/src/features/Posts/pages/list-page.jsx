@@ -1,47 +1,24 @@
 import { Container, Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import { generateKeyPost } from 'constants/key-constants';
+import usePostTags from 'hooks/query/use-post-tags';
+import usePosts from 'hooks/query/use-posts';
 import queryString from 'query-string';
-import React, { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import GoToTopBtn from '../../../components/go-to-top-btn';
 import PostFilters from '../components/post-filter';
 import PostList from '../components/post-list';
 import SkeletonPostList from '../components/skeleton-post-list';
-import { fetchPosts, fetchTagsPost } from '../posts-thunk';
 
 function ListPage() {
-  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-
-  const { posts, postTags, loading } = useSelector((state) => state.posts);
 
   const queryParams = useMemo(() => {
     return queryString.parse(location.search) || {};
   }, [location.search]);
-  const postsCategory = generateKeyPost.list(queryParams);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        await dispatch(fetchPosts(queryParams)).unwrap();
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [dispatch, queryParams]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        await dispatch(fetchTagsPost());
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [dispatch]);
+  const { posts, isErrorPosts, isLoadingPosts } = usePosts(queryParams);
+  const { postTags, isErrorTags, isLoadingTags } = usePostTags();
 
   const handleTagChange = (newFilter) => {
     let searchParams;
@@ -77,9 +54,14 @@ function ListPage() {
               filters={queryParams}
               onTagChange={handleTagChange}
               onSearchChange={handleSearchChange}
+              isLoadingTags={isLoadingTags}
             />
           </Box>
-          {loading ? <SkeletonPostList quantity={10} /> : <PostList posts={posts[postsCategory]} />}
+          {isLoadingPosts ? (
+            <SkeletonPostList quantity={10} />
+          ) : (
+            <PostList posts={posts} queryKeys="posts" params={queryParams} />
+          )}
         </Stack>
       </Container>
       <GoToTopBtn pageYOffset={400} />

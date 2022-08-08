@@ -5,7 +5,7 @@ function BookmarkPost({ post, onSave }) {
   const { _id, savedByUser } = post;
 
   const handleSavePost = () => {
-    if (onSave) onSave({ actionType: savedByUser ? 'unSave' : 'save', postId: _id });
+    if (onSave) onSave({ isSavedByUser: savedByUser, postId: _id });
   };
 
   return (

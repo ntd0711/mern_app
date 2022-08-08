@@ -1,20 +1,23 @@
 import { Container, Paper } from '@mui/material';
 import { Box } from '@mui/system';
-import { unsetAvatar, updateAvatar, updateInfo } from 'features/Auth/user-thunk';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { userApi } from 'api/user-api';
+import TYPES from 'constants/action-types';
+import useUpdateProfile from 'hooks/query/user/use-update-profile';
+import useAuthStore from 'store/authStore';
 import { notify } from 'utils/toastify';
 import { ProfileForm } from '../components';
 
 function ProfileSetting() {
-  const dispatch = useDispatch();
-  const { profile, loading } = useSelector((state) => state.user);
+  const { dispatch } = useAuthStore();
+  const { user: profile } = useAuthStore();
+  const { mutateAsync, isLoading } = useUpdateProfile();
 
   const handleOnSubmit = async (data) => {
-    if (loading) return;
+    if (isLoading) return;
     try {
       const id = profile._id;
-      await dispatch(updateInfo({ id, data })).unwrap();
+      const response = await mutateAsync(() => userApi.updateInfo({ id, data }));
+      dispatch({ type: TYPES.CHANGE_INFO_USER, payload: response });
 
       notify.success('update info successfully!');
     } catch (error) {
@@ -23,21 +26,23 @@ function ProfileSetting() {
   };
 
   const handleUnsetAvt = async () => {
-    if (loading) return;
+    if (isLoading) return;
+    if (!profile?.avatar) return;
     try {
-      await dispatch(unsetAvatar(profile._id));
+      await mutateAsync(() => userApi.unsetAvatar(profile._id));
+      dispatch({ type: TYPES.UNSET_AVATAR });
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleUpdateAvt = async (imgUrl) => {
-    if (loading) return;
+    if (isLoading) return;
     try {
       if (!imgUrl) throw new Error('image not found');
-
       const id = profile._id;
-      await dispatch(updateAvatar({ id, imgUrl }));
+      const response = await mutateAsync(() => userApi.updateAvatar({ id, imgUrl }));
+      dispatch({ type: TYPES.UPLOAD_AVATAR, payload: response });
     } catch (error) {
       console.log(error);
     }
@@ -54,7 +59,7 @@ function ProfileSetting() {
         >
           <ProfileForm
             profile={profile}
-            loading={loading}
+            loading={isLoading}
             onUnsetAvt={handleUnsetAvt}
             onUpdateAvt={handleUpdateAvt}
             onSubmit={handleOnSubmit}

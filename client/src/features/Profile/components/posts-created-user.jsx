@@ -1,35 +1,29 @@
 import { Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import { generateKeyPost } from 'constants/key-constants';
-import { getPostsCreatedByUser } from 'features/Auth/user-thunk';
+import { useQuery } from '@tanstack/react-query';
+import { userApi } from 'api/user-api';
 import PostList from 'features/Posts/components/post-list';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 function PostsCreatedUser({ userId }) {
-  const dispatch = useDispatch();
-  const { posts, loading } = useSelector((state) => state.posts);
+  const { data, isLoading } = useQuery(['posts-user-created', { params: userId }], fetchPostList, {
+    cacheTime: Infinity,
+    staleTime: 5000,
+  });
 
-  const postList = posts[generateKeyPost.createdByUser(userId)];
-
-  useEffect(() => {
-    (async () => {
-      try {
-        await dispatch(getPostsCreatedByUser(userId)).unwrap();
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [userId, dispatch]);
+  async function fetchPostList({ queryKey }) {
+    const [_key, { params }] = queryKey;
+    const response = await userApi.getPostsCreatedByUser(params);
+    return response.createdPosts;
+  }
 
   return (
     <Box>
-      {loading ? (
+      {isLoading ? (
         <Stack alignItems="center" mt={5}>
           <i style={{ color: '#f9f9f9' }} className="bx bx-loader bx-spin bx-md"></i>
         </Stack>
       ) : (
-        <PostList posts={postList} />
+        <PostList posts={data} queryKeys="posts-user-created" params={userId} />
       )}
     </Box>
   );
